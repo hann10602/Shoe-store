@@ -1,0 +1,16 @@
+{
+  "name" : "Vans classic black",
+  "code" : "VANSCLASSICBLACK",
+  "price" : 1750000,
+  "description" : "The Authentic, the original and now iconic Vans style, features a simple low top, lace-up profile with sturdy canvas uppers, metal eyelets, and signature rubber waffle outsoles.",
+  "sizes" : [
+    "37","38","40","41","42"
+  ],
+  "imageUrls" : [
+    "vans-classic-1.jpg",
+    "vans-classic-2.jpg",
+    "vans-classic-3.jpg",
+    "vans-classic-4.jpg",
+    "vans-classic-5.jpg"
+  ]
+}

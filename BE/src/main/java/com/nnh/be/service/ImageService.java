@@ -9,7 +9,7 @@ import java.util.List;
 public interface ImageService {
     MessageSdo create(CreateImageSdi req);
     MessageSdo update(List<String> req, Shoe shoe);
-    void deleteAllByShoeId(Long id);
+    void deleteAllByShoe(Shoe shoe);
 
 
 }

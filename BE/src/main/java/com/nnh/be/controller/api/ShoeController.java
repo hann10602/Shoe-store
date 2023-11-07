@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/shoe")
 public class ShoeController {
-    @Autowired
-    private ShoeService shoeService;
+    private final ShoeService shoeService;
 
     @GetMapping("/self")
     public ShoeSelfSdo self(@RequestBody SelfShoeSdi req) {

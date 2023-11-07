@@ -13,19 +13,16 @@ import com.nnh.be.repository.UserRepository;
 import com.nnh.be.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private RoleRepository roleRepo;
+    private final UserRepository userRepo;
+    private final RoleRepository roleRepo;
 
     @Override
     public List<UserSelfSdo> findAll() {
@@ -33,6 +30,8 @@ public class UserServiceImpl implements UserService {
         userRepo.findAll().forEach((entity) -> {
             UserSelfSdo dto = new UserSelfSdo();
             BeanUtils.copyProperties(entity, dto);
+
+            dto.setRole(entity.getUserRole().getName());
 
             dtoList.add(dto);
         });
@@ -43,7 +42,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSelfSdo self(SelfUserSdi req) {
         UserSelfSdo dto = new UserSelfSdo();
-        BeanUtils.copyProperties(findOne(req.getId()), dto);
+        User entity = findOne(req.getId());
+        BeanUtils.copyProperties(entity, dto);
+
+        dto.setRole(entity.getUserRole().getName());
 
         return dto;
     }

@@ -6,26 +6,27 @@ import com.nnh.be.model.ShoeSize;
 import com.nnh.be.model.Size;
 import com.nnh.be.repository.ShoeSizeRepository;
 import com.nnh.be.service.ShoeSizeService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class ShoeSizeServiceImpl implements ShoeSizeService {
-    @Autowired
-    private ShoeSizeRepository shoeSizeRepo;
+    private final ShoeSizeRepository shoeSizeRepo;
 
 
     @Override
     public MessageSdo create(Shoe shoe, List<Size> sizes) {
         try {
-            ShoeSize entity = new ShoeSize();
-            entity.setShoeSize(shoe);
-
             sizes.forEach((size) -> {
+                ShoeSize entity = new ShoeSize();
+                entity.setShoeSize(shoe);
                 entity.setSizeShoe(size);
                 entity.setQuantity(50);
                 shoeSizeRepo.save(entity);
@@ -40,25 +41,26 @@ public class ShoeSizeServiceImpl implements ShoeSizeService {
     }
 
     @Override
+    @Transactional
     public MessageSdo update(Shoe shoe, List<Size> sizes) {
         try {
-            List<ShoeSize> shoeSizeList = shoeSizeRepo.findAllByShoeId(shoe.getId());
-            List<Size> shoeSizeIdList = new ArrayList<>();
+            List<ShoeSize> shoeSizeList = shoeSizeRepo.findAllByShoeSize(shoe);
+            Map<Size, Long> shoeSizeIdList = new HashMap<>();
 
             shoeSizeList.forEach(item -> {
-                shoeSizeIdList.add(item.getSizeShoe());
+                shoeSizeIdList.put(item.getSizeShoe(), item.getId());
             });
 
-            shoeSizeList.forEach(size -> {
+            shoeSizeIdList.forEach((size, id) -> {
                 if(!sizes.contains(size)) {
-                    shoeSizeRepo.deleteById(size.getId());
+                    shoeSizeRepo.deleteById(id);
                 }
             });
 
-            ShoeSize entity = new ShoeSize();
-            entity.setShoeSize(shoe);
             sizes.forEach(size -> {
-                if(!shoeSizeList.contains(size)) {
+                if(!shoeSizeIdList.containsKey(size)) {
+                    ShoeSize entity = new ShoeSize();
+                    entity.setShoeSize(shoe);
                     entity.setSizeShoe(size);
                     entity.setQuantity(50);
                     shoeSizeRepo.save(entity);
@@ -71,6 +73,11 @@ public class ShoeSizeServiceImpl implements ShoeSizeService {
 
             return MessageSdo.of("Failed");
         }
+    }
+
+    @Override
+    public void deleteAllByShoe(Shoe shoe) {
+        shoeSizeRepo.deleteAllByShoeSize(shoe);
     }
 }
 

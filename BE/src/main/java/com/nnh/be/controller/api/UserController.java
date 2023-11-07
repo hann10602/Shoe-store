@@ -20,17 +20,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/self")
     public UserSelfSdo self(@RequestBody SelfUserSdi req) {
         return userService.self(req);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/get-all")
     public List<UserSelfSdo> findAll() {
         return userService.findAll();
     }

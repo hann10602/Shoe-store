@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class SizeServiceImpl implements SizeService {
-    @Autowired
-    private SizeRepository sizeRepo;
+    private final SizeRepository sizeRepo;
+
     @Override
     public Size self(String code) {
         return sizeRepo.findByCode(code).get();
@@ -21,6 +22,6 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public List<Size> searchByCodes(List<String> sizeCodes) {
-        return sizeRepo.findAllByShoeSize(sizeCodes);
+        return sizeRepo.findByCodeIn(sizeCodes);
     }
 }

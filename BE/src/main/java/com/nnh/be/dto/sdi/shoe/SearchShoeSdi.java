@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchShoeSdi {
     private String name;
-    private String price;
+    private Long price;
     private String description;
-    private Long sizeId;
+    private String sizeId;
 }

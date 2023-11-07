@@ -6,23 +6,25 @@ import com.nnh.be.model.Image;
 import com.nnh.be.model.Shoe;
 import com.nnh.be.repository.ImageRepository;
 import com.nnh.be.service.ImageService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class ImageServiceImpl implements ImageService {
-    @Autowired
-    private ImageRepository imageRepo;
+    private final ImageRepository imageRepo;
 
     @Override
     public MessageSdo create(CreateImageSdi req) {
         try {
-            Image entity = new Image();
-            entity.setShoeImage(req.getShoe());
             req.getUrls().forEach(url -> {
+                Image entity = new Image();
+                entity.setShoeImage(req.getShoe());
                 entity.setUrl(url);
 
                 imageRepo.save(entity);
@@ -36,16 +38,30 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public MessageSdo update(List<String> req, Shoe shoe) {
         try {
-            deleteAllByShoeId(shoe.getId());
+            List<Image> currentImages = imageRepo.findAllByShoeImage(shoe);
+            Map<String, Image> currentUrlsList = new HashMap<>();
 
-            Image entity = new Image();
-            entity.setShoeImage(shoe);
+            currentImages.forEach(image -> {
+                currentUrlsList.put(image.getUrl(), image);
+            });
+
+            currentUrlsList.forEach((url, image) -> {
+                if(!req.contains(url)) {
+                    imageRepo.delete(image);
+                }
+            });
+
             req.forEach(url -> {
-                entity.setUrl(url);
+                if(!currentUrlsList.containsKey(url)) {
+                    Image image = new Image();
+                    image.setShoeImage(shoe);
+                    image.setUrl(url);
 
-                imageRepo.save(entity);
+                    imageRepo.save(image);
+                }
             });
 
             return MessageSdo.of("Success");
@@ -56,7 +72,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteAllByShoeId(Long id) {
-//        imageRepo.deleteAllByShoeId(id);
+    public void deleteAllByShoe(Shoe shoe) {
+        imageRepo.deleteAllByShoeImage(shoe);
     }
 }

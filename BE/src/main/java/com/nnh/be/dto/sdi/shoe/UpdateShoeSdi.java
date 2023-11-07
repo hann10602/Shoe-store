@@ -12,7 +12,7 @@ public class UpdateShoeSdi {
     private Long id;
     private String name;
     private String code;
-    private String price;
+    private Long price;
     private String description;
     private List<String> imageUrls;
     private List<String> sizes;

@@ -7,37 +7,31 @@ import com.nnh.be.dto.sdi.shoe.SelfShoeSdi;
 import com.nnh.be.dto.sdi.shoe.UpdateShoeSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
+import com.nnh.be.model.Category;
 import com.nnh.be.model.Shoe;
 import com.nnh.be.repository.CategoryRepository;
 import com.nnh.be.repository.ShoeRepository;
+import com.nnh.be.repository.ShoeSizeRepository;
 import com.nnh.be.service.ImageService;
 import com.nnh.be.service.ShoeService;
 import com.nnh.be.service.ShoeSizeService;
 import com.nnh.be.service.SizeService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ShoeServiceImpl implements ShoeService {
-    @Autowired
-    private ShoeRepository shoeRepo;
-
-    @Autowired
-    private CategoryRepository categoryRepo;
-
-    @Autowired
-    private ImageService imageService;
-
-    @Autowired
-    private SizeService sizeService;
-
-    @Autowired
-    private ShoeSizeService shoeSizeService;
+    private final ShoeRepository shoeRepo;
+    private final CategoryRepository categoryRepo;
+    private final ImageService imageService;
+    private final SizeService sizeService;
+    private final ShoeSizeService shoeSizeService;
 
     @Override
     public List<ShoeSelfSdo> findAll() {
@@ -89,6 +83,7 @@ public class ShoeServiceImpl implements ShoeService {
             Shoe shoe = shoeRepo.findById(req.getId()).get();
             BeanUtils.copyProperties(req, shoe);
 
+            shoe.setPrice(req.getPrice());
             shoe.setShoeCategory(categoryRepo.findByCode(req.getCategory()));
 
             shoeRepo.save(shoe);
@@ -103,8 +98,15 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    @Transactional
     public MessageSdo delete(DeleteShoeSdi req) {
         try {
+            Shoe entity = findOne(req.getId());
+
+            shoeSizeService.deleteAllByShoe(entity);
+
+            imageService.deleteAllByShoe(entity);
+
             shoeRepo.deleteById(req.getId());
 
             return MessageSdo.of("Success");
