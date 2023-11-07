@@ -1,0 +1,21 @@
+package com.nnh.be.model;
+
+import javax.persistence.*;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Data
+@Table(name = "size")
+public class Size extends BaseEntity{
+    @Column
+    private String name;
+
+    @Column
+    private String code;
+
+    @OneToMany(mappedBy = "shoeSize")
+    private List<Shoe> shoes = new ArrayList<>();
+}

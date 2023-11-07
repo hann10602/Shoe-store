@@ -1,0 +1,9 @@
+INDEX VERSION 1.134+D:\Downloads\VScode\vscode_workspace\project\vmo-internship\.metadata\.plugins\org.eclipse.jdt.core
+532563299.index
+432659181.index
+2377490098.index
+1865797976.index
+1205014538.index
+3048550346.index
+1392458100.index
+1750212352.index

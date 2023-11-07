@@ -1,0 +1,39 @@
+package com.nnh.be.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Data
+@Table(name = "shoe")
+public class Shoe extends BaseEntity{
+    @Column
+    private String name;
+
+    @Column
+    private Long price;
+
+    @Column
+    private String description;
+
+    @Column
+    private String phoneNum;
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Size shoeSize;
+
+    @OneToMany(mappedBy = "shoeImage")
+    private List<Image> image;
+
+    @OneToMany(mappedBy = "shoeCart")
+    private List<Shoe> shoes = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category shoeCategory;
+
+}

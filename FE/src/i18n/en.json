@@ -1,0 +1,16 @@
+{
+  "common": {
+    "action": {
+      "edit": "Edit",
+      "update": "Update",
+      "delete": "Delete",
+      "add": "Add",
+      "save": "Save",
+      "discard": "Discard"
+    },
+    "state": {
+      "active": "Active",
+      "draft": "Draft"
+    }
+  }
+}

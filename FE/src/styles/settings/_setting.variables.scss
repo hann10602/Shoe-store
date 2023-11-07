@@ -1,0 +1,52 @@
+/* ==========================================================================
+   # START VARIABLE SETTING
+   ==========================================================================
+*/
+
+$breakpoints: (
+  md: 768px,
+  lg: 1280px,
+  xl: 1366px,
+  xxl: 1600px,
+  xxxl: 1920px,
+);
+
+$colors: (
+  primary: #45adff,
+  background-primary: #252525,
+  background-secondary: #1a1a1a,
+  text-label: "#CCCCCC",
+  text-color: "#2E260A",
+  text-grey: #808080,
+  text-default: "#CCCCCC",
+  text-pagination: "#616161",
+  border-primary: "#333333",
+  green-primary: #30d158,
+  error-primary: #e9453a,
+);
+$colors-dark: (
+  primary: #45adff,
+  background-primary: #252525,
+  background-secondary: #1a1a1a,
+);
+
+:root {
+  /*Begin color*/
+  @each $name, $color in $colors {
+    --color-#{$name}: #{$color};
+  }
+
+  /*End color*/
+}
+
+[data-theme="dark"] {
+  @each $name, $color in $colors-dark {
+    --color-#{$name}: #{$color};
+  }
+}
+
+//End variable root
+/* ==========================================================================
+   # END VARIABLE SETTING
+   ==========================================================================
+*/

@@ -1,0 +1,108 @@
+package com.nnh.be.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "shoe")
+public class Shoe extends BaseEntity{
+    @Column
+    private String name;
+
+    @Column
+    private Long price;
+
+    @Column
+    private String description;
+
+    @Column
+    private String phoneNum;
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Size shoeSize;
+
+    @OneToMany(mappedBy = "shoeImage")
+    private List<Image> image;
+
+    @OneToMany(mappedBy = "shoeCart")
+    private List<Shoe> shoes = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category shoeCategory;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getPrice() {
+		return price;
+	}
+
+	public void setPrice(Long price) {
+		this.price = price;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+
+	public Size getShoeSize() {
+		return shoeSize;
+	}
+
+	public void setShoeSize(Size shoeSize) {
+		this.shoeSize = shoeSize;
+	}
+
+	public List<Image> getImage() {
+		return image;
+	}
+
+	public void setImage(List<Image> image) {
+		this.image = image;
+	}
+
+	public List<Shoe> getShoes() {
+		return shoes;
+	}
+
+	public void setShoes(List<Shoe> shoes) {
+		this.shoes = shoes;
+	}
+
+	public Category getShoeCategory() {
+		return shoeCategory;
+	}
+
+	public void setShoeCategory(Category shoeCategory) {
+		this.shoeCategory = shoeCategory;
+	}
+    
+    
+
+}

@@ -1,0 +1,48 @@
+package com.nnh.be.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "cart")
+public class Cart extends BaseEntity{
+    @Column
+    private Integer quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userCart;
+
+    @ManyToOne
+    @JoinColumn(name = "shoe_id")
+    private Shoe shoeCart;
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public User getUserCart() {
+		return userCart;
+	}
+
+	public void setUserCart(User userCart) {
+		this.userCart = userCart;
+	}
+
+	public Shoe getShoeCart() {
+		return shoeCart;
+	}
+
+	public void setShoeCart(Shoe shoeCart) {
+		this.shoeCart = shoeCart;
+	}
+    
+    
+}
