@@ -35,11 +35,6 @@ public class UserController {
         return userService.findAll();
     }
 
-    @PostMapping("/create")
-    public MessageSdo create(@RequestBody CreateUserSdi req) {
-        return userService.create(req);
-    }
-
     @PutMapping("/update")
     public MessageSdo update(@RequestBody UpdateUserSdi req) {
         return userService.update(req);

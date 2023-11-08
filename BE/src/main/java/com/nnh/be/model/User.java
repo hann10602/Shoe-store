@@ -3,6 +3,9 @@ package com.nnh.be.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Table(name = "user")
-public class User extends BaseEntity{
+public class User extends BaseEntity implements UserDetails {
     @Column
     private String fullName;
 
@@ -37,4 +40,38 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "userCart")
     private List<Cart> carts = new ArrayList<>();
 
+    public List<GrantedAuthority> convertRoles(List<Role> oldRoles) {
+        List<GrantedAuthority> newRoles = new ArrayList<>();
+        for(Role role : oldRoles) {
+            newRoles.add(new SimpleGrantedAuthority(role.getName()));
+        }
+
+        return newRoles;
+    }
+
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

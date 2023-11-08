@@ -8,7 +8,6 @@ import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.service.ShoeService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class ShoeController {
         return shoeService.self(req);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/get-all")
     public List<ShoeSelfSdo> findAll() {
         return shoeService.findAll();
     }

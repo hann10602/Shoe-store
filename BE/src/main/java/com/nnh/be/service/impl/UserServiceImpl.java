@@ -8,9 +8,12 @@ import com.nnh.be.dto.sdi.user.UpdateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
 import com.nnh.be.model.User;
+import com.nnh.be.repository.CartRepository;
 import com.nnh.be.repository.RoleRepository;
 import com.nnh.be.repository.UserRepository;
+import com.nnh.be.service.CartService;
 import com.nnh.be.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final RoleRepository roleRepo;
+    private final CartRepository cartRepository;
 
     @Override
     public List<UserSelfSdo> findAll() {
@@ -51,23 +55,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MessageSdo create(CreateUserSdi req) {
-        try {
-            User user = new User();
-            BeanUtils.copyProperties(req, user);
-
-            user.setUserRole(roleRepo.findByCode("ROLE_USER").get());
-
-            userRepo.save(user);
-
-            return MessageSdo.of("Success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return MessageSdo.of("Failed");
-        }
-    }
-
-    @Override
     public MessageSdo update(UpdateUserSdi req) {
         try {
             User user = findOne(req.getId());
@@ -83,8 +70,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public MessageSdo delete(DeleteUserSdi req) {
         try {
+            cartRepository.deleteByUserCart(userRepo.findById(req.getId()).get());
             userRepo.deleteById(req.getId());
 
             return MessageSdo.of("Success");
@@ -97,5 +86,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findOne(Long id) {
         return userRepo.findById(id).get();
+    }
+
+    @Override
+    public User findOneByUsername(String username) {
+        return userRepo.findByUsername(username).get();
     }
 }
