@@ -7,6 +7,7 @@ import com.nnh.be.dto.sdi.shoe.SelfShoeSdi;
 import com.nnh.be.dto.sdi.shoe.UpdateShoeSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
+import com.nnh.be.model.Cart;
 import com.nnh.be.model.Category;
 import com.nnh.be.model.Shoe;
 import com.nnh.be.repository.CategoryRepository;
@@ -22,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -119,5 +121,10 @@ public class ShoeServiceImpl implements ShoeService {
     @Override
     public Shoe findOne(Long id) {
         return shoeRepo.findById(id).get();
+    }
+
+    @Override
+    public List<Shoe> findByIds(List<Long> idList) {
+        return shoeRepo.findByIdIn(idList);
     }
 }
