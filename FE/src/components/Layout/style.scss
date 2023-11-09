@@ -1,0 +1,77 @@
+#project-wrapper {
+  position: relative;
+
+  header {
+    width: 100%;
+    padding: 40px 180px;
+    z-index: 1;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      cursor: pointer;
+    }
+  }
+
+  nav {
+    display: flex;
+
+    .nav-item {
+      font-size: 28px;
+      font-weight: 700;
+      margin-right: 80px;
+      cursor: pointer;
+    }
+  }
+
+  #header-right {
+    display: flex;
+    align-items: center;
+
+    #magnify-glass {
+      cursor: pointer;
+    }
+
+    #shopping-bag {
+      margin-left: 48px;
+      cursor: pointer;
+    }
+
+    #header-user {
+      margin-left: 48px;
+      position: relative;
+
+      #header-user-image {
+        cursor: pointer;
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+        border-radius: 40px;
+      }
+
+      #header-user-menu {
+        position: absolute;
+        border-radius: 4px;
+        top: 88px;
+        right: 0;
+        width: 300px;
+        background-color: white;
+      }
+    }
+
+    #header-user-sign {
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: 700;
+      transition: color 0.1s ease-in-out;
+      margin-left: 48px;
+    }
+
+    #header-user-sign:hover {
+      color: rgb(49, 255, 255);
+    }
+  }
+}

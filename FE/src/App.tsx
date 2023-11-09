@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { Switch } from "react-router-dom";
 
 import { RouteWithLayout } from "@/components/RouteWithLayout";
-import { RequestUserProfile } from "@/store/user/actions";
 
 import "antd/dist/antd.less";
 import "./App.scss";
@@ -14,14 +13,14 @@ import { AppProvider } from "./context";
 
 export default function App() {
   const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
+  // const jwt = localStorage.getItem("jwt");
 
-  useEffect(() => {
-    if (jwt) {
-      dispatch(RequestUserProfile());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jwt]);
+  // useEffect(() => {
+  //   if (jwt) {
+  //     dispatch(RequestUserProfile());
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [jwt]);
 
   return (
     <>
