@@ -1,2 +1,2 @@
-export * from "./Home/Home";
+export * from "./Home/HomePage";
 export * from "./Auth/Login";
