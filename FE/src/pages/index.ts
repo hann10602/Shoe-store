@@ -1,2 +1,2 @@
-export * from './Home/Home';
-export * from './Auth/Login';
+export * from "./Home/Home";
+export * from "./Auth/Login";
