@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { ShoeType } from "./type";
 import { shoeAsyncAction } from "./action";
+import { products } from "@/constants/shoe";
 
 type ShoeStateType = {
   isGettingShoe: boolean;
@@ -21,7 +22,7 @@ const initialState: ShoeStateType = {
   isUpdatingShoe: false,
   isDeletingShoe: false,
   shoe: undefined,
-  shoes: [],
+  shoes: products,
   response: undefined,
 };
 

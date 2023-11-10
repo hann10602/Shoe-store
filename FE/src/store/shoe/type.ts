@@ -1,7 +1,7 @@
 export type ShoeType = {
   id: number;
   name: string;
-  price: number;
+  price: string;
   description: string;
   quantity: number;
   averageStar: number;

@@ -1,0 +1,26 @@
+#addition-service {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(219, 219, 219);
+
+  .service {
+    display: flex;
+    align-items: center;
+    padding: 20px 160px;
+
+    .service-content {
+      margin-left: 20px;
+      
+      .service-title {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .service-sub-title {
+        font-weight: 500;
+        color: rgba(51,63,72,.5);
+      }
+    }
+  }
+}

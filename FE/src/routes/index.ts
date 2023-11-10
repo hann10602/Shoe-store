@@ -2,6 +2,7 @@ import React from "react";
 
 import { MainLayout, LoginLayout } from "../layouts";
 import Register from "@/pages/Auth/Register";
+import ProductDetail from "@/pages/Home/ProductDetail";
 
 const Login = React.lazy(() => import("@/pages/Auth/Login"));
 const Home = React.lazy(() => import("@/pages/Home/HomePage"));
@@ -39,6 +40,14 @@ export const routes: IRoute[] = [
     exact: true,
     path: ["/home"],
     routePath: "/home",
+    Protected: false,
+  },
+  {
+    Component: ProductDetail,
+    Layout: MainLayout,
+    exact: true,
+    path: "/shoe",
+    routePath: "/shoe",
     Protected: false,
   },
 ];

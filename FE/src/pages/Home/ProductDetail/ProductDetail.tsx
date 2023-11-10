@@ -4,7 +4,14 @@ type Props = {}
 
 const ProductDetail = (props: Props) => {
   return (
-    <div>ProductDetail</div>
+    <div>
+      <div id='product-detail'>
+
+      </div>
+      <div className='more-information'>
+        
+      </div>
+    </div>
   )
 }
 
