@@ -1,11 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 import LoginImage from "@/assets/img/auth/login-background-1.jpg";
+import { useForm } from "react-hook-form";
+import { useHistory, useLocation } from "react-router-dom";
+import { LoginType } from "@/store/auth/type";
+import { useAppDispatch } from "@/store/store";
+import { authAsyncAction } from "@/store/auth/action";
+import { useSelector } from "react-redux";
+import { authRespSelector } from "@/store/auth/selector";
+import { deleteResp } from "@/store/auth/slice";
 
-import { useHistory } from "react-router-dom";
+const login: LoginType = {
+  username: "",
+  password: "",
+};
 
 export const Login = () => {
+  const [message, setMessage] = useState<string | null>(null);
+
+  const dispatch = useAppDispatch();
+
+  const form = useForm<LoginType>();
+
+  const { register, handleSubmit, formState } = form;
+
+  const { errors } = formState;
+
+  const location = useLocation();
   const history = useHistory();
+
+  const resp = useSelector(authRespSelector);
+
+  const onSubmit = (data: LoginType) => {
+    dispatch(authAsyncAction.login(data));
+  };
+
+  useEffect(() => {
+    if (resp === "Success") {
+      history.push(`/register?message=${resp}`);
+    } else if (!resp) {
+    } else {
+      history.push(`/sign-in?message=${resp}`);
+    }
+  }, [resp, history]);
+
+  useEffect(() => {
+    if (location.search.includes("message")) {
+      setMessage(new URLSearchParams(location.search).get("message"));
+    }
+    dispatch(deleteResp);
+  }, [location, dispatch]);
+
   return (
     <div id="login-page">
       <span className="back-icon" onClick={() => history.push("/home")}>
@@ -29,21 +74,46 @@ export const Login = () => {
         </svg>
       </span>
       <img src={LoginImage} alt="" style={{ position: "absolute" }} />
-      <form id="login-form">
+      <form id="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div id="login-form-background"></div>
         <div className="form-wrapper">
           <h1 className="title">Login</h1>
+          {message && (
+            <div
+              className={`${
+                message === "Success" ? "success-message" : "error-message"
+              }`}
+            >
+              {message}
+            </div>
+          )}
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Username</label>
             </div>
-            <input className="login-input" type="text" name="username" />
+            <input
+              className="login-input"
+              type="text"
+              {...register("username", {
+                required: "Please enter username",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.username?.message}</p>
           </div>
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Password</label>
             </div>
-            <input className="login-input" type="password" name="password" />
+            <input
+              className="login-input"
+              type="password"
+              {...register("password", {
+                required: "Please enter password",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.password?.message}</p>
           </div>
           <button type="submit" className="login-btn">
             Login
@@ -56,7 +126,12 @@ export const Login = () => {
           <p className="register-text">You don`t have any account yet ?</p>
           <button
             type="button"
-            onClick={() => history.push("/register")}
+            onClick={() => {
+
+              history.push(
+                `/register`
+              );
+            }}
             className="register-btn"
           >
             Register

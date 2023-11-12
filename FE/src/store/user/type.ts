@@ -1,9 +1,13 @@
 export type UserType = {
   id: number;
-  quantity: number;
-  userId: number;
-  shoeId: number;
-  shoePrice: number;
+  fullName: string;
+  username: string;
+  password: string;
+  email: string;
+  phoneNum: number;
+  avatar: string;
+  role: string;
+  address: string;
 };
 
 export type GetUserType = {
@@ -11,13 +15,26 @@ export type GetUserType = {
 };
 
 export type CreateUserType = {
-  userId: number;
-  shoeId: number;
+  fullName: string;
+  username: string;
+  password: string;
+  email: string;
+  phoneNum: number;
+  avatar: string;
+  role: string;
+  address: string;
 };
 
 export type UpdateUserType = {
   id: number;
-  quantity: number;
+  fullName: string;
+  username: string;
+  password: string;
+  email: string;
+  phoneNum: number;
+  avatar: string;
+  role: string;
+  address: string;
 };
 
 export type DeleteUserType = GetUserType;

@@ -1,14 +1,15 @@
-import { combineReducers } from "redux";
-import { categoryReducer } from "./category/slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { sizeReducer } from "./size/slice";
+import { authReducer } from "./auth/slice";
 import { cartReducer } from "./cart/slice";
-import { userReducer } from "./user/slice";
+import { categoryReducer } from "./category/slice";
 import { shoeReducer } from "./shoe/slice";
+import { sizeReducer } from "./size/slice";
+import { userReducer } from "./user/slice";
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     category: categoryReducer,
     size: sizeReducer,
     cart: cartReducer,
@@ -19,6 +20,6 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 type AppDispatch = typeof store.dispatch;
-export const userAppDispatch = useDispatch<AppDispatch>;
+export const useAppDispatch = useDispatch<AppDispatch>;
 
 export default store;

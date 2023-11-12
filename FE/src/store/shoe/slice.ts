@@ -36,7 +36,8 @@ const shoeSlice = createSlice({
         state.isGettingShoe = true;
       })
       .addCase(shoeAsyncAction.getOne.fulfilled, (state, action) => {
-        state.shoe = action.payload;
+        // state.shoe = action.payload;
+        state.shoe = products[0];
         state.isGettingShoe = false;
       })
       .addCase(shoeAsyncAction.getOne.rejected, (state) => {

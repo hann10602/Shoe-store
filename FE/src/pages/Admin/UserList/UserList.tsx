@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
+import "./style.scss";
 
-type Props = {}
+type Props = {};
 
 const UserList = (props: Props) => {
-  return (
-    <div>UserList</div>
-  )
-}
+  return <div>UserList</div>;
+};
 
-export default UserList
+export default UserList;

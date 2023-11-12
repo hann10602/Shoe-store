@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
+import "./style.scss";
 
-type Props = {}
+type Props = {};
 
 const SearchPage = (props: Props) => {
-  return (
-    <div>SearchPage</div>
-  )
-}
+  return <div>SearchPage</div>;
+};
 
-export default SearchPage
+export default SearchPage;

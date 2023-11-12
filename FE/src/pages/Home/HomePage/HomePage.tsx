@@ -55,7 +55,7 @@ const HomePage = (props: Props) => {
       <Banner />
       <AdditionService />
       {concept.map((item) => (
-        <AdvertConcept item={item} />
+        <AdvertConcept item={item} key={item.id}/>
       ))}
       <ProductGroup />
     </main>

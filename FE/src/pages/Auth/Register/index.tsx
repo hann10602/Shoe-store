@@ -1,13 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 import LoginImage from "@/assets/img/auth/login-background-1.jpg";
 
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { RegisterType } from "@/store/auth/type";
+import { authAsyncAction } from "@/store/auth/action";
+import { useAppDispatch } from "@/store/store";
+import { useSelector } from "react-redux";
+import { authRespSelector } from "@/store/auth/selector";
 
 type Props = {};
 
 const Register = (props: Props) => {
+  const [message, setMessage] = useState<string | null>(null);
+  const form = useForm<RegisterType>();
+
+  const { register, handleSubmit, formState } = form;
+
+  const { errors } = formState;
+
+  const location = useLocation();
   const history = useHistory();
+
+  const resp = useSelector(authRespSelector);
+
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (data: RegisterType) => {
+    dispatch(authAsyncAction.register(data));
+  };
+
+  useEffect(() => {
+    if (resp === "Success") {
+      history.push(`/home`);
+    } else if (!resp) {
+    } else {
+      history.push(`/register?message=${resp}`);
+    }
+  }, [resp, history]);
+
+  useEffect(() => {
+    if (location.search.includes("message")) {
+      setMessage(new URLSearchParams(location.search).get("message"));
+    }
+  }, [location]);
 
   return (
     <div id="register-page">
@@ -32,39 +69,88 @@ const Register = (props: Props) => {
         </svg>
       </span>
       <img src={LoginImage} alt="" />
-      <form id="register-form">
+      <form id="register-form" onSubmit={handleSubmit(onSubmit)}>
         <div id="register-form-background"></div>
         <div className="form-wrapper">
           <h1 className="title">Register</h1>
+          {message !== null && (
+            <div
+              className={`${
+                message === "Success" ? "success-message" : "error-message"
+              }`}
+            >
+              {message}
+            </div>
+          )}
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Full name</label>
             </div>
-            <input className="register-input" type="text" name="fullName" />
+            <input
+              className="register-input"
+              type="text"
+              {...register("fullName", {
+                required: "Please enter full name",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.fullName?.message}</p>
           </div>
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Username</label>
             </div>
-            <input className="register-input" type="text" name="username" />
+            <input
+              className="register-input"
+              type="text"
+              {...register("username", {
+                required: "Please enter username",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.username?.message}</p>
           </div>
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Password</label>
             </div>
-            <input className="register-input" type="password" name="password" />
+            <input
+              className="register-input"
+              type="password"
+              {...register("password", {
+                required: "Please enter password",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.password?.message}</p>
           </div>
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Email</label>
             </div>
-            <input className="register-input" type="text" name="email" />
+            <input
+              className="register-input"
+              type="text"
+              {...register("email", {
+                required: "Please enter email",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.email?.message}</p>
           </div>
           <div className="form-control">
-            <div>
+            <div className="label-wrapper">
               <label htmlFor="">Phone number</label>
             </div>
-            <input className="register-input" type="text" name="phoneNum" />
+            <input
+              className="register-input"
+              type="text"
+              {...register("phoneNum", {
+                required: "Please enter phone number",
+                minLength: 6,
+              })}
+            />
+            <p className="field-message">{errors.phoneNum?.message}</p>
           </div>
           <button type="submit" className="register-btn">
             Register

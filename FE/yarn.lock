@@ -10401,6 +10401,11 @@
     "prop-types" "^15.5.0"
     "react-async-script" "^1.1.1"
 
+"react-hook-form@^7.48.2":
+  "integrity" "sha512-H0T2InFQb1hX7qKtDIZmvpU1Xfn/bdahWBN1fH19gSe4bBEqTfmlr7H3XWTaVtiK4/tpPaI1F3355GPMZYge+A=="
+  "resolved" "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.48.2.tgz"
+  "version" "7.48.2"
+
 "react-i18next@^12.0.0":
   "integrity" "sha512-5v8E2XjZDFzK7K87eSwC7AJcAkcLt5xYZ4+yTPDAW1i7C93oOY1dnr4BaQM7un4Hm+GmghuiPvevWwlca5PwDA=="
   "resolved" "https://registry.npmjs.org/react-i18next/-/react-i18next-12.3.1.tgz"

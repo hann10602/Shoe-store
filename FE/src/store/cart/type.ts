@@ -11,6 +11,8 @@ export type GetCartType = {
 };
 
 export type CreateCartType = {
+  quantity: number;
+  sizeCode: string;
   userId: number;
   shoeId: number;
 };
