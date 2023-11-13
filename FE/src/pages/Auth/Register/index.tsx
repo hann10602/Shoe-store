@@ -32,6 +32,7 @@ const Register = (props: Props) => {
   };
 
   useEffect(() => {
+    console.log(resp);
     if (resp === "Success") {
       history.push(`/home`);
     } else if (!resp) {

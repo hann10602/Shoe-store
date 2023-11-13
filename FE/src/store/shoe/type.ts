@@ -5,6 +5,7 @@ export type ShoeType = {
   description: string;
   quantity: number;
   averageStar: number;
+  category: string;
   shoeSizes: string[];
   imageUrls: string[];
 };
@@ -14,7 +15,7 @@ export type GetShoeType = {
 };
 
 export type GetShoeByCategory = {
-  categoryId: number;
+  category: string;
 };
 
 export type CreateShoeType = {

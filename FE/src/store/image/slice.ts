@@ -26,7 +26,7 @@ const initialState: ShoeStateType = {
 };
 
 const shoeSlice = createSlice({
-  name: "shoe",
+  name: "image",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

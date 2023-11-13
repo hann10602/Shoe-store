@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   CreateShoeType,
   DeleteShoeType,
+  GetShoeByCategory,
   GetShoeType,
   UpdateShoeType,
 } from "./type";
@@ -11,7 +12,7 @@ const baseUrl = process.env.PUBLIC_URL;
 
 const getOne = createAsyncThunk("size/getOne", async (param: GetShoeType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/shoe/self/${param.id}`);
+    const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`);
     if (resp.status === 200) {
       return resp.data;
     }
@@ -23,6 +24,17 @@ const getOne = createAsyncThunk("size/getOne", async (param: GetShoeType) => {
 const getAll = createAsyncThunk("shoe/getAll", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/shoe/get-all`);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getByCategory = createAsyncThunk("shoe/getByCategory", async (param:GetShoeByCategory) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/shoe/get-by-category?category=${param.category}`);
     if (resp.status === 200) {
       return resp.data;
     }
@@ -82,4 +94,4 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const shoeAsyncAction = { getOne, getAll, create, update, deletes };
+export const shoeAsyncAction = { getOne, getAll, getByCategory, create, update, deletes };

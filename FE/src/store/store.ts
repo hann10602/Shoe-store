@@ -6,6 +6,7 @@ import { categoryReducer } from "./category/slice";
 import { shoeReducer } from "./shoe/slice";
 import { sizeReducer } from "./size/slice";
 import { userReducer } from "./user/slice";
+import { evaluateReducer } from "./evaluate/slice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     cart: cartReducer,
     user: userReducer,
     shoe: shoeReducer,
+    evaluate: evaluateReducer,
   },
 });
 

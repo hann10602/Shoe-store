@@ -42,13 +42,14 @@ export const Login = () => {
     } else {
       history.push(`/sign-in?message=${resp}`);
     }
+
+
   }, [resp, history]);
 
   useEffect(() => {
     if (location.search.includes("message")) {
       setMessage(new URLSearchParams(location.search).get("message"));
     }
-    dispatch(deleteResp);
   }, [location, dispatch]);
 
   return (

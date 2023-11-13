@@ -1,17 +1,14 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import "./style.scss";
-import { useSelector } from "react-redux";
-import { userSelector } from "@/store/user/selector";
 import Avatar from "@/assets/img/auth/login-background-1.jpg";
-import QRCode from "@/assets/img/web/bancode.png";
 import AppStore from "@/assets/img/web/appstore.png";
-import ConnectFooter from "@/assets/img/web/web-carousel-1.jpg";
+import QRCode from "@/assets/img/web/bancode.png";
 import GooglePlay from "@/assets/img/web/googleplay.png";
-import NavigateItem, { NavType } from "./NavigateItem/NavigateItem";
-import { useHistory } from "react-router-dom";
-import { loginUserSelector } from "@/store/auth/selector";
+import ConnectFooter from "@/assets/img/web/web-carousel-1.jpg";
+import { LoginUserType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
-import { logout } from "@/store/auth/slice";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
+import NavigateItem, { NavType } from "./NavigateItem/NavigateItem";
+import "./style.scss";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
@@ -71,7 +68,9 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   const dispatch = useAppDispatch();
 
-  const user = useSelector(loginUserSelector);
+  const userInformation:string | null = localStorage.getItem("login-user");
+
+  const user: LoginUserType = userInformation != null ? JSON.parse(userInformation) : null;
 
   const userImageRef = useRef<HTMLImageElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -133,7 +132,8 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
     {
       id: 4,
       onClick: () => {
-        dispatch(logout);
+        localStorage.removeItem('login-user')
+        window.location.reload();
       },
       title: "Logout",
       icon: (
@@ -326,7 +326,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
               </g>
             </svg>
           </span>
-          {user !== undefined ? (
+          {user !== null ? (
             <div id="header-user">
               <img
                 id="header-user-image"

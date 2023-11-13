@@ -5,14 +5,12 @@ import { ResponseType } from "../type";
 import { useHistory } from "react-router-dom";
 
 type AuthStateType = {
-  loginUser: LoginUserType | undefined;
   isRegister: boolean;
   isLogin: boolean;
   response: ResponseType | undefined;
 };
 
 const initialState: AuthStateType = {
-  loginUser: undefined,
   isRegister: false,
   isLogin: false,
   response: undefined,
@@ -22,10 +20,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
-      console.log('alo')
-      state.loginUser = undefined;
-    },
     deleteResp: (state) => {
       state.response = undefined;
     },
@@ -36,8 +30,7 @@ const authSlice = createSlice({
         state.isLogin = true;
       })
       .addCase(authAsyncAction.login.fulfilled, (state, action) => {
-        // state.loginUser = action.payload;
-        state.loginUser = {
+        localStorage.setItem("login-user", JSON.stringify({
           id: 1,
           fullName: "Nguyễn Ngọc Hà",
           username: "ngocha123",
@@ -49,8 +42,8 @@ const authSlice = createSlice({
           avatar:
             "https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg",
           token: "abc",
-        };
-        state.response = { message: "Failed" };
+        }))
+        state.response = { message: "Success" };
         state.isLogin = false;
       })
       .addCase(authAsyncAction.login.rejected, (state) => {
@@ -72,6 +65,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, deleteResp } = authSlice.actions;
+export const { deleteResp } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

@@ -7,22 +7,26 @@ import { products } from "@/constants/shoe";
 type ShoeStateType = {
   isGettingShoe: boolean;
   isGettingShoes: boolean;
+  isGettingCategoryShoes: boolean;
   isCreatingShoe: boolean;
   isUpdatingShoe: boolean;
   isDeletingShoe: boolean;
   shoe: ShoeType | undefined;
   shoes: ShoeType[] | [];
+  shoesByCategory: ShoeType[] | [];
   response: ResponseType | undefined;
 };
 
 const initialState: ShoeStateType = {
   isGettingShoe: false,
   isGettingShoes: false,
+  isGettingCategoryShoes: false,
   isCreatingShoe: false,
   isUpdatingShoe: false,
   isDeletingShoe: false,
   shoe: undefined,
-  shoes: products,
+  shoes: [],
+  shoesByCategory: [],
   response: undefined,
 };
 
@@ -48,12 +52,25 @@ const shoeSlice = createSlice({
         state.isGettingShoes = true;
       })
       .addCase(shoeAsyncAction.getAll.fulfilled, (state, action) => {
-        state.shoes = action.payload;
+        // state.shoes = action.payload;
+        state.shoes = products;
         state.isGettingShoes = false;
       })
       .addCase(shoeAsyncAction.getAll.rejected, (state) => {
         state.isGettingShoes = false;
       });
+      builder
+        .addCase(shoeAsyncAction.getByCategory.pending, (state) => {
+          state.isGettingCategoryShoes = true;
+        })
+        .addCase(shoeAsyncAction.getByCategory.fulfilled, (state, action) => {
+          // state.shoesByCategory = action.payload;
+          state.shoesByCategory = products;
+          state.isGettingCategoryShoes = false;
+        })
+        .addCase(shoeAsyncAction.getByCategory.rejected, (state) => {
+          state.isGettingCategoryShoes = false;
+        });
     builder
       .addCase(shoeAsyncAction.create.pending, (state) => {
         state.isCreatingShoe = true;

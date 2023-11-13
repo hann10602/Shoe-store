@@ -12,7 +12,7 @@ const AverageStar = ({averageStar, size = "small"}: Props) => {
   return (
     <div className="product-average-star">
       {stars.map((star) => (
-        <div>
+        <div key={star}>
           {star <= averageStar ? (
             <div>
               <svg

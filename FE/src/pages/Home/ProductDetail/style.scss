@@ -51,7 +51,11 @@
   #product-statistics {
     flex: 1 1 0%;
     border-radius: 12px;
-    background-color: rgb(255, 171, 150);
+    background: linear-gradient(
+      to bottom,
+      rgb(231, 199, 155),
+      rgb(252, 186, 93)
+    );
     padding: 40px;
 
     .product-name {
@@ -74,6 +78,7 @@
     .product-size-group {
       border-top: 1px solid black;
       display: flex;
+      align-items: center;
       padding: 40px 0 20px 0;
 
       .size-choose {
@@ -86,7 +91,11 @@
         align-items: center;
         font-weight: 500;
         border-radius: 4px;
-        background-color: rgb(85, 230, 217);
+        background: linear-gradient(
+          to top,
+          rgb(184, 163, 134),
+          rgb(199, 139, 55)
+        );
       }
 
       .product-size {
@@ -99,11 +108,24 @@
         align-items: center;
         font-weight: 500;
         border-radius: 4px;
-        background-color: rgb(94, 255, 242);
+        background: linear-gradient(
+          to top,
+          rgb(184, 163, 134),
+          rgb(255, 179, 73)
+        );
       }
 
       .product-size:hover {
-        background-color: rgb(85, 230, 217);
+        background: linear-gradient(
+          to top,
+          rgb(184, 163, 134),
+          rgb(199, 139, 55)
+        );
+      }
+
+      .size-error {
+        color: red;
+        font-size: 16px;
       }
     }
 
@@ -129,7 +151,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid rgb(182, 255, 249);
+        border: 1px solid rgb(255, 179, 73);
         width: 80px;
         height: 100%;
         cursor: pointer;
@@ -151,7 +173,7 @@
         height: 60px;
         margin-top: 160px;
         border-radius: 40px;
-        background-color: rgb(73, 245, 187);
+        background-color: rgb(255, 218, 165);
         border: none;
         transition: width 0.3s, height 0.3s, margin 0.3s, background-color 0.3s;
       }
@@ -160,16 +182,286 @@
         width: 288px;
         margin-top: 152px;
         margin-bottom: 8px;
-        background-color: rgb(57, 255, 189);
+        background: linear-gradient(
+          to right,
+          rgb(255, 218, 165),
+          rgb(100, 253, 202)
+        );
       }
     }
   }
 }
 
-.is-loading {
-  height: 200px;
+.more-information {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: antiquewhite;
+  font-size: 16px;
+
+  #description-wrapper {
+    padding: 40px 60px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    #product-description {
+      flex: 1 1 0%;
+
+      #description-title {
+        font-size: 24px;
+        color: rgb(31, 31, 31);
+      }
+
+      #description-content {
+        margin-left: 12px;
+        line-height: 24px;
+      }
+    }
+
+    #product-evaluate {
+      font-size: 16px;
+      margin-left: 80px;
+  
+      #evaluate-title {
+        font-size: 24px;
+        line-height: normal;
+        color: rgb(31, 31, 31);
+      }
+  
+      #evaluate-content {
+        margin-left: 12px;
+        line-height: 24px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+  
+        .star-wrapper {
+          width: 100px;
+          margin-right: 20px;
+        }
+  
+        p {
+          margin-right: 20px;
+        }
+      }
+  
+      #rating-distribution {
+        margin-left: 12px;
+  
+        #rating-title {
+          margin-bottom: 8px;
+          font-size: 16px;
+        }
+  
+        .rating-star {
+          display: flex;
+          align-items: center;
+  
+          .rating-frame {
+            width: 320px;
+            margin-left: 12px;
+            height: 8px;
+            border-radius: 40px;
+            background-color: lightgray;
+            overflow: hidden;
+          }
+  
+          .rating-body {
+            height: 100%;
+            border-radius: 40px;
+            background-color: rgb(80, 80, 80);
+          }
+        }
+      }
+    }
+  }
+
+  #review {
+    background-color: antiquewhite;
+    width: 100%;
+    padding: 40px 60px;
+
+    #review-title {
+      font-size: 24px;
+    }
+
+    .review-wrapper {
+      padding: 12px 40px 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .evaluate-information {
+        flex: 1 1 0%;
+        margin-right: 20px;
+
+        .star-wrapper {
+          width: 100px;
+          line-height: 8px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .review-comment {
+          font-size: 20px;
+        }
+      }
+
+      .review-information {
+        width: 160px;
+        font-size: 12px;
+
+        .review-date {
+          display: flex;
+          p {
+            margin-left: 4px;
+            color: rgb(143, 143, 143);
+          }
+        }
+
+        .review-by {
+          display: flex;
+          p {
+            margin-left: 4px;
+            color: rgb(143, 143, 143);
+          }
+        }
+      }
+    }
+
+    #review-pagination {
+      margin-top: 60px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      .pagination-option {
+        cursor: pointer;
+        width: 36px;
+        height: 36px;
+        background-color: rgb(216, 216, 216);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s;
+      }
+
+      .pagination-option:hover {
+        background-color: rgb(184, 184, 184);
+      }
+
+      :not(.pagination-option:last-child) {
+        border-right: 1px solid rgb(180, 180, 180);
+      }
+    }
+  }
+
+  #suggest-product-frame {
+    margin: 60px 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 760px;
+
+    .image-wrapper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      #suggest-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    #suggest-product-wrapper {
+      width: 80%;
+      height: 80%;
+      z-index: 1;
+      border: 2px solid white;
+      padding: 40px;
+
+      #suggest-product-title {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        #title {
+          color: white;
+          font-size: 32px;
+          font-weight: 700;
+          margin: 0 24px;
+        }
+
+        .side-line {
+          width: 20%;
+          height: 2px;
+          background-color: white;
+        }
+      }
+
+      #suggest-product-group {
+        overflow-x: scroll;
+        display: flex;
+        margin-top: 20px;
+
+        .product-wrapper {
+          width: 280px;
+          margin: 0 40px;
+          background-color: white;
+          text-align: center;
+          padding-bottom: 12px;
+          border-radius: 4px;
+
+          .product-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            cursor: pointer;
+          }
+
+          .product-name {
+            cursor: pointer;
+            width: 100%;
+            font-size: 20px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            background: linear-gradient(
+              to right,
+              rgb(194, 52, 94),
+              rgb(255, 180, 74)
+            );
+            color: transparent;
+            -webkit-background-clip: text;
+          }
+
+          .product-name:hover {
+            background: linear-gradient(
+              to right,
+              rgb(102, 52, 194),
+              rgb(74, 255, 195)
+            );
+            color: transparent;
+            -webkit-background-clip: text;
+          }
+
+          .star-wrapper {
+            width: 100%;
+            padding: 0 80px;
+            display: flex;
+            justify-content: center;
+          }
+
+          .product-price {
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
 }

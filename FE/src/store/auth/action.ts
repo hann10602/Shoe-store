@@ -23,7 +23,7 @@ const register = createAsyncThunk(
   async (param: RegisterType) => {
     try {
       const resp = await axios.get(
-        "https://dummyjson.com/todos"
+      `${baseUrl}/auth/register`,
       );
       if (resp.status === 200) {
         return resp.data;
