@@ -10,7 +10,7 @@ type UserStateType = {
   isUpdatingUser: boolean;
   isDeletingUser: boolean;
   user: UserType | undefined;
-  users: UserType[] | [];
+  users: UserType[];
   response: ResponseType | undefined;
 };
 

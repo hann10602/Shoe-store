@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
-import "./style.scss";
-import { useHistory, useLocation } from "react-router-dom";
-import { useAppDispatch } from "@/store/store";
-import { shoeAsyncAction } from "@/store/shoe/action";
-import { useSelector } from "react-redux";
-import {
-  categoryShoesSelector,
-  isGettingCategoryShoesSelector,
-  isGettingShoeSelector,
-  shoeSelector,
-} from "@/store/shoe/selector";
 import SuggestProduct from "@/assets/img/web/suggest-product.jpg";
 import AverageStar from "@/components/AverageStar";
 import { LoginUserType } from "@/store/auth/type";
 import { cartAsyncAction } from "@/store/cart/action";
+import { evaluateAsyncAction } from "@/store/evaluate/action";
 import {
   evaluatesSelector,
   isGettingEvaluatesSelector,
 } from "@/store/evaluate/selector";
-import { evaluateAsyncAction } from "@/store/evaluate/action";
+import { shoeAsyncAction } from "@/store/shoe/action";
+import {
+  isGettingShoeSelector,
+  isSearchShoesSelector,
+  shoeSelector,
+  shoesSearchSelector,
+} from "@/store/shoe/selector";
+import { useAppDispatch } from "@/store/store";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import "./style.scss";
+import { FieldValues, useForm } from "react-hook-form";
 
 type Props = {};
 
@@ -28,6 +29,14 @@ const ProductDetail = (props: Props) => {
   const [buySize, setBuySize] = useState<string>("");
   const [hasBuySize, setHasBuySize] = useState<boolean>(true);
   const [evaluatePage, setEvaluatePage] = useState<number>(1);
+  const [evaluateOrderStar, setEvaluateOrderStar] = useState<number>(5);
+  const [evaluateSection, setEvaluateSection] = useState<boolean>(false);
+
+  const form = useForm();
+
+  const { register, formState, handleSubmit, reset } = form;
+
+  const { errors } = formState;
 
   const dispatch = useAppDispatch();
 
@@ -36,11 +45,11 @@ const ProductDetail = (props: Props) => {
   const history = useHistory();
 
   const shoe = useSelector(shoeSelector);
-  const shoesByCategory = useSelector(categoryShoesSelector);
+  const shoesSearch = useSelector(shoesSearchSelector);
   const evaluates = useSelector(evaluatesSelector);
 
   const isGettingShoe = useSelector(isGettingShoeSelector);
-  const isGettingShoesByCategory = useSelector(isGettingCategoryShoesSelector);
+  const isSearchShoes = useSelector(isSearchShoesSelector);
   const isGettingEvaluates = useSelector(isGettingEvaluatesSelector);
 
   const userInformation: string | null = localStorage.getItem("login-user");
@@ -59,6 +68,7 @@ const ProductDetail = (props: Props) => {
     } else if (hasBuySize && buySize === "") {
       setHasBuySize(false);
     } else if (shoe) {
+      setEvaluateSection(true);
       dispatch(
         cartAsyncAction.create({
           userId: user.id,
@@ -67,6 +77,26 @@ const ProductDetail = (props: Props) => {
           quantity: buyQuantity,
         })
       );
+    }
+  };
+
+  const handleSetEvaluateStar = useCallback((star: number) => {
+    setEvaluateOrderStar(star);
+  }, []);
+
+  const handleSubmitEvaluate = (e: FieldValues) => {
+    if (user && shoe) {
+      dispatch(
+        evaluateAsyncAction.create({
+          userId: user.id,
+          shoeId: shoe.id,
+          star: evaluateOrderStar,
+          evaluate: e.evaluate,
+        })
+      );
+
+      reset();
+      setEvaluateSection(false);
     }
   };
 
@@ -80,7 +110,7 @@ const ProductDetail = (props: Props) => {
     );
 
     if (shoe) {
-      dispatch(shoeAsyncAction.getByCategory({ category: shoe.category }));
+      dispatch(shoeAsyncAction.searchShoes({ category: shoe.category }));
       dispatch(evaluateAsyncAction.getByShoeId({ shoeId: shoe.id }));
     }
 
@@ -96,7 +126,51 @@ const ProductDetail = (props: Props) => {
 
   return (
     <div>
-      <div id="header-space"></div>
+      {evaluateSection && <div id="evaluate-background"></div>}
+      {evaluateSection && (
+        <div id="evaluate-section">
+          <form
+            id="evaluate-wrapper"
+            onSubmit={handleSubmit(handleSubmitEvaluate)}
+          >
+            <div id="evaluate-close-wrapper">
+              <button
+                id="evaluate-close-btn"
+                onClick={() => setEvaluateSection(false)}
+              >
+                x
+              </button>
+            </div>
+            <p id="evaluate-title">Evaluate</p>
+            <div className="star-wrapper">
+              <AverageStar
+                averageStar={5}
+                size="large"
+                fixable={true}
+                handleEvaluate={handleSetEvaluateStar}
+              />
+            </div>
+            <div className="text-area-wrapper">
+              <textarea
+                id="evaluate-content"
+                rows={4}
+                {...register("evaluate", {
+                  required: "Please enter evaluate",
+                })}
+              ></textarea>
+              <p className="field-message">
+                {errors?.evaluate?.message?.toString()}
+              </p>
+            </div>
+            <div id="evaluate-btn-wrapper">
+              <button className="evaluate-btn" type="submit">
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      <div className="header-space"></div>
       {!isGettingShoe && shoe ? (
         <>
           <div id="product-detail">
@@ -191,7 +265,7 @@ const ProductDetail = (props: Props) => {
                       <AverageStar averageStar={shoe.averageStar} />
                     </div>
                     <p>{shoe.averageStar}</p>
-                    <p>111 Reviews</p>
+                    <p>{evaluates.length} Reviews</p>
                   </div>
                   <div id="rating-distribution">
                     <p id="rating-title">Rating distribution</p>
@@ -257,7 +331,9 @@ const ProductDetail = (props: Props) => {
                             <div className="star-wrapper">
                               <AverageStar averageStar={evaluate.star} />
                             </div>
-                            <p className="review-comment">{evaluate.comment}</p>
+                            <p className="review-evaluate">
+                              {evaluate.evaluate}
+                            </p>
                           </div>
                           <div className="review-information">
                             <div className="review-date">
@@ -275,6 +351,7 @@ const ProductDetail = (props: Props) => {
                         <div
                           className="pagination-option"
                           onClick={() => setEvaluatePage(item)}
+                          key={item}
                         >
                           {item}
                         </div>
@@ -336,7 +413,7 @@ const ProductDetail = (props: Props) => {
                   </div>
                 )}
               </div>
-              {!isGettingShoesByCategory ? (
+              {!isSearchShoes ? (
                 <div id="suggest-product-frame">
                   <div className="image-wrapper">
                     <img
@@ -352,7 +429,7 @@ const ProductDetail = (props: Props) => {
                       <div className="side-line"></div>
                     </div>
                     <div id="suggest-product-group">
-                      {shoesByCategory.slice(0, 4).map((sp) => (
+                      {shoesSearch.slice(0, 4).map((sp) => (
                         <div className="suggest-product">
                           <div className="product-wrapper" key={sp.id}>
                             <div

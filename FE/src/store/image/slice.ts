@@ -10,7 +10,7 @@ type ShoeStateType = {
   isUpdatingShoe: boolean;
   isDeletingShoe: boolean;
   shoe: ShoeType | undefined;
-  shoes: ShoeType[] | [];
+  shoes: ShoeType[];
   response: ResponseType | undefined;
 };
 

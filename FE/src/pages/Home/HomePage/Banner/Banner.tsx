@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.scss";
 
@@ -11,7 +11,12 @@ const Banner = (props: Props) => {
       <div id="banner">
         <p id="banner-title">Stylish Footwear for Every Occasion</p>
         <div id="banner-btn-group">
-          <button className="banner-btn">Dash Board</button>
+          <button
+            className="banner-btn"
+            onClick={() => history.push("/search?s=?")}
+          >
+            Find your shoe
+          </button>
           <button
             className="banner-btn"
             onClick={() => history.push("/register")}
@@ -24,4 +29,4 @@ const Banner = (props: Props) => {
   );
 };
 
-export default Banner;
+export default memo(Banner);

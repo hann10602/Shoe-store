@@ -1,7 +1,7 @@
 export type EvaluateType = {
   id: number;
   star: number;
-  comment: string;
+  evaluate: string;
   userName: string;
   createdDate: string;
 };
@@ -16,7 +16,7 @@ export type GetEvaluatesByShoeIdType = {
 
 export type CreateEvaluateType = {
   star: number;
-  comment: string;
+  evaluate: string;
   userId: number;
   shoeId: number;
 };

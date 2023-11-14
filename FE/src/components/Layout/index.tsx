@@ -4,8 +4,14 @@ import QRCode from "@/assets/img/web/bancode.png";
 import GooglePlay from "@/assets/img/web/googleplay.png";
 import ConnectFooter from "@/assets/img/web/web-carousel-1.jpg";
 import { LoginUserType } from "@/store/auth/type";
+import { categoryAsyncAction } from "@/store/category/action";
+import {
+  categoriesSelector,
+  isGettingCategoriesSelector,
+} from "@/store/category/selector";
 import { useAppDispatch } from "@/store/store";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import NavigateItem, { NavType } from "./NavigateItem/NavigateItem";
 import "./style.scss";
@@ -21,42 +27,6 @@ type HeaderMenuItemType = {
   icon: React.ReactElement;
 };
 
-const navMenu: NavType[] = [
-  {
-    id: 1,
-    title: "Home",
-  },
-  {
-    id: 2,
-    title: "Category",
-    menuItem: [
-      {
-        id: 1,
-        name: "Sneaker",
-        code: "SNEAKER",
-      },
-      {
-        id: 2,
-        name: "Boot",
-        code: "BOOT",
-      },
-      {
-        id: 3,
-        name: "Sport",
-        code: "SPORT",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "About",
-  },
-  {
-    id: 4,
-    title: "Contact",
-  },
-];
-
 export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
   const [isMenuDisplay, setIsMenuDisplay] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -68,12 +38,43 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   const dispatch = useAppDispatch();
 
-  const userInformation:string | null = localStorage.getItem("login-user");
+  const categories = useSelector(categoriesSelector);
+  const isGettingCategories = useSelector(isGettingCategoriesSelector);
 
-  const user: LoginUserType = userInformation != null ? JSON.parse(userInformation) : null;
+  const userInformation: string | null = localStorage.getItem("login-user");
+
+  const user: LoginUserType =
+    userInformation != null ? JSON.parse(userInformation) : null;
 
   const userImageRef = useRef<HTMLImageElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    dispatch(categoryAsyncAction.getAll());
+  }, [dispatch]);
+
+  const navMenu: NavType[] = [
+    {
+      id: 1,
+      path: "/home",
+      title: "Home",
+    },
+    {
+      id: 2,
+      title: "Category",
+      menuItem: categories,
+    },
+    {
+      id: 3,
+      title: "About",
+      path: "/home",
+    },
+    {
+      id: 4,
+      path: "/home",
+      title: "Contact",
+    },
+  ];
 
   const headerMenu: HeaderMenuItemType[] = [
     {
@@ -132,7 +133,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
     {
       id: 4,
       onClick: () => {
-        localStorage.removeItem('login-user')
+        localStorage.removeItem("login-user");
         window.location.reload();
       },
       title: "Logout",
@@ -363,9 +364,64 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
         <div id="footer-overall">
           <div className="footer-overall-item">
             <h2>Category</h2>
-            {navMenu[1].menuItem?.map((category) => (
-              <p key={category.id}>{category.name}</p>
-            ))}
+            {!isGettingCategories ? (
+              navMenu[1].menuItem?.map((category) => (
+                <p key={category.id}>{category.name}</p>
+              ))
+            ) : (
+              <div className="is-loading">
+                <svg
+                  id="Capa_1"
+                  enable-background="new 0 0 497 497"
+                  height="40"
+                  viewBox="0 0 497 497"
+                  width="40"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g>
+                    <circle cx="98" cy="376" fill="#909ba6" r="53" />
+                    <circle cx="439" cy="336" fill="#c8d2dc" r="46" />
+                    <circle cx="397" cy="112" fill="#e9edf1" r="38" />
+                    <ellipse
+                      cx="56.245"
+                      cy="244.754"
+                      fill="#7e8b96"
+                      rx="56.245"
+                      ry="54.874"
+                    />
+                    <ellipse
+                      cx="217.821"
+                      cy="447.175"
+                      fill="#a2abb8"
+                      rx="51.132"
+                      ry="49.825"
+                    />
+                    <ellipse
+                      cx="349.229"
+                      cy="427.873"
+                      fill="#b9c3cd"
+                      rx="48.575"
+                      ry="47.297"
+                    />
+                    <ellipse
+                      cx="117.092"
+                      cy="114.794"
+                      fill="#5f6c75"
+                      rx="58.801"
+                      ry="57.397"
+                    />
+                    <ellipse
+                      cx="453.538"
+                      cy="216.477"
+                      fill="#dce6eb"
+                      rx="43.462"
+                      ry="42.656"
+                    />
+                    <circle cx="263" cy="62" fill="#4e5a61" r="62" />
+                  </g>
+                </svg>
+              </div>
+            )}
           </div>
           <div className="footer-overall-item">
             <h2>Address</h2>

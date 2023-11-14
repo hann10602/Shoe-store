@@ -29,12 +29,14 @@ export type UpdateUserType = {
   id: number;
   fullName: string;
   username: string;
-  password: string;
   email: string;
   phoneNum: number;
-  avatar: string;
-  role: string;
   address: string;
+};
+
+export type ChangePasswordType = {
+  id: number;
+  password: string;
 };
 
 export type DeleteUserType = GetUserType;

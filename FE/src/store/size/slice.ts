@@ -10,7 +10,7 @@ type SizeStateType = {
   isUpdatingSize: boolean;
   isDeletingSize: boolean;
   size: SizeType | undefined;
-  sizes: SizeType[] | [];
+  sizes: SizeType[];
   response: ResponseType | undefined;
 };
 

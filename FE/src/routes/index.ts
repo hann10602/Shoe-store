@@ -3,6 +3,8 @@ import React from "react";
 import { MainLayout, LoginLayout } from "../layouts";
 import Register from "@/pages/Auth/Register";
 import ProductDetail from "@/pages/Home/ProductDetail";
+import SearchPage from "@/pages/Home/SearchPage";
+import UserDetail from "@/pages/Home/UserDetail";
 
 const Login = React.lazy(() => import("@/pages/Auth/Login"));
 const Home = React.lazy(() => import("@/pages/Home/HomePage"));
@@ -48,6 +50,22 @@ export const routes: IRoute[] = [
     exact: true,
     path: "/shoe",
     routePath: "/shoe",
+    Protected: false,
+  },
+  {
+    Component: UserDetail,
+    Layout: MainLayout,
+    exact: true,
+    path: "/user",
+    routePath: "/user",
+    Protected: false,
+  },
+  {
+    Component: SearchPage,
+    Layout: MainLayout,
+    exact: true,
+    path: "/search",
+    routePath: "/search",
     Protected: false,
   },
 ];

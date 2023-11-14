@@ -10,7 +10,7 @@ type CartStateType = {
   isUpdatingCart: boolean;
   isDeletingCart: boolean;
   cart: CartType | undefined;
-  carts: CartType[] | [];
+  carts: CartType[];
   response: ResponseType | undefined;
 };
 

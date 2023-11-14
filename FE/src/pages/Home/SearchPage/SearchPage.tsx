@@ -1,10 +1,323 @@
-import React from "react";
+import AverageStar from "@/components/AverageStar";
+import { sizes } from "@/constants/size";
+import { useDebounce } from "@/hooks";
+import { categoryAsyncAction } from "@/store/category/action";
+import { categoriesSelector } from "@/store/category/selector";
+import { shoeAsyncAction } from "@/store/shoe/action";
+import {
+  isSearchShoesSelector,
+  shoesSearchSelector
+} from "@/store/shoe/selector";
+import { SearchShoes } from "@/store/shoe/type";
+import { useAppDispatch } from "@/store/store";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 
 type Props = {};
 
 const SearchPage = (props: Props) => {
-  return <div>SearchPage</div>;
+  const [search, setSearch] = useState<string>("");
+  const [sizeChoose, setSizeChoose] = useState<string>("");
+  const [categoryChoose, setCategoryChoose] = useState<string>("");
+  const [priceFrom, setPriceFrom] = useState<string>("");
+  const [priceTo, setPriceTo] = useState<string>("");
+
+  const searchDebounce = useDebounce<string>(search, 2000);
+  const sizeChooseDebounce = useDebounce<string>(sizeChoose, 2000);
+  const categoryChooseDebounce = useDebounce<string>(categoryChoose, 2000);
+  const priceFromDebounce = useDebounce<string>(priceFrom, 2000);
+  const priceToDebounce = useDebounce<string>(priceTo, 2000);
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const dispatch = useAppDispatch();
+
+  const categories = useSelector(categoriesSelector);
+  const isSearchShoes = useSelector(isSearchShoesSelector);
+  const shoesSearch = useSelector(shoesSearchSelector);
+
+  const searchParam = new URLSearchParams(location.search).get("search");
+  const sizeParam = new URLSearchParams(location.search).get("size");
+  const categoryParam = new URLSearchParams(location.search).get("category");
+  const priceFromParam = new URLSearchParams(location.search).get("price-from");
+  const priceToParam = new URLSearchParams(location.search).get("price-to");
+
+  useEffect(() => {
+    let searchResultString: string = "";
+
+    if (searchDebounce.trim() !== "") {
+      searchResultString += `&search=${searchDebounce
+        .trim()
+        .split(" ")
+        .filter(Boolean)
+        .join(" ")}`;
+    }
+
+    if (sizeChooseDebounce !== "") {
+      searchResultString += `&size=${sizeChooseDebounce}`;
+    }
+
+    if (categoryChooseDebounce !== "") {
+      searchResultString += `&category=${categoryChooseDebounce}`;
+    }
+
+    if (priceFromDebounce !== "") {
+      searchResultString += `&price-from=${priceFromDebounce}`;
+    }
+
+    if (priceToDebounce !== "") {
+      searchResultString += `&price-to=${priceToDebounce}`;
+    }
+
+    history.push(`/search?s=?${searchResultString}`);
+  }, [
+    searchDebounce,
+    sizeChooseDebounce,
+    categoryChooseDebounce,
+    priceFromDebounce,
+    priceToDebounce,
+    history,
+  ]);
+
+  useEffect(() => {
+    dispatch(categoryAsyncAction.getAll());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const searchResultParams: SearchShoes = {};
+
+    if (searchParam) {
+      searchResultParams.search = searchParam;
+    }
+    if (sizeParam) {
+      searchResultParams.size = sizeParam;
+    }
+    if (categoryParam) {
+      searchResultParams.category = categoryParam;
+    }
+    if (priceFromParam) {
+      searchResultParams.priceFrom = priceFromParam;
+    }
+    if (priceToParam) {
+      searchResultParams.priceTo = priceToParam;
+    }
+
+    dispatch(shoeAsyncAction.searchShoes(searchResultParams));
+  }, [
+    location,
+    dispatch,
+    searchParam,
+    sizeParam,
+    categoryParam,
+    priceFromParam,
+    priceToParam,
+  ]);
+
+  return (
+    <>
+      <div className="header-space"></div>
+      <div id="search">
+        {searchParam && (
+          <div id="search-text">Search result for: {searchParam}</div>
+        )}
+        <div id="search-body">
+          <div id="search-filter">
+            <div id="text-filter">
+              <div id="text-wrapper">
+                <input
+                  id="text-result"
+                  name="text-result"
+                  type="text"
+                  value={search}
+                  placeholder="Searching"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <span id="text-icon">
+                  <svg
+                    version="1.1"
+                    id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={20}
+                    height={20}
+                    viewBox="0 0 512 512"
+                  >
+                    <path d="M310,190c-5.52,0-10,4.48-10,10s4.48,10,10,10c5.52,0,10-4.48,10-10S315.52,190,310,190z" />
+
+                    <path
+                      d="M500.281,443.719l-133.48-133.48C388.546,277.485,400,239.555,400,200C400,89.72,310.28,0,200,0S0,89.72,0,200
+			s89.72,200,200,200c39.556,0,77.486-11.455,110.239-33.198l36.895,36.895c0.005,0.005,0.01,0.01,0.016,0.016l96.568,96.568
+			C451.276,507.838,461.319,512,472,512c10.681,0,20.724-4.162,28.278-11.716C507.837,492.731,512,482.687,512,472
+			S507.837,451.269,500.281,443.719z M305.536,345.727c0,0.001-0.001,0.001-0.002,0.002C274.667,368.149,238.175,380,200,380
+			c-99.252,0-180-80.748-180-180S100.748,20,200,20s180,80.748,180,180c0,38.175-11.851,74.667-34.272,105.535
+			C334.511,320.988,320.989,334.511,305.536,345.727z M326.516,354.793c10.35-8.467,19.811-17.928,28.277-28.277l28.371,28.371
+			c-8.628,10.183-18.094,19.65-28.277,28.277L326.516,354.793z M486.139,486.139c-3.78,3.78-8.801,5.861-14.139,5.861
+			s-10.359-2.081-14.139-5.861l-88.795-88.795c10.127-8.691,19.587-18.15,28.277-28.277l88.798,88.798
+			C489.919,461.639,492,466.658,492,472C492,477.342,489.919,482.361,486.139,486.139z"
+                    />
+
+                    <path
+                      d="M200,40c-88.225,0-160,71.775-160,160s71.775,160,160,160s160-71.775,160-160S288.225,40,200,40z M200,340
+			c-77.196,0-140-62.804-140-140S122.804,60,200,60s140,62.804,140,140S277.196,340,200,340z"
+                    />
+
+                    <path
+                      d="M312.065,157.073c-8.611-22.412-23.604-41.574-43.36-55.413C248.479,87.49,224.721,80,200,80c-5.522,0-10,4.478-10,10
+			c0,5.522,4.478,10,10,10c41.099,0,78.631,25.818,93.396,64.247c1.528,3.976,5.317,6.416,9.337,6.416
+			c1.192,0,2.405-0.215,3.584-0.668C311.472,168.014,314.046,162.229,312.065,157.073z"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div id="size-filter">
+              <p id="size-title">Size:</p>
+              <div id="size-wrapper">
+                {sizes.map((size) => (
+                  <div
+                    className={`size-item ${
+                      size.code === sizeChoose ? "size-choose" : ""
+                    }`}
+                    key={size.id}
+                    onClick={() => {
+                      if (size.code === sizeChoose) {
+                        setSizeChoose("");
+                      } else {
+                        setSizeChoose(size.code);
+                      }
+                    }}
+                  >
+                    {size.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div id="price-filter">
+              <p id="price-title">Price:</p>
+              <div className="price-input-wrapper">
+                <label htmlFor="">From:</label>
+                <input
+                  className="price-input"
+                  name="price-from"
+                  type="number"
+                  onChange={(e) => setPriceFrom(e.target.value)}
+                />
+              </div>
+              <div className="price-input-wrapper">
+                <label htmlFor="">To:</label>
+                <input
+                  className="price-input"
+                  name="price-to"
+                  type="number"
+                  onChange={(e) => setPriceTo(e.target.value)}
+                />
+              </div>
+            </div>
+            <div id="category-filter">
+              <p id="category-title">Category:</p>
+              <div>
+                {categories.map((category) => (
+                  <label className="category-item" key={category.id}>
+                    <input
+                      type="checkbox"
+                      className="category-checkbox"
+                      name="category"
+                      value={category.code}
+                      checked={category.code === categoryChoose}
+                      onClick={() => {
+                        if (category.code === categoryChoose) {
+                          setCategoryChoose("");
+                        } else {
+                          setCategoryChoose(category.code);
+                        }
+                      }}
+                      onChange={(e) => {}}
+                    />
+                    {category.name}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div id="search-result">
+            {!isSearchShoes && shoesSearch ? (
+              shoesSearch.map((item) => (
+                <div className="product-wrapper" key={item.id}>
+                  <div onClick={() => history.push(`/shoe?id=${item.id}`)}>
+                    <img
+                      className="product-image"
+                      src={item.imageUrls[0]}
+                      alt=""
+                    />
+                    <p className="product-name">{item.name}</p>
+                  </div>
+                  <div className="star-wrapper">
+                    <AverageStar averageStar={item.averageStar} />
+                  </div>
+                  <p className="product-price">{item.price}$</p>
+                </div>
+              ))
+            ) : (
+              <div className="is-loading">
+                <svg
+                  id="Capa_1"
+                  enable-background="new 0 0 497 497"
+                  height="60"
+                  viewBox="0 0 497 497"
+                  width="60"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g>
+                    <circle cx="98" cy="376" fill="#909ba6" r="53" />
+                    <circle cx="439" cy="336" fill="#c8d2dc" r="46" />
+                    <circle cx="397" cy="112" fill="#e9edf1" r="38" />
+                    <ellipse
+                      cx="56.245"
+                      cy="244.754"
+                      fill="#7e8b96"
+                      rx="56.245"
+                      ry="54.874"
+                    />
+                    <ellipse
+                      cx="217.821"
+                      cy="447.175"
+                      fill="#a2abb8"
+                      rx="51.132"
+                      ry="49.825"
+                    />
+                    <ellipse
+                      cx="349.229"
+                      cy="427.873"
+                      fill="#b9c3cd"
+                      rx="48.575"
+                      ry="47.297"
+                    />
+                    <ellipse
+                      cx="117.092"
+                      cy="114.794"
+                      fill="#5f6c75"
+                      rx="58.801"
+                      ry="57.397"
+                    />
+                    <ellipse
+                      cx="453.538"
+                      cy="216.477"
+                      fill="#dce6eb"
+                      rx="43.462"
+                      ry="42.656"
+                    />
+                    <circle cx="263" cy="62" fill="#4e5a61" r="62" />
+                  </g>
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default SearchPage;

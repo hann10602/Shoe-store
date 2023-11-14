@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import "./style.scss";
 
 export type ConceptType = {
@@ -30,4 +30,4 @@ const AdvertConcept = ({ item }: Props) => {
   );
 };
 
-export default AdvertConcept;
+export default memo(AdvertConcept);

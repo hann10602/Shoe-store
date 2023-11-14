@@ -14,8 +14,12 @@ export type GetShoeType = {
   id: number;
 };
 
-export type GetShoeByCategory = {
-  category: string;
+export type SearchShoes = {
+  search?: string;
+  category?: string;
+  size?: string;
+  priceFrom?: string;
+  priceTo?: string;
 };
 
 export type CreateShoeType = {

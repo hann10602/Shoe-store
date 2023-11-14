@@ -3,8 +3,8 @@ import axios from "axios";
 import {
   CreateShoeType,
   DeleteShoeType,
-  GetShoeByCategory,
   GetShoeType,
+  SearchShoes,
   UpdateShoeType,
 } from "./type";
 
@@ -32,16 +32,26 @@ const getAll = createAsyncThunk("shoe/getAll", async () => {
   }
 });
 
-const getByCategory = createAsyncThunk("shoe/getByCategory", async (param:GetShoeByCategory) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/shoe/get-by-category?category=${param.category}`);
-    if (resp.status === 200) {
-      return resp.data;
+const searchShoes = createAsyncThunk(
+  "shoe/searchShoes",
+  async (param: SearchShoes) => {
+    try {
+      const resp = await axios.get(
+        `${baseUrl}/shoe/search?s=?
+        ${param.search && `search=${param.search}`}
+        ${param.category && `&category=${param.category}`}
+        ${param.size && `&size=${param.size}`}
+        ${param.priceFrom && `&price-from=${param.priceFrom}`}
+        ${param.priceTo && `&price-to=${param.priceTo}`}`
+      );
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return isRejectedWithValue(err);
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
   }
-});
+);
 
 const create = createAsyncThunk(
   "shoe/create",
@@ -94,4 +104,11 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const shoeAsyncAction = { getOne, getAll, getByCategory, create, update, deletes };
+export const shoeAsyncAction = {
+  getOne,
+  getAll,
+  searchShoes,
+  create,
+  update,
+  deletes,
+};

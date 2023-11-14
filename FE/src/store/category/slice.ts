@@ -2,6 +2,7 @@ import { CategoryType } from "@/store/category/type";
 import { createSlice } from "@reduxjs/toolkit";
 import { categoryAsyncAction } from "./action";
 import { ResponseType } from "../type";
+import { categories } from "@/constants/category";
 
 type CategoryStateType = {
   isGettingCategory: boolean;
@@ -10,7 +11,7 @@ type CategoryStateType = {
   isUpdatingCategory: boolean;
   isDeletingCategory: boolean;
   category: CategoryType | undefined;
-  categories: CategoryType[] | [];
+  categories: CategoryType[];
   response: ResponseType | undefined;
 };
 
@@ -46,7 +47,9 @@ const categorySlice = createSlice({
         state.isGettingCategories = true;
       })
       .addCase(categoryAsyncAction.getAll.fulfilled, (state, action) => {
-        state.categories = action.payload;
+        // state.categories = action.payload;
+        state.categories = categories;
+
         state.isGettingCategories = false;
       })
       .addCase(categoryAsyncAction.getAll.rejected, (state) => {

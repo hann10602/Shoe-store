@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import ShipCod from "@/assets/img/web/service1.png";
 import FreeShip from "@/assets/img/web/service2.png";
 import Return from "@/assets/img/web/service3.png";
@@ -38,4 +38,4 @@ const AdditionService = (props: Props) => {
   );
 };
 
-export default AdditionService;
+export default memo(AdditionService);

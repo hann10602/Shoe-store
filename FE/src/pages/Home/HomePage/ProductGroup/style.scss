@@ -10,11 +10,11 @@
   #product-group {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
 
     .product-wrapper {
       width: 280px;
-      margin: 0 40px;
+      margin: 0 60px;
 
       .product-image {
         width: 100%;

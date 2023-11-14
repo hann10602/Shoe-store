@@ -1,18 +1,23 @@
-import React from 'react'
-import { CategoryType } from '@/store/category/type';
-import "./style.scss"
-import { useHistory } from 'react-router-dom';
+import React, { memo } from "react";
+import { CategoryType } from "@/store/category/type";
+import "./style.scss";
+import { useHistory } from "react-router-dom";
 
 type Props = {
-    item: CategoryType;
-}
+  item: CategoryType;
+};
 
-const NavSubMenuItem = ({item}: Props) => {
+const NavSubMenuItem = ({ item }: Props) => {
   const history = useHistory();
 
   return (
-    <p className='nav-sub-menu-item' onClick={() => history.push(`/home?category=${item.code}`)}>{item.name}</p>
-  )
-}
+    <p
+      className="nav-sub-menu-item"
+      onClick={() => history.push(`/home?category=${item.code}`)}
+    >
+      {item.name}
+    </p>
+  );
+};
 
-export default NavSubMenuItem
+export default memo(NavSubMenuItem);

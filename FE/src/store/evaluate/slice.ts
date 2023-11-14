@@ -11,7 +11,7 @@ type EvaluateStateType = {
   isUpdatingEvaluate: boolean;
   isDeletingEvaluate: boolean;
   evaluate: EvaluateType | undefined;
-  evaluates: EvaluateType[] | [];
+  evaluates: EvaluateType[];
   response: ResponseType | undefined;
 };
 

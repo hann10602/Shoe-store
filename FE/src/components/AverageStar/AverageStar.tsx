@@ -1,19 +1,35 @@
-import React from "react";
-import "./style.scss"
+import React, { memo, useState } from "react";
+import "./style.scss";
 
 type Props = {
-    averageStar: number;
-    size?: "small" | "large";
+  averageStar: number;
+  fixable?: boolean;
+  handleEvaluate?: (star: number) => void;
+  size?: "small" | "large";
 };
 
-const AverageStar = ({averageStar, size = "small"}: Props) => {
+const AverageStar = ({
+  averageStar,
+  size = "small",
+  fixable = false,
+  handleEvaluate,
+}: Props) => {
+  const [evaluateStar, setEvaluateStar] = useState<number>(averageStar);
   const stars = Array.from({ length: 5 }, (_, index) => index + 1);
 
   return (
     <div className="product-average-star">
       {stars.map((star) => (
-        <div key={star}>
-          {star <= averageStar ? (
+        <div
+          key={star}
+          onClick={() => {
+            if (fixable && handleEvaluate) {
+              setEvaluateStar(star);
+              handleEvaluate(star);
+            }
+          }}
+        >
+          {star <= evaluateStar ? (
             <div>
               <svg
                 id="color"
@@ -47,4 +63,4 @@ const AverageStar = ({averageStar, size = "small"}: Props) => {
   );
 };
 
-export default AverageStar;
+export default memo(AverageStar);

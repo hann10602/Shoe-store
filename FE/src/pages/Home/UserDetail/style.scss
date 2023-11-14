@@ -1,0 +1,180 @@
+.header-space {
+  width: 100%;
+  height: 132px;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(172, 74, 103),
+    rgb(237, 200, 148)
+  );
+}
+
+#user {
+  padding: 60px 100px;
+  display: flex;
+
+  #user-side-bar {
+    color: rgb(59, 59, 59);
+    overflow: hidden;
+    background-color: rgb(243, 243, 243);
+    border-radius: 20px;
+    width: 360px;
+    height: max-content;
+
+    #user-side-header {
+      text-align: center;
+      padding: 24px 20px;
+
+      .title {
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      #user-title {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+
+    #user-side-nav {
+      border-top: 1px solid rgb(214, 214, 214);
+
+      .page-nav {
+        cursor: pointer;
+        padding: 20px 28px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .page-nav:not(.page-chosen):hover {
+        background-color: rgb(219, 219, 219);
+      }
+
+      .page-chosen {
+        color: rgb(240, 240, 240);
+        background-color: rgb(138, 138, 138);
+      }
+    }
+
+    #user-side-footer {
+      border-top: 1px solid rgb(214, 214, 214);
+
+      #logout {
+        cursor: pointer;
+        padding: 20px 28px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      #logout:hover {
+        background-color: rgb(219, 219, 219);
+      }
+    }
+  }
+
+  #user-main {
+    margin-left: 40px;
+    flex: 1 1 0%;
+
+    #user-information {
+      text-align: center;
+      border: 1px solid rgb(148, 148, 148);
+      border-radius: 24px;
+      padding: 40px;
+
+      #information-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      #information-main {
+        font-size: 20px;
+        width: 100%;
+        text-align: start;
+
+        .field-wrapper {
+          display: flex;
+          align-items: center;
+          height: 40px;
+
+          b {
+            width: 180px;
+          }
+
+          input {
+            border-radius: 20px;
+            padding: 0 8px;
+            border: 1px solid rgb(146, 146, 146);
+          }
+
+          .error-field {
+            margin-left: 20px;
+            font-size: 16px;
+            color: rgb(255, 86, 74);
+          }
+        }
+
+        #update-information {
+          display: flex;
+          justify-content: end;
+
+          #update-information-btn {
+            cursor: pointer;
+            padding: 12px 28px;
+            border-radius: 16px;
+            color: rgb(66, 66, 66);
+            background-color: rgb(230, 230, 230);
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            transition: background-color 0.3s;
+          }
+
+          #update-information-btn:hover {
+            background-color: rgb(202, 202, 202);
+          }
+
+          #save-information-btn {
+            cursor: pointer;
+            padding: 12px 28px;
+            border-radius: 16px;
+            color: rgb(66, 66, 66);
+            background-color: rgb(230, 230, 230);
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            transition: background-color 0.3s;
+          }
+
+          #save-information-btn:hover {
+            background-color: rgb(202, 202, 202);
+          }
+
+          #cancel-information-btn {
+            cursor: pointer;
+            padding: 12px 28px;
+            border-radius: 16px;
+            margin-left: 20px;
+            border: none;
+            border: 1px solid rgb(212, 212, 212);
+            font-size: 16px;
+            font-weight: 700;
+            transition: background-color 0.3s;
+          }
+
+          #cancel-information-btn:hover {
+            background-color: rgb(202, 202, 202);
+          }
+        }
+      }
+    }
+
+    #orders {
+      text-align: center;
+    }
+
+    #change-password {
+      text-align: center;
+    }
+  }
+}
