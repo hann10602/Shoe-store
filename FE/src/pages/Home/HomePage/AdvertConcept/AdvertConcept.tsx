@@ -22,7 +22,11 @@ const AdvertConcept = ({ item }: Props) => {
         <p className="concept-title">{item.title}</p>
         <p className="concept-sub-title">{item.description}</p>
         <div className="btn-wrapper">
-          <button>Explore</button>
+          <button
+            id={`${item.bgColor === "concept-white" ? "btn-white" : "btn-red"}`}
+          >
+            Explore
+          </button>
         </div>
       </div>
       {item.imageRight}

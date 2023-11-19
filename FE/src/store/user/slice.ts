@@ -6,23 +6,23 @@ import { UserType } from "./type";
 type UserStateType = {
   isGettingUser: boolean;
   isGettingUsers: boolean;
+  isChangingPasswordUsers: boolean;
   isCreatingUser: boolean;
   isUpdatingUser: boolean;
   isDeletingUser: boolean;
   user: UserType | undefined;
   users: UserType[];
-  response: ResponseType | undefined;
 };
 
 const initialState: UserStateType = {
   isGettingUser: false,
   isGettingUsers: false,
+  isChangingPasswordUsers: false,
   isCreatingUser: false,
   isUpdatingUser: false,
   isDeletingUser: false,
   user: undefined,
   users: [],
-  response: undefined,
 };
 
 const userSlice = createSlice({
@@ -57,7 +57,6 @@ const userSlice = createSlice({
         state.isCreatingUser = true;
       })
       .addCase(userAsyncAction.create.fulfilled, (state, action) => {
-        state.response = action.payload;
         state.isCreatingUser = false;
       })
       .addCase(userAsyncAction.create.rejected, (state) => {
@@ -68,18 +67,26 @@ const userSlice = createSlice({
         state.isUpdatingUser = true;
       })
       .addCase(userAsyncAction.update.fulfilled, (state, action) => {
-        state.response = action.payload;
         state.isUpdatingUser = false;
       })
       .addCase(userAsyncAction.update.rejected, (state) => {
         state.isUpdatingUser = false;
       });
     builder
+      .addCase(userAsyncAction.changePassword.pending, (state) => {
+        state.isChangingPasswordUsers = true;
+      })
+      .addCase(userAsyncAction.changePassword.fulfilled, (state, action) => {
+        state.isChangingPasswordUsers = false;
+      })
+      .addCase(userAsyncAction.changePassword.rejected, (state) => {
+        state.isChangingPasswordUsers = false;
+      });
+    builder
       .addCase(userAsyncAction.deletes.pending, (state) => {
         state.isDeletingUser = true;
       })
       .addCase(userAsyncAction.deletes.fulfilled, (state, action) => {
-        state.response = action.payload;
         state.isDeletingUser = false;
       })
       .addCase(userAsyncAction.deletes.rejected, (state) => {

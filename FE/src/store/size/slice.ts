@@ -2,26 +2,31 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { SizeType } from "./type";
 import { sizeAsyncAction } from "./action";
+import { sizes } from "@/constants/size";
 
 type SizeStateType = {
   isGettingSize: boolean;
   isGettingSizes: boolean;
+  isGettingSizesByShoeId: boolean;
   isCreatingSize: boolean;
   isUpdatingSize: boolean;
   isDeletingSize: boolean;
   size: SizeType | undefined;
   sizes: SizeType[];
+  sizesByShoeId: SizeType[];
   response: ResponseType | undefined;
 };
 
 const initialState: SizeStateType = {
   isGettingSize: false,
   isGettingSizes: false,
+  isGettingSizesByShoeId: false,
   isCreatingSize: false,
   isUpdatingSize: false,
   isDeletingSize: false,
   size: undefined,
   sizes: [],
+  sizesByShoeId: [],
   response: undefined,
 };
 
@@ -46,11 +51,24 @@ const sizeSlice = createSlice({
         state.isGettingSizes = true;
       })
       .addCase(sizeAsyncAction.getAll.fulfilled, (state, action) => {
-        state.sizes = action.payload;
+        // state.sizes = action.payload;
+        state.sizes = sizes;
         state.isGettingSizes = false;
       })
       .addCase(sizeAsyncAction.getAll.rejected, (state) => {
         state.isGettingSizes = false;
+      });
+    builder
+      .addCase(sizeAsyncAction.getByShoeId.pending, (state) => {
+        state.isGettingSizesByShoeId = true;
+      })
+      .addCase(sizeAsyncAction.getByShoeId.fulfilled, (state, action) => {
+        // state.sizesByShoeId = action.payload;
+        state.sizesByShoeId = sizes;
+        state.isGettingSizesByShoeId = false;
+      })
+      .addCase(sizeAsyncAction.getByShoeId.rejected, (state) => {
+        state.isGettingSizesByShoeId = false;
       });
     builder
       .addCase(sizeAsyncAction.create.pending, (state) => {

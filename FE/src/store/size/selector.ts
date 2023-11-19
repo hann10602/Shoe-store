@@ -6,6 +6,9 @@ export const isGettingSizeSelector = (state: RootState) =>
 export const isGettingSizesSelector = (state: RootState) =>
   state.size.isGettingSizes;
 
+export const isGettingSizesByShoeIdSelector = (state: RootState) =>
+  state.size.isGettingSizesByShoeId;
+
 export const isCreatingSizeSelector = (state: RootState) =>
   state.size.isCreatingSize;
 
@@ -18,5 +21,8 @@ export const isDeletingSizeSelector = (state: RootState) =>
 export const sizeSelector = (state: RootState) => state.size.size;
 
 export const sizesSelector = (state: RootState) => state.size.sizes;
+
+export const sizesByShoeIdSelector = (state: RootState) =>
+  state.size.sizesByShoeId;
 
 export const sizeResponseSelector = (state: RootState) => state.size.response;

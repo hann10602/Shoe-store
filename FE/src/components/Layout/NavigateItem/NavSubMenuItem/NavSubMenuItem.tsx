@@ -13,7 +13,7 @@ const NavSubMenuItem = ({ item }: Props) => {
   return (
     <p
       className="nav-sub-menu-item"
-      onClick={() => history.push(`/home?category=${item.code}`)}
+      onClick={() => history.push(`/search?s=?&category=${item.code}`)}
     >
       {item.name}
     </p>

@@ -1,4 +1,5 @@
 import { errorCode } from "@/constants";
+import { LoginUserType } from "@/store/auth/type";
 
 export const validateEmail = (email: string) => {
   return String(email)
@@ -14,6 +15,11 @@ export const validatePassword = (password: string) => {
 
 export const handleErrorCode = (response: any) => {
   return errorCode[response.errorCode as keyof typeof errorCode];
+};
+
+export const getCurrentLoginUser: () => LoginUserType = () => {
+  const userInformation: string | null = localStorage.getItem("login-user");
+  return userInformation != null ? JSON.parse(userInformation) : null;
 };
 
 export const localStorageHelper = {

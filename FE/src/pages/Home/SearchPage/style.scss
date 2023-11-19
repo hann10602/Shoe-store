@@ -168,6 +168,12 @@
         #size-wrapper {
           display: flex;
           flex-wrap: wrap;
+          
+          .is-loading {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+          }
 
           .size-item {
             cursor: pointer;
@@ -249,6 +255,7 @@
 
       .product-wrapper {
         width: 260px;
+        text-align: center;
         margin: 0 40px;
 
         .product-image {

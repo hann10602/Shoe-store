@@ -6,6 +6,9 @@ export const isGettingUserSelector = (state: RootState) =>
 export const isGettingUsersSelector = (state: RootState) =>
   state.user.isGettingUsers;
 
+export const isChangingPasswordUserSelector = (state: RootState) =>
+  state.user.isChangingPasswordUsers;
+
 export const isCreatingUserSelector = (state: RootState) =>
   state.user.isCreatingUser;
 
@@ -18,5 +21,3 @@ export const isDeletingUserSelector = (state: RootState) =>
 export const userSelector = (state: RootState) => state.user.user;
 
 export const usersSelector = (state: RootState) => state.user.users;
-
-export const userResponseSelector = (state: RootState) => state.user.response;

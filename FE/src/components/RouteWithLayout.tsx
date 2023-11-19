@@ -1,6 +1,7 @@
+import { getCurrentLoginUser } from "@/utils";
 import React, { Suspense } from "react";
 
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
 export interface RouteWithLayoutProps {
   component: React.FC<any>;
@@ -15,12 +16,13 @@ export interface RouteWithLayoutProps {
 
 export const RouteWithLayout: React.FC<RouteWithLayoutProps> = (props) => {
   const { layout: Layout, component: Component, protect, ...rest } = props;
-  // const loggedIn = useSelector(IsLoggedIn);
 
-  // if (protect && !loggedIn) {
-  //   return <Redirect to="/sign-in" />;
-  // }
-  
+  const loginUser = getCurrentLoginUser();
+
+  if (protect && !loginUser) {
+    return <Redirect to="/sign-in" />;
+  }
+
   return (
     <Route
       {...rest}

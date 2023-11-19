@@ -6,6 +6,9 @@ export const isGettingCartSelector = (state: RootState) =>
 export const isGettingCartsSelector = (state: RootState) =>
   state.cart.isGettingCarts;
 
+export const isGettingCartsByUserIdSelector = (state: RootState) =>
+  state.cart.isGettingCartsByUserId;
+
 export const isCreatingCartSelector = (state: RootState) =>
   state.cart.isCreatingCart;
 
@@ -18,5 +21,7 @@ export const isDeletingCartSelector = (state: RootState) =>
 export const cartSelector = (state: RootState) => state.cart.cart;
 
 export const cartsSelector = (state: RootState) => state.cart.carts;
+
+export const cartsByUserIdSelector = (state: RootState) => state.cart.cartsByUserId;
 
 export const cartResponseSelector = (state: RootState) => state.cart.response;

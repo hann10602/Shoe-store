@@ -36,7 +36,7 @@ const NavigateItem = ({ item }: Props) => {
             xmlns="http://www.w3.org/2000/svg"
             width="12"
             height="12"
-            fill="rgb(135, 255, 255)"
+            fill="white"
             viewBox="0 0 123.959 123.958"
           >
             <path

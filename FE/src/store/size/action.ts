@@ -1,6 +1,6 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CreateSizeType, DeleteSizeType, GetSizeType, UpdateSizeType } from "./type";
+import { CreateSizeType, DeleteSizeType, GetSizeByShoeIdType, GetSizeType, UpdateSizeType } from "./type";
 
 const baseUrl = process.env.PUBLIC_URL;
 
@@ -21,6 +21,17 @@ const getOne = createAsyncThunk(
 const getAll = createAsyncThunk("size/getAll", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/size/get-all`);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getByShoeId = createAsyncThunk("size/getByShoeId", async (params: GetSizeByShoeIdType) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/size/get-by-shoe-id/${params.shoeId}`);
     if (resp.status === 200) {
       return resp.data;
     }
@@ -80,4 +91,4 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const sizeAsyncAction = { getOne, getAll, create, update, deletes };
+export const sizeAsyncAction = { getOne, getAll, getByShoeId, create, update, deletes };

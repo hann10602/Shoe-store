@@ -4,7 +4,7 @@ export type LoginUserType = {
   username: string;
   password: string;
   email: string;
-  phoneNum: number;
+  phoneNum: string;
   role: string;
   address: string;
   avatar: string;
@@ -21,7 +21,7 @@ export type RegisterType = {
   username: string;
   password: string;
   email: string;
-  phoneNum: number;
+  phoneNum: string;
   role: string;
   address: string;
 };

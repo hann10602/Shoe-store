@@ -1,13 +1,26 @@
 export type CartType = {
   id: number;
   quantity: number;
+  maxQuantity: number;
   userId: number;
   shoeId: number;
+  shoeName: string;
+  shoeImage: string;
+  sizeCode: string;
   shoePrice: number;
+  shoeSalePrice?: number;
 };
 
 export type GetCartType = {
   id: number;
+};
+
+export type GetCartByUserIdType = {
+  userId: number;
+};
+
+export type OrderCartType = {
+  idList: number[];
 };
 
 export type CreateCartType = {
@@ -18,7 +31,8 @@ export type CreateCartType = {
 };
 
 export type UpdateCartType = {
-  id: number;
+  userId: number;
+  shoeId: number;
   quantity: number;
 };
 

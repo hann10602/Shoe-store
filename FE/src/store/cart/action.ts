@@ -3,7 +3,9 @@ import axios from "axios";
 import {
   CreateCartType,
   DeleteCartType,
+  GetCartByUserIdType,
   GetCartType,
+  OrderCartType,
   UpdateCartType,
 } from "./type";
 
@@ -30,6 +32,34 @@ const getAll = createAsyncThunk("cart/getAll", async () => {
     return isRejectedWithValue(err);
   }
 });
+
+const getByUserId = createAsyncThunk("cart/getByUserId", async (params: GetCartByUserIdType) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/cart/get-by-user-id/${params.userId}`);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const order = createAsyncThunk(
+  "cart/order",
+  async (param: OrderCartType) => {
+    try {
+      const resp = await axios.post(
+        `${baseUrl}/cart/order`,
+        JSON.stringify(param)
+      );
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return isRejectedWithValue(err);
+    }
+  }
+);
 
 const create = createAsyncThunk(
   "cart/create",
@@ -82,4 +112,4 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const cartAsyncAction = { getOne, getAll, create, update, deletes };
+export const cartAsyncAction = { getOne, getAll, getByUserId, order, create, update, deletes };

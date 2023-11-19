@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from "react";
-import "./style.scss";
 import LoginImage from "@/assets/img/auth/login-background-1.jpg";
-import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
+import { authAsyncAction } from "@/store/auth/action";
 import { LoginType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
-import { authAsyncAction } from "@/store/auth/action";
-import { useSelector } from "react-redux";
-import { authRespSelector } from "@/store/auth/selector";
-import { deleteResp } from "@/store/auth/slice";
-
-const login: LoginType = {
-  username: "",
-  password: "",
-};
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useHistory, useLocation } from "react-router-dom";
+import "./style.scss";
+import { validatePassword } from "@/utils";
 
 export const Login = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -26,31 +19,22 @@ export const Login = () => {
 
   const { errors } = formState;
 
-  const location = useLocation();
   const history = useHistory();
-
-  const resp = useSelector(authRespSelector);
+  const location = useLocation();
 
   const onSubmit = (data: LoginType) => {
-    dispatch(authAsyncAction.login(data));
+    dispatch(authAsyncAction.login(data))
+      .then(() => {
+        history.push(`/home`);
+      })
+      .catch((err) => {
+        history.push(`/sign-in?error=${err}`);
+      });
   };
 
   useEffect(() => {
-    if (resp === "Success") {
-      history.push(`/register?message=${resp}`);
-    } else if (!resp) {
-    } else {
-      history.push(`/sign-in?message=${resp}`);
-    }
-
-
-  }, [resp, history]);
-
-  useEffect(() => {
-    if (location.search.includes("message")) {
-      setMessage(new URLSearchParams(location.search).get("message"));
-    }
-  }, [location, dispatch]);
+    setMessage(new URLSearchParams(location.search).get("error"));
+  }, [location]);
 
   return (
     <div id="login-page">
@@ -79,15 +63,7 @@ export const Login = () => {
         <div id="login-form-background"></div>
         <div className="form-wrapper">
           <h1 className="title">Login</h1>
-          {message && (
-            <div
-              className={`${
-                message === "Success" ? "success-message" : "error-message"
-              }`}
-            >
-              {message}
-            </div>
-          )}
+          {message && <div className="error-message">{message}</div>}
           <div className="form-control">
             <div className="label-wrapper">
               <label htmlFor="">Username</label>
@@ -111,7 +87,6 @@ export const Login = () => {
               type="password"
               {...register("password", {
                 required: "Please enter password",
-                minLength: 6,
               })}
             />
             <p className="field-message">{errors.password?.message}</p>
@@ -125,18 +100,14 @@ export const Login = () => {
             <div className="line"></div>
           </div>
           <p className="register-text">You don`t have any account yet ?</p>
-          <button
-            type="button"
+          <p
             onClick={() => {
-
-              history.push(
-                `/register`
-              );
+              history.push(`/register`);
             }}
             className="register-btn"
           >
             Register
-          </button>
+          </p>
         </div>
       </form>
     </div>

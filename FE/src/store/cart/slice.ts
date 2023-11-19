@@ -2,26 +2,31 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { cartAsyncAction } from "./action";
 import { CartType } from "./type";
+import { carts } from "@/constants/cart";
 
 type CartStateType = {
   isGettingCart: boolean;
   isGettingCarts: boolean;
+  isGettingCartsByUserId: boolean;
   isCreatingCart: boolean;
   isUpdatingCart: boolean;
   isDeletingCart: boolean;
   cart: CartType | undefined;
   carts: CartType[];
+  cartsByUserId: CartType[];
   response: ResponseType | undefined;
 };
 
 const initialState: CartStateType = {
   isGettingCart: false,
   isGettingCarts: false,
+  isGettingCartsByUserId: false,
   isCreatingCart: false,
   isUpdatingCart: false,
   isDeletingCart: false,
   cart: undefined,
   carts: [],
+  cartsByUserId: [],
   response: undefined,
 };
 
@@ -51,6 +56,19 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.getAll.rejected, (state) => {
         state.isGettingCarts = false;
+      });
+    builder
+      .addCase(cartAsyncAction.getByUserId.pending, (state) => {
+        state.isGettingCartsByUserId = true;
+      })
+      .addCase(cartAsyncAction.getByUserId.fulfilled, (state, action) => {
+        // state.cartsByUserId = action.payload;
+        state.cartsByUserId = carts;
+
+        state.isGettingCartsByUserId = false;
+      })
+      .addCase(cartAsyncAction.getByUserId.rejected, (state) => {
+        state.isGettingCartsByUserId = false;
       });
     builder
       .addCase(cartAsyncAction.create.pending, (state) => {

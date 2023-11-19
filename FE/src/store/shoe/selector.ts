@@ -6,8 +6,17 @@ export const isGettingShoeSelector = (state: RootState) =>
 export const isGettingShoesSelector = (state: RootState) =>
   state.shoe.isGettingShoes;
 
+export const isGettingShoesByCategory1Selector = (state: RootState) =>
+  state.shoe.isGettingShoes;
+
+export const isGettingShoesByCategory2Selector = (state: RootState) =>
+  state.shoe.isGettingShoes;
+
+export const isGettingShoesByCategory3Selector = (state: RootState) =>
+  state.shoe.isGettingShoes;
+
 export const isSearchShoesSelector = (state: RootState) =>
-state.shoe.isSearchShoes;
+  state.shoe.isSearchShoes;
 
 export const isCreatingShoeSelector = (state: RootState) =>
   state.shoe.isCreatingShoe;
@@ -21,6 +30,12 @@ export const isDeletingShoeSelector = (state: RootState) =>
 export const shoeSelector = (state: RootState) => state.shoe.shoe;
 
 export const shoesSelector = (state: RootState) => state.shoe.shoes;
+
+export const shoesByCategory1Selector = (state: RootState) => state.shoe.shoesByCategory1;
+
+export const shoesByCategory2Selector = (state: RootState) => state.shoe.shoesByCategory2;
+
+export const shoesByCategory3Selector = (state: RootState) => state.shoe.shoesByCategory3;
 
 export const shoesSearchSelector = (state: RootState) => state.shoe.shoesSearch;
 

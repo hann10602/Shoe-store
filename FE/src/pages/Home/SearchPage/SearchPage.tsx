@@ -1,12 +1,13 @@
 import AverageStar from "@/components/AverageStar";
-import { sizes } from "@/constants/size";
-import { useDebounce } from "@/hooks";
 import { categoryAsyncAction } from "@/store/category/action";
-import { categoriesSelector } from "@/store/category/selector";
+import {
+  categoriesSelector,
+  isGettingCategoriesSelector,
+} from "@/store/category/selector";
 import { shoeAsyncAction } from "@/store/shoe/action";
 import {
   isSearchShoesSelector,
-  shoesSearchSelector
+  shoesSearchSelector,
 } from "@/store/shoe/selector";
 import { SearchShoes } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
@@ -14,6 +15,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
+import { isGettingSizesSelector, sizesSelector } from "@/store/size/selector";
+import { sizeAsyncAction } from "@/store/size/action";
 
 type Props = {};
 
@@ -24,20 +27,18 @@ const SearchPage = (props: Props) => {
   const [priceFrom, setPriceFrom] = useState<string>("");
   const [priceTo, setPriceTo] = useState<string>("");
 
-  const searchDebounce = useDebounce<string>(search, 2000);
-  const sizeChooseDebounce = useDebounce<string>(sizeChoose, 2000);
-  const categoryChooseDebounce = useDebounce<string>(categoryChoose, 2000);
-  const priceFromDebounce = useDebounce<string>(priceFrom, 2000);
-  const priceToDebounce = useDebounce<string>(priceTo, 2000);
-
   const history = useHistory();
   const location = useLocation();
 
   const dispatch = useAppDispatch();
 
   const categories = useSelector(categoriesSelector);
-  const isSearchShoes = useSelector(isSearchShoesSelector);
   const shoesSearch = useSelector(shoesSearchSelector);
+  const sizes = useSelector(sizesSelector);
+
+  const isSearchShoes = useSelector(isSearchShoesSelector);
+  const isGettingCategories = useSelector(isGettingCategoriesSelector);
+  const isGettingSizes = useSelector(isGettingSizesSelector);
 
   const searchParam = new URLSearchParams(location.search).get("search");
   const sizeParam = new URLSearchParams(location.search).get("size");
@@ -48,42 +49,36 @@ const SearchPage = (props: Props) => {
   useEffect(() => {
     let searchResultString: string = "";
 
-    if (searchDebounce.trim() !== "") {
-      searchResultString += `&search=${searchDebounce
+    if (search.trim() !== "") {
+      searchResultString += `&search=${search
         .trim()
         .split(" ")
         .filter(Boolean)
         .join(" ")}`;
     }
 
-    if (sizeChooseDebounce !== "") {
-      searchResultString += `&size=${sizeChooseDebounce}`;
+    if (sizeChoose !== "") {
+      searchResultString += `&size=${sizeChoose}`;
     }
 
-    if (categoryChooseDebounce !== "") {
-      searchResultString += `&category=${categoryChooseDebounce}`;
+    if (categoryChoose !== "") {
+      searchResultString += `&category=${categoryChoose}`;
     }
 
-    if (priceFromDebounce !== "") {
-      searchResultString += `&price-from=${priceFromDebounce}`;
+    if (priceFrom !== "") {
+      searchResultString += `&price-from=${priceFrom}`;
     }
 
-    if (priceToDebounce !== "") {
-      searchResultString += `&price-to=${priceToDebounce}`;
+    if (priceTo !== "") {
+      searchResultString += `&price-to=${priceTo}`;
     }
 
     history.push(`/search?s=?${searchResultString}`);
-  }, [
-    searchDebounce,
-    sizeChooseDebounce,
-    categoryChooseDebounce,
-    priceFromDebounce,
-    priceToDebounce,
-    history,
-  ]);
+  }, [search, sizeChoose, categoryChoose, priceFrom, priceTo, history]);
 
   useEffect(() => {
     dispatch(categoryAsyncAction.getAll());
+    dispatch(sizeAsyncAction.getAll());
   }, [dispatch]);
 
   useEffect(() => {
@@ -91,18 +86,23 @@ const SearchPage = (props: Props) => {
 
     if (searchParam) {
       searchResultParams.search = searchParam;
+      setSearch(searchParam);
     }
     if (sizeParam) {
       searchResultParams.size = sizeParam;
+      setSizeChoose(sizeParam);
     }
     if (categoryParam) {
       searchResultParams.category = categoryParam;
+      setCategoryChoose(categoryParam);
     }
     if (priceFromParam) {
       searchResultParams.priceFrom = priceFromParam;
+      setPriceFrom(priceFromParam);
     }
     if (priceToParam) {
       searchResultParams.priceTo = priceToParam;
+      setPriceTo(priceToParam);
     }
 
     dispatch(shoeAsyncAction.searchShoes(searchResultParams));
@@ -175,23 +175,78 @@ const SearchPage = (props: Props) => {
             <div id="size-filter">
               <p id="size-title">Size:</p>
               <div id="size-wrapper">
-                {sizes.map((size) => (
-                  <div
-                    className={`size-item ${
-                      size.code === sizeChoose ? "size-choose" : ""
-                    }`}
-                    key={size.id}
-                    onClick={() => {
-                      if (size.code === sizeChoose) {
-                        setSizeChoose("");
-                      } else {
-                        setSizeChoose(size.code);
-                      }
-                    }}
-                  >
-                    {size.name}
+                {!isGettingSizes && sizes ? (
+                  sizes.map((size) => (
+                    <div
+                      className={`size-item ${
+                        size.code === sizeChoose ? "size-choose" : ""
+                      }`}
+                      key={size.id}
+                      onClick={() => {
+                        if (size.code === sizeChoose) {
+                          setSizeChoose("");
+                        } else {
+                          setSizeChoose(size.code);
+                        }
+                      }}
+                    >
+                      {size.name}
+                    </div>
+                  ))
+                ) : (
+                  <div className="is-loading">
+                    <svg
+                      id="Capa_1"
+                      enable-background="new 0 0 497 497"
+                      height="40"
+                      viewBox="0 0 497 497"
+                      width="40"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g>
+                        <circle cx="98" cy="376" fill="#909ba6" r="53" />
+                        <circle cx="439" cy="336" fill="#c8d2dc" r="46" />
+                        <circle cx="397" cy="112" fill="#e9edf1" r="38" />
+                        <ellipse
+                          cx="56.245"
+                          cy="244.754"
+                          fill="#7e8b96"
+                          rx="56.245"
+                          ry="54.874"
+                        />
+                        <ellipse
+                          cx="217.821"
+                          cy="447.175"
+                          fill="#a2abb8"
+                          rx="51.132"
+                          ry="49.825"
+                        />
+                        <ellipse
+                          cx="349.229"
+                          cy="427.873"
+                          fill="#b9c3cd"
+                          rx="48.575"
+                          ry="47.297"
+                        />
+                        <ellipse
+                          cx="117.092"
+                          cy="114.794"
+                          fill="#5f6c75"
+                          rx="58.801"
+                          ry="57.397"
+                        />
+                        <ellipse
+                          cx="453.538"
+                          cy="216.477"
+                          fill="#dce6eb"
+                          rx="43.462"
+                          ry="42.656"
+                        />
+                        <circle cx="263" cy="62" fill="#4e5a61" r="62" />
+                      </g>
+                    </svg>
                   </div>
-                ))}
+                )}
               </div>
             </div>
             <div id="price-filter">
@@ -218,26 +273,81 @@ const SearchPage = (props: Props) => {
             <div id="category-filter">
               <p id="category-title">Category:</p>
               <div>
-                {categories.map((category) => (
-                  <label className="category-item" key={category.id}>
-                    <input
-                      type="checkbox"
-                      className="category-checkbox"
-                      name="category"
-                      value={category.code}
-                      checked={category.code === categoryChoose}
-                      onClick={() => {
-                        if (category.code === categoryChoose) {
-                          setCategoryChoose("");
-                        } else {
-                          setCategoryChoose(category.code);
-                        }
-                      }}
-                      onChange={(e) => {}}
-                    />
-                    {category.name}
-                  </label>
-                ))}
+                {!isGettingCategories && categories ? (
+                  categories.map((category) => (
+                    <label className="category-item" key={category.id}>
+                      <input
+                        type="checkbox"
+                        className="category-checkbox"
+                        name="category"
+                        value={category.code}
+                        checked={category.code === categoryChoose}
+                        onClick={() => {
+                          if (category.code === categoryChoose) {
+                            setCategoryChoose("");
+                          } else {
+                            setCategoryChoose(category.code);
+                          }
+                        }}
+                        onChange={(e) => {}}
+                      />
+                      {category.name}
+                    </label>
+                  ))
+                ) : (
+                  <div className="is-loading">
+                    <svg
+                      id="Capa_1"
+                      enable-background="new 0 0 497 497"
+                      height="40"
+                      viewBox="0 0 497 497"
+                      width="40"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g>
+                        <circle cx="98" cy="376" fill="#909ba6" r="53" />
+                        <circle cx="439" cy="336" fill="#c8d2dc" r="46" />
+                        <circle cx="397" cy="112" fill="#e9edf1" r="38" />
+                        <ellipse
+                          cx="56.245"
+                          cy="244.754"
+                          fill="#7e8b96"
+                          rx="56.245"
+                          ry="54.874"
+                        />
+                        <ellipse
+                          cx="217.821"
+                          cy="447.175"
+                          fill="#a2abb8"
+                          rx="51.132"
+                          ry="49.825"
+                        />
+                        <ellipse
+                          cx="349.229"
+                          cy="427.873"
+                          fill="#b9c3cd"
+                          rx="48.575"
+                          ry="47.297"
+                        />
+                        <ellipse
+                          cx="117.092"
+                          cy="114.794"
+                          fill="#5f6c75"
+                          rx="58.801"
+                          ry="57.397"
+                        />
+                        <ellipse
+                          cx="453.538"
+                          cy="216.477"
+                          fill="#dce6eb"
+                          rx="43.462"
+                          ry="42.656"
+                        />
+                        <circle cx="263" cy="62" fill="#4e5a61" r="62" />
+                      </g>
+                    </svg>
+                  </div>
+                )}
               </div>
             </div>
           </div>

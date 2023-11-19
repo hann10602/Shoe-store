@@ -5,6 +5,8 @@ import Register from "@/pages/Auth/Register";
 import ProductDetail from "@/pages/Home/ProductDetail";
 import SearchPage from "@/pages/Home/SearchPage";
 import UserDetail from "@/pages/Home/UserDetail";
+import About from "@/pages/Home/About";
+import Policy from "@/pages/Home/Policy";
 
 const Login = React.lazy(() => import("@/pages/Auth/Login"));
 const Home = React.lazy(() => import("@/pages/Home/HomePage"));
@@ -58,7 +60,7 @@ export const routes: IRoute[] = [
     exact: true,
     path: "/user",
     routePath: "/user",
-    Protected: false,
+    Protected: true,
   },
   {
     Component: SearchPage,
@@ -66,6 +68,22 @@ export const routes: IRoute[] = [
     exact: true,
     path: "/search",
     routePath: "/search",
+    Protected: false,
+  },
+  {
+    Component: About,
+    Layout: MainLayout,
+    exact: true,
+    path: "/about",
+    routePath: "/about",
+    Protected: false,
+  },
+  {
+    Component: Policy,
+    Layout: MainLayout,
+    exact: true,
+    path: "/policy",
+    routePath: "/policy",
     Protected: false,
   },
 ];

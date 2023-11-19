@@ -8,6 +8,10 @@ export type GetSizeType = {
   id: number;
 };
 
+export type GetSizeByShoeIdType = {
+  shoeId: number;
+};
+
 export type CreateSizeType = {
   name: string;
   code: string;

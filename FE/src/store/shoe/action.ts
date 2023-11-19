@@ -4,6 +4,7 @@ import {
   CreateShoeType,
   DeleteShoeType,
   GetShoeType,
+  GetShoesByCategoryType,
   SearchShoes,
   UpdateShoeType,
 } from "./type";
@@ -24,6 +25,39 @@ const getOne = createAsyncThunk("size/getOne", async (param: GetShoeType) => {
 const getAll = createAsyncThunk("shoe/getAll", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/shoe/get-all`);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getByCategory1 = createAsyncThunk("shoe/getByCategory1", async (params: GetShoesByCategoryType) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/shoe/get-by-category/${params.categoryCode}`);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getByCategory2 = createAsyncThunk("shoe/getByCategory2", async (params: GetShoesByCategoryType) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/shoe/get-by-category/${params.categoryCode}`);
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getByCategory3 = createAsyncThunk("shoe/getByCategory3", async (params: GetShoesByCategoryType) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/shoe/get-by-category/${params.categoryCode}`);
     if (resp.status === 200) {
       return resp.data;
     }
@@ -107,6 +141,9 @@ const deletes = createAsyncThunk(
 export const shoeAsyncAction = {
   getOne,
   getAll,
+  getByCategory1,
+  getByCategory2,
+  getByCategory3,
   searchShoes,
   create,
   update,

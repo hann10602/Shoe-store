@@ -1,10 +1,11 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
+  ChangePasswordUserType,
   CreateUserType,
   DeleteUserType,
   GetUserType,
-  UpdateUserType
+  UpdateUserType,
 } from "./type";
 
 const baseUrl = process.env.PUBLIC_URL;
@@ -65,6 +66,23 @@ const update = createAsyncThunk(
   }
 );
 
+const changePassword = createAsyncThunk(
+  "user/change-password",
+  async (param: ChangePasswordUserType) => {
+    try {
+      const resp = await axios.post(
+        `${baseUrl}/user/change-password`,
+        JSON.stringify(param)
+      );
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return isRejectedWithValue(err);
+    }
+  }
+);
+
 const deletes = createAsyncThunk(
   "user/delete",
   async (param: DeleteUserType) => {
@@ -82,4 +100,11 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const userAsyncAction = { getOne, getAll, create, update, deletes };
+export const userAsyncAction = {
+  getOne,
+  getAll,
+  changePassword,
+  create,
+  update,
+  deletes,
+};

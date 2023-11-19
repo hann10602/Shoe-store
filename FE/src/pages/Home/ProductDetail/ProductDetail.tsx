@@ -15,16 +15,19 @@ import {
   shoesSearchSelector,
 } from "@/store/shoe/selector";
 import { useAppDispatch } from "@/store/store";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 import { FieldValues, useForm } from "react-hook-form";
+import { Carousel } from "antd";
+import { CarouselRef } from "antd/lib/carousel";
 
 type Props = {};
 
 const ProductDetail = (props: Props) => {
   const [mainImage, setMainImage] = useState<string>();
+  const [itemShow, setItemShow] = useState<number>();
   const [buyQuantity, setBuyQuantity] = useState<number>(1);
   const [buySize, setBuySize] = useState<string>("");
   const [hasBuySize, setHasBuySize] = useState<boolean>(true);
@@ -32,11 +35,15 @@ const ProductDetail = (props: Props) => {
   const [evaluateOrderStar, setEvaluateOrderStar] = useState<number>(5);
   const [evaluateSection, setEvaluateSection] = useState<boolean>(false);
 
+  const suggestRef: React.Ref<CarouselRef> = useRef(null);
+
   const form = useForm();
 
   const { register, formState, handleSubmit, reset } = form;
 
   const { errors } = formState;
+
+  const screenWidth: number = window.innerWidth;
 
   const dispatch = useAppDispatch();
 
@@ -99,6 +106,16 @@ const ProductDetail = (props: Props) => {
       setEvaluateSection(false);
     }
   };
+
+  useEffect(() => {
+    if (screenWidth > 1220) {
+      setItemShow(4);
+    } else if (screenWidth > 780) {
+      setItemShow(3);
+    } else {
+      setItemShow(2);
+    }
+  }, [screenWidth]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -429,26 +446,91 @@ const ProductDetail = (props: Props) => {
                       <div className="side-line"></div>
                     </div>
                     <div id="suggest-product-group">
-                      {shoesSearch.slice(0, 4).map((sp) => (
-                        <div className="suggest-product">
-                          <div className="product-wrapper" key={sp.id}>
-                            <div
-                              onClick={() => history.push(`/shoe?id=${sp.id}`)}
+                      <div
+                        style={{
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      >
+                        <div className="product-group-wrapper">
+                          <button
+                            className="left-carousel-btn"
+                            onClick={() => suggestRef.current?.prev()}
+                          >
+                            <svg
+                              version="1.1"
+                              id="Layer_1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width={20}
+                              height={20}
+                              fill="rgb(81, 162, 255)"
+                              x="0px"
+                              y="0px"
+                              viewBox="0 0 492 492"
                             >
-                              <img
-                                className="product-image"
-                                src={sp.imageUrls[0]}
-                                alt=""
+                              <path
+                                d="M198.608,246.104L382.664,62.04c5.068-5.056,7.856-11.816,7.856-19.024c0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12
+			C361.476,2.792,354.712,0,347.504,0s-13.964,2.792-19.028,7.864L109.328,227.008c-5.084,5.08-7.868,11.868-7.848,19.084
+			c-0.02,7.248,2.76,14.028,7.848,19.112l218.944,218.932c5.064,5.072,11.82,7.864,19.032,7.864c7.208,0,13.964-2.792,19.032-7.864
+			l16.124-16.12c10.492-10.492,10.492-27.572,0-38.06L198.608,246.104z"
                               />
-                              <p className="product-name">{sp.name}</p>
-                            </div>
-                            <div className="star-wrapper">
-                              <AverageStar averageStar={sp.averageStar} />
-                            </div>
-                            <p className="product-price">{sp.price}$</p>
-                          </div>
+                            </svg>
+                          </button>
+                          <button
+                            className="right-carousel-btn"
+                            onClick={() => suggestRef.current?.next()}
+                          >
+                            <svg
+                              version="1.1"
+                              id="Layer_1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              x="0px"
+                              y="0px"
+                              width={20}
+                              height={20}
+                              fill="rgb(81, 162, 255)"
+                              viewBox="0 0 492.004 492.004"
+                            >
+                              <path
+                                d="M382.678,226.804L163.73,7.86C158.666,2.792,151.906,0,144.698,0s-13.968,2.792-19.032,7.86l-16.124,16.12
+			c-10.492,10.504-10.492,27.576,0,38.064L293.398,245.9l-184.06,184.06c-5.064,5.068-7.86,11.824-7.86,19.028
+			c0,7.212,2.796,13.968,7.86,19.04l16.124,16.116c5.068,5.068,11.824,7.86,19.032,7.86s13.968-2.792,19.032-7.86L382.678,265
+			c5.076-5.084,7.864-11.872,7.848-19.088C390.542,238.668,387.754,231.884,382.678,226.804z"
+                              />
+                            </svg>
+                          </button>
                         </div>
-                      ))}
+                      </div>
+                      <Carousel
+                        slidesToShow={itemShow}
+                        dots={false}
+                        draggable
+                        ref={suggestRef}
+                      >
+                        {shoesSearch.map((sp) => (
+                          <div className="suggest-product" key={sp.id}>
+                            <div className="product-wrapper">
+                              <div
+                                onClick={() =>
+                                  history.push(`/shoe?id=${sp.id}`)
+                                }
+                              >
+                                <img
+                                  className="product-image"
+                                  src={sp.imageUrls[0]}
+                                  alt=""
+                                />
+                                <p className="product-name">{sp.name}</p>
+                              </div>
+                              <div className="star-wrapper">
+                                <AverageStar averageStar={sp.averageStar} />
+                              </div>
+                              <p className="product-price">{sp.price}$</p>
+                            </div>
+                          </div>
+                        ))}
+                      </Carousel>
                     </div>
                   </div>
                 </div>

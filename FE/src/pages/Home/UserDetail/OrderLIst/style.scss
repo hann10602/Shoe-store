@@ -1,0 +1,50 @@
+#orders {
+  width: 100%;
+
+  #total-payment {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    padding: 28px 28px;
+    border: 1px solid rgb(235, 235, 235);
+
+    #buy-all-btn {
+      cursor: pointer;
+      width: 100px;
+      padding: 20px;
+      border-radius: 16px;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgb(71, 71, 71);
+      margin-right: 12px;
+      background: linear-gradient(
+        to bottom,
+        rgb(237, 255, 247),
+        rgb(35, 255, 163)
+      );
+      transition: background-color 0.15s;
+    }
+
+    #buy-all-btn:hover {
+      background: linear-gradient(
+        to bottom,
+        rgb(207, 248, 229),
+        rgb(17, 247, 151)
+      );
+    }
+
+    #total-price-title {
+      font-size: 16px;
+      margin-right: 8px;
+    }
+
+    #total-price-value {
+      font-size: 24px;
+      color: rgb(255, 96, 96);
+      font-weight: 500;
+    }
+  }
+}

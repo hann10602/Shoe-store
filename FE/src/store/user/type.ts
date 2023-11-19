@@ -4,7 +4,7 @@ export type UserType = {
   username: string;
   password: string;
   email: string;
-  phoneNum: number;
+  phoneNum: string;
   avatar: string;
   role: string;
   address: string;
@@ -19,7 +19,7 @@ export type CreateUserType = {
   username: string;
   password: string;
   email: string;
-  phoneNum: number;
+  phoneNum: string;
   avatar: string;
   role: string;
   address: string;
@@ -30,11 +30,11 @@ export type UpdateUserType = {
   fullName: string;
   username: string;
   email: string;
-  phoneNum: number;
+  phoneNum: string;
   address: string;
 };
 
-export type ChangePasswordType = {
+export type ChangePasswordUserType = {
   id: number;
   password: string;
 };

@@ -1,14 +1,13 @@
+import LoginImage from "@/assets/img/auth/login-background-1.jpg";
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import LoginImage from "@/assets/img/auth/login-background-1.jpg";
 
-import { useHistory, useLocation } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { RegisterType } from "@/store/auth/type";
 import { authAsyncAction } from "@/store/auth/action";
+import { RegisterType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
-import { useSelector } from "react-redux";
-import { authRespSelector } from "@/store/auth/selector";
+import { useForm } from "react-hook-form";
+import { useHistory, useLocation } from "react-router-dom";
+import { validateEmail, validatePassword } from "@/utils";
 
 type Props = {};
 
@@ -23,28 +22,16 @@ const Register = (props: Props) => {
   const location = useLocation();
   const history = useHistory();
 
-  const resp = useSelector(authRespSelector);
-
   const dispatch = useAppDispatch();
 
   const onSubmit = (data: RegisterType) => {
-    dispatch(authAsyncAction.register(data));
+    dispatch(authAsyncAction.register(data))
+      .then(() => history.push(`/sign-in`))
+      .catch((err) => history.push(`/register?error=${err}`));
   };
 
   useEffect(() => {
-    console.log(resp);
-    if (resp === "Success") {
-      history.push(`/home`);
-    } else if (!resp) {
-    } else {
-      history.push(`/register?message=${resp}`);
-    }
-  }, [resp, history]);
-
-  useEffect(() => {
-    if (location.search.includes("message")) {
-      setMessage(new URLSearchParams(location.search).get("message"));
-    }
+    setMessage(new URLSearchParams(location.search).get("error"));
   }, [location]);
 
   return (
@@ -74,15 +61,7 @@ const Register = (props: Props) => {
         <div id="register-form-background"></div>
         <div className="form-wrapper">
           <h1 className="title">Register</h1>
-          {message !== null && (
-            <div
-              className={`${
-                message === "Success" ? "success-message" : "error-message"
-              }`}
-            >
-              {message}
-            </div>
-          )}
+          {message !== null && <div className="error-message">{message}</div>}
           <div className="form-control">
             <div className="label-wrapper">
               <label htmlFor="">Full name</label>
@@ -120,7 +99,11 @@ const Register = (props: Props) => {
               type="password"
               {...register("password", {
                 required: "Please enter password",
-                minLength: 6,
+                validate: {
+                  validFormat: (fieldValue) =>
+                    validatePassword(fieldValue) ||
+                    "At least 8 characters and doesn`t include special character",
+                },
               })}
             />
             <p className="field-message">{errors.password?.message}</p>
@@ -135,6 +118,10 @@ const Register = (props: Props) => {
               {...register("email", {
                 required: "Please enter email",
                 minLength: 6,
+                validate: {
+                  isSimilar: (fieldValue) =>
+                    validateEmail(fieldValue) || "Wrong email format",
+                },
               })}
             />
             <p className="field-message">{errors.email?.message}</p>
@@ -148,7 +135,8 @@ const Register = (props: Props) => {
               type="text"
               {...register("phoneNum", {
                 required: "Please enter phone number",
-                minLength: 6,
+                minLength: 10,
+                maxLength: 15,
               })}
             />
             <p className="field-message">{errors.phoneNum?.message}</p>
@@ -162,13 +150,9 @@ const Register = (props: Props) => {
             <div className="line"></div>
           </div>
           <p className="login-text">You already have an account ?</p>
-          <button
-            type="button"
-            onClick={() => history.push("/sign-in")}
-            className="login-btn"
-          >
+          <p onClick={() => history.push("/sign-in")} className="login-btn">
             Login
-          </button>
+          </p>
         </div>
       </form>
     </div>

@@ -7,6 +7,7 @@ import { shoeReducer } from "./shoe/slice";
 import { sizeReducer } from "./size/slice";
 import { userReducer } from "./user/slice";
 import { evaluateReducer } from "./evaluate/slice";
+import { orderReducer } from "./order/slice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     user: userReducer,
     shoe: shoeReducer,
     evaluate: evaluateReducer,
+    order: orderReducer,
   },
 });
 

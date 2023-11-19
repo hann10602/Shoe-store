@@ -9,6 +9,15 @@ import AdditionService from "./AdditionService";
 import AdvertConcept from "./AdvertConcept";
 import ProductGroup from "./ProductGroup";
 import { ConceptType } from "./AdvertConcept/AdvertConcept";
+import { Carousel } from "antd";
+
+const contentStyle: React.CSSProperties = {
+  height: "160px",
+  color: "#fff",
+  lineHeight: "160px",
+  textAlign: "center",
+  background: "#364d79",
+};
 
 type Props = {};
 
@@ -55,7 +64,7 @@ const HomePage = (props: Props) => {
       <Banner />
       <AdditionService />
       {concept.map((item) => (
-        <AdvertConcept item={item} key={item.id}/>
+        <AdvertConcept item={item} key={item.id} />
       ))}
       <ProductGroup />
     </main>
