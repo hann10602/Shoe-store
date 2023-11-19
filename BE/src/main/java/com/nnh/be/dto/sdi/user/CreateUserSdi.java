@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class CreateUserSdi {
     private String fullName;
     private String username;
+    private String avatar;
     private String password;
     private String address;
     private String email;

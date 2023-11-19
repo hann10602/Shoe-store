@@ -1,18 +1,13 @@
-import { orderAsyncAction } from "@/store/order/action";
+import { cartAsyncAction } from "@/store/cart/action";
 import {
-  isGettingOrdersByUserIdSelector,
-  ordersByUserIdSelector,
-} from "@/store/order/selector";
+  cartsByUserIdSelector,
+  isGettingCartsByUserIdSelector,
+} from "@/store/cart/selector";
 import { useAppDispatch } from "@/store/store";
 import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import Order from "./Order/Order";
 import "./style.scss";
-import {
-  cartsByUserIdSelector,
-  isGettingCartsByUserIdSelector,
-} from "@/store/cart/selector";
-import { cartAsyncAction } from "@/store/cart/action";
 
 type Props = { userId: number };
 

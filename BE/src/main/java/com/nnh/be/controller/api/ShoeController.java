@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/shoe")
+@CrossOrigin
 public class ShoeController {
     private final ShoeService shoeService;
 
@@ -25,6 +26,11 @@ public class ShoeController {
 
     @GetMapping("/get-all")
     public List<ShoeSelfSdo> findAll() {
+        return shoeService.findAll();
+    }
+
+    @GetMapping("/get-by-category/{category}")
+    public List<ShoeSelfSdo> findByCategory(@RequestParam("category") String category) {
         return shoeService.findAll();
     }
 

@@ -1,6 +1,7 @@
-import { OrderType } from "@/store/order/type";
+import { BillType } from "@/store/bill/type";
 
-export const orders: OrderType[] = [
+
+export const bills: BillType[] = [
   {
     id: 1,
     quantity: 2,
@@ -11,8 +12,8 @@ export const orders: OrderType[] = [
     userId: 1,
     shoePrice: 50,
     shoeSalePrice: 40,
-    orderStatus: "WAIT",
-    orderReceived: false,
+    billStatus: "WAIT",
+    billReceived: false,
   },
   {
     id: 2,
@@ -24,8 +25,8 @@ export const orders: OrderType[] = [
     userId: 1,
     shoePrice: 75.5,
     shoeSalePrice: 65.5,
-    orderStatus: "DELIVERY",
-    orderReceived: false,
+    billStatus: "DELIVERY",
+    billReceived: false,
   },
   {
     id: 3,
@@ -36,7 +37,7 @@ export const orders: OrderType[] = [
       "https://bizweb.dktcdn.net/thumb/1024x1024/100/140/774/products/vans-old-skool-classic-navy-white-vn000d3hnvy-1.jpg?v=1625922070377",
     userId: 1,
     shoePrice: 100,
-    orderStatus: "COMPLETED",
-    orderReceived: true,
+    billStatus: "COMPLETED",
+    billReceived: true,
   },
 ];

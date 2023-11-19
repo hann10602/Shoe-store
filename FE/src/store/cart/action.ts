@@ -8,12 +8,15 @@ import {
   OrderCartType,
   UpdateCartType,
 } from "./type";
+import { BASE_URL, getToken } from "@/utils";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
+const token = getToken();
 
 const getOne = createAsyncThunk("cart/getOne", async (param: GetCartType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`);
+    const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`,
+        { headers: { Authorization: `Bearer ${token}` } });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -24,7 +27,8 @@ const getOne = createAsyncThunk("cart/getOne", async (param: GetCartType) => {
 
 const getAll = createAsyncThunk("cart/getAll", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/cart/get-all`);
+    const resp = await axios.get(`${baseUrl}/cart/get-all`,
+        { headers: { Authorization: `Bearer ${token}` } });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -35,7 +39,8 @@ const getAll = createAsyncThunk("cart/getAll", async () => {
 
 const getByUserId = createAsyncThunk("cart/getByUserId", async (params: GetCartByUserIdType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/cart/get-by-user-id/${params.userId}`);
+    const resp = await axios.get(`${baseUrl}/cart/get-by-user-id/${params.userId}`,
+        { headers: { Authorization: `Bearer ${token}` } });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -50,7 +55,8 @@ const order = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/cart/order`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -67,7 +73,8 @@ const create = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/cart/create`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -84,7 +91,8 @@ const update = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/cart/update`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -101,7 +109,8 @@ const deletes = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/cart/delete`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;

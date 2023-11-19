@@ -7,20 +7,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "cart")
-public class Cart extends BaseEntity{
+@Table(name = "bill")
+public class Bill extends BaseEntity{
     @Column
     private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "size_id")
-    private Size sizeCart;
+    private Size sizeOrder;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userCart;
+    private User userOrder;
 
     @ManyToOne
     @JoinColumn(name = "shoe_id")
-    private Shoe shoeCart;
+    private Shoe shoeOrder;
 }

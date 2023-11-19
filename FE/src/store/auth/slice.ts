@@ -21,23 +21,23 @@ const authSlice = createSlice({
         state.isLogin = true;
       })
       .addCase(authAsyncAction.login.fulfilled, (state, action) => {
-        // localStorage.setItem("login-user", JSON.stringify(action.payload));
-        localStorage.setItem(
-          "login-user",
-          JSON.stringify({
-            id: 1,
-            fullName: "Nguyễn Ngọc Hà",
-            username: "ngocha123",
-            password: "ngocha123",
-            email: "email1",
-            phoneNum: "0987654321",
-            role: "User",
-            address: "Van Phu",
-            avatar:
-              "https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg",
-            token: "abc",
-          })
-        );
+        localStorage.setItem("login-user", JSON.stringify(action.payload));
+        // localStorage.setItem(
+        //   "login-user",
+        //   JSON.stringify({
+        //     id: 1,
+        //     fullName: "Nguyễn Ngọc Hà",
+        //     username: "ngocha123",
+        //     password: "ngocha123",
+        //     email: "email1",
+        //     phoneNum: "0987654321",
+        //     role: "User",
+        //     address: "Van Phu",
+        //     avatar:
+        //       "https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg",
+        //     token: "abc",
+        //   })
+        // );
 
         state.isLogin = false;
       })

@@ -99,11 +99,7 @@ const Register = (props: Props) => {
               type="password"
               {...register("password", {
                 required: "Please enter password",
-                validate: {
-                  validFormat: (fieldValue) =>
-                    validatePassword(fieldValue) ||
-                    "At least 8 characters and doesn`t include special character",
-                },
+                minLength: 6
               })}
             />
             <p className="field-message">{errors.password?.message}</p>

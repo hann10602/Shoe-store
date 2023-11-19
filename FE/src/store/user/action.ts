@@ -7,12 +7,16 @@ import {
   GetUserType,
   UpdateUserType,
 } from "./type";
+import { BASE_URL, getToken } from "@/utils";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
+const token = getToken();
 
 const getOne = createAsyncThunk("size/getOne", async (param: GetUserType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/user/self/${param.id}`);
+    const resp = await axios.get(`${baseUrl}/user/self/${param.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -23,7 +27,9 @@ const getOne = createAsyncThunk("size/getOne", async (param: GetUserType) => {
 
 const getAll = createAsyncThunk("user/getAll", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/user/get-all`);
+    const resp = await axios.get(`${baseUrl}/user/get-all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -38,7 +44,8 @@ const create = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/user/create`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -55,7 +62,8 @@ const update = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/user/update`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -72,7 +80,8 @@ const changePassword = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/user/change-password`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -89,7 +98,8 @@ const deletes = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/user/delete`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;

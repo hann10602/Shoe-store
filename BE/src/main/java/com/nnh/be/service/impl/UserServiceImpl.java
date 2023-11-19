@@ -1,25 +1,27 @@
 package com.nnh.be.service.impl;
 
 
-import com.nnh.be.dto.sdi.user.CreateUserSdi;
 import com.nnh.be.dto.sdi.user.DeleteUserSdi;
 import com.nnh.be.dto.sdi.user.SelfUserSdi;
 import com.nnh.be.dto.sdi.user.UpdateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
+import com.nnh.be.exception.AppException;
 import com.nnh.be.model.User;
 import com.nnh.be.repository.CartRepository;
 import com.nnh.be.repository.RoleRepository;
 import com.nnh.be.repository.UserRepository;
-import com.nnh.be.service.CartService;
 import com.nnh.be.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.nnh.be.utils.LabelKeys.*;
 
 @Service
 @AllArgsConstructor

@@ -50,6 +50,20 @@ public class ShoeServiceImpl implements ShoeService {
     }
 
     @Override
+    public List<ShoeSelfSdo> findByCategory(String categoryCode) {
+        Category category = categoryRepo.findByCode(categoryCode);
+        List<ShoeSelfSdo> dtoList = new ArrayList<>();
+        shoeRepo.findByShoeCategory(category).forEach((entity) -> {
+            ShoeSelfSdo dto = new ShoeSelfSdo();
+            BeanUtils.copyProperties(entity, dto);
+
+            dtoList.add(dto);
+        });
+
+        return dtoList;
+    }
+
+    @Override
     public ShoeSelfSdo self(SelfShoeSdi req) {
 
         ShoeSelfSdo dto = new ShoeSelfSdo();

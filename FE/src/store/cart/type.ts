@@ -31,8 +31,7 @@ export type CreateCartType = {
 };
 
 export type UpdateCartType = {
-  userId: number;
-  shoeId: number;
+  id: number;
   quantity: number;
 };
 

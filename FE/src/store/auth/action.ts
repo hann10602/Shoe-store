@@ -1,8 +1,9 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LoginType, RegisterType } from "./type";
+import { BASE_URL } from "@/utils";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
 
 const login = createAsyncThunk(
   "auth/login",
@@ -17,8 +18,8 @@ const login = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      // return rejectWithValue(err);
-      return err;
+      return rejectWithValue(err);
+      // return err;
     }
   }
 );

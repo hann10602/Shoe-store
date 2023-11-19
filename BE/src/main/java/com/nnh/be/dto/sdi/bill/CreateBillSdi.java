@@ -1,9 +1,9 @@
-package com.nnh.be.dto.sdi.cart;
+package com.nnh.be.dto.sdi.bill;
 
 import lombok.Data;
 
 @Data
-public class CreateCartSdi {
+public class CreateBillSdi {
     private Integer quantity;
     private String sizeCode;
     private Long userId;

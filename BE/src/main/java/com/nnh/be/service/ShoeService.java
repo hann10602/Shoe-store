@@ -13,6 +13,7 @@ import com.nnh.be.model.Shoe;
 import java.util.List;
 public interface ShoeService {
     List<ShoeSelfSdo> findAll();
+    List<ShoeSelfSdo> findByCategory(String categoryCode);
     ShoeSelfSdo self(SelfShoeSdi req);
     MessageSdo create(CreateShoeSdi req);
     MessageSdo update(UpdateShoeSdi req);

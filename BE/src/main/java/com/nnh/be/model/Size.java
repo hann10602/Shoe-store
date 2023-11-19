@@ -20,4 +20,10 @@ public class Size extends BaseEntity{
 
     @OneToMany(mappedBy = "sizeShoe")
     private List<ShoeSize> sizeShoe = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sizeOrder")
+    private List<Bill> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sizeCart")
+    private List<Cart> carts = new ArrayList<>();
 }

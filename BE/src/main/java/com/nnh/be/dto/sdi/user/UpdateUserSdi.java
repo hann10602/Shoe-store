@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class UpdateUserSdi {
     private Long id;
     private String fullName;
+    private String avatar;
     private String username;
     private String password;
     private String address;

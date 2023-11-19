@@ -4,32 +4,45 @@ import {
   CreateEvaluateType,
   DeleteEvaluateType,
   GetEvaluateType,
-  GetEvaluatesByShoeIdType
+  GetEvaluatesByShoeIdType,
 } from "./type";
+import { BASE_URL, getToken } from "@/utils";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
+const token = getToken();
 
-const getOne = createAsyncThunk("evaluate/getOne", async (param: GetEvaluateType) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/evaluate/self/${param.id}`);
-    if (resp.status === 200) {
-      return resp.data;
+const getOne = createAsyncThunk(
+  "evaluate/getOne",
+  async (param: GetEvaluateType) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/evaluate/self/${param.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return isRejectedWithValue(err);
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
   }
-});
+);
 
-const getByShoeId = createAsyncThunk("evaluate/getByShoeId", async (param: GetEvaluatesByShoeIdType) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/evaluate/get-by-shoe-id?${param.shoeId}`);
-    if (resp.status === 200) {
-      return resp.data;
+const getByShoeId = createAsyncThunk(
+  "evaluate/getByShoeId",
+  async (param: GetEvaluatesByShoeIdType) => {
+    try {
+      const resp = await axios.get(
+        `${baseUrl}/evaluate/get-by-shoe-id?${param.shoeId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return isRejectedWithValue(err);
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
   }
-});
+);
 
 const create = createAsyncThunk(
   "evaluate/create",
@@ -37,7 +50,8 @@ const create = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/evaluate/create`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -54,7 +68,8 @@ const deletes = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/evaluate/delete`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;

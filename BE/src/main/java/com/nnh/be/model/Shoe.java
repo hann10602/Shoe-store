@@ -22,16 +22,22 @@ public class Shoe extends BaseEntity{
     private Long price;
 
     @Column
+    private Long salePrice;
+
+    @Column
     private String description;
 
     @OneToMany(mappedBy = "shoeSize")
     private List<ShoeSize> shoeSizes = new ArrayList<>();
 
     @OneToMany(mappedBy = "shoeImage")
-    private List<Image> image;
+    private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "shoeCart")
     private List<Cart> carts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "shoeOrder")
+    private List<Bill> orders = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")

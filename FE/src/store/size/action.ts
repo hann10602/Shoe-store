@@ -1,14 +1,49 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CreateSizeType, DeleteSizeType, GetSizeByShoeIdType, GetSizeType, UpdateSizeType } from "./type";
+import {
+  CreateSizeType,
+  DeleteSizeType,
+  GetSizeByShoeIdType,
+  GetSizeType,
+  UpdateSizeType,
+} from "./type";
+import { BASE_URL, getToken } from "@/utils";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
+const token = getToken();
 
-const getOne = createAsyncThunk(
-  "size/getOne",
-  async (param: GetSizeType) => {
+const getOne = createAsyncThunk("size/getOne", async (param: GetSizeType) => {
+  try {
+    const resp = await axios.get(`${baseUrl}/size/self/${param.id}`,
+        { headers: { Authorization: `Bearer ${token}` } });
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getAll = createAsyncThunk("size/getAll", async () => {
+  try {
+    const resp = await axios.get(`${baseUrl}/size/get-all`,
+        { headers: { Authorization: `Bearer ${token}` } });
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
+const getByShoeId = createAsyncThunk(
+  "size/getByShoeId",
+  async (params: GetSizeByShoeIdType) => {
     try {
-      const resp = await axios.get(`${baseUrl}/size/self/${param.id}`);
+      const resp = await axios.get(
+        `${baseUrl}/size/get-by-shoe-id/${params.shoeId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       if (resp.status === 200) {
         return resp.data;
       }
@@ -18,35 +53,14 @@ const getOne = createAsyncThunk(
   }
 );
 
-const getAll = createAsyncThunk("size/getAll", async () => {
-  try {
-    const resp = await axios.get(`${baseUrl}/size/get-all`);
-    if (resp.status === 200) {
-      return resp.data;
-    }
-  } catch (err) {
-    return isRejectedWithValue(err);
-  }
-});
-
-const getByShoeId = createAsyncThunk("size/getByShoeId", async (params: GetSizeByShoeIdType) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/size/get-by-shoe-id/${params.shoeId}`);
-    if (resp.status === 200) {
-      return resp.data;
-    }
-  } catch (err) {
-    return isRejectedWithValue(err);
-  }
-});
-
 const create = createAsyncThunk(
   "size/create",
   async (param: CreateSizeType) => {
     try {
       const resp = await axios.post(
         `${baseUrl}/size/create`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -63,7 +77,8 @@ const update = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/size/update`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -80,7 +95,8 @@ const deletes = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/size/delete`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -91,4 +107,11 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const sizeAsyncAction = { getOne, getAll, getByShoeId, create, update, deletes };
+export const sizeAsyncAction = {
+  getOne,
+  getAll,
+  getByShoeId,
+  create,
+  update,
+  deletes,
+};

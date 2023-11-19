@@ -22,6 +22,5 @@ export type RegisterType = {
   password: string;
   email: string;
   phoneNum: string;
-  role: string;
   address: string;
 };

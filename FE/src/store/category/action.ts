@@ -4,16 +4,20 @@ import {
   GetCategoryType,
   UpdateCategoryType,
 } from "@/store/category/type";
+import { BASE_URL, getToken } from "@/utils";
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
+const token = getToken();
 
 const getOne = createAsyncThunk(
   "category/getOne",
   async (param: GetCategoryType) => {
     try {
-      const resp = await axios.get(`${baseUrl}/category/self/${param.id}`);
+      const resp = await axios.get(`${baseUrl}/category/self/${param.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -25,7 +29,9 @@ const getOne = createAsyncThunk(
 
 const getAll = createAsyncThunk("category/getAll", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/category/get-all`);
+    const resp = await axios.get(`${baseUrl}/category/get-all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -40,7 +46,8 @@ const create = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/category/create`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -57,7 +64,8 @@ const update = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/category/update`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -74,7 +82,8 @@ const deletes = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/category/delete`,
-        JSON.stringify(param)
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;

@@ -36,8 +36,7 @@ const Order = ({ order }: Props) => {
                 if (order.quantity > 1) {
                   dispatch(
                     cartAsyncAction.update({
-                      userId: order.userId,
-                      shoeId: order.shoeId,
+                      id: order.id,
                       quantity: order.quantity - 1,
                     })
                   );
@@ -54,8 +53,7 @@ const Order = ({ order }: Props) => {
                 if (order.quantity < order.maxQuantity) {
                   dispatch(
                     cartAsyncAction.update({
-                      userId: order.userId,
-                      shoeId: order.shoeId,
+                      id: order.id,
                       quantity: order.quantity + 1,
                     })
                   );

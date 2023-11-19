@@ -4,15 +4,18 @@ import com.nnh.be.dto.auth.AuthenticationSdi;
 import com.nnh.be.dto.auth.AuthenticationSdo;
 import com.nnh.be.dto.sdi.user.CreateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
+import com.nnh.be.exception.AuthenticationExceptionCustom;
 import com.nnh.be.model.User;
 import com.nnh.be.repository.RoleRepository;
 import com.nnh.be.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,14 +30,15 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     public MessageSdo register(CreateUserSdi req) {
-        try {
-            List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
+        List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
 
+        try {
             if (usersExist.isEmpty()) {
                 User user = new User();
                 user.setUsername(req.getUsername());
                 user.setPassword(passwordEncoder.encode(req.getPassword()));
                 user.setFullName(req.getFullName());
+                user.setAvatar(req.getAvatar());
                 user.setEmail(req.getEmail());
                 user.setPhoneNum(req.getPhoneNum());
                 user.setAddress(req.getAddress());
@@ -68,12 +72,27 @@ public class AuthenticationService {
 
 
     public AuthenticationSdo authenticate(AuthenticationSdi req) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
 
-        User user = userRepo.findByUsername(req.getUsername()).get();
-        String jwtToken = jwtService.generateToken(user);
+            User user = userRepo.findByUsername(req.getUsername()).get();
+            String jwtToken = jwtService.generateToken(user);
 
-        return new AuthenticationSdo(jwtToken);
+            return new AuthenticationSdo(
+                    user.getId(),
+                    user.getUserRole().getCode(),
+                    user.getAvatar(),
+                    user.getFullName(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getAddress(),
+                    user.getEmail(),
+                    user.getPhoneNum(),
+                    jwtToken);
+        } catch(AuthenticationException e) {
+            e.getMessage();
+        }
 
+        return null;
     }
 }

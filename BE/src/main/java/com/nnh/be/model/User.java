@@ -16,6 +16,8 @@ import java.util.List;
 @Table(name = "user")
 public class User extends BaseEntity implements UserDetails {
     @Column
+    private String avatar;
+    @Column
     private String fullName;
 
     @Column
@@ -39,6 +41,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "userCart")
     private List<Cart> carts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userOrder")
+    private List<Bill> orders = new ArrayList<>();
 
     public List<GrantedAuthority> convertRoles(List<Role> oldRoles) {
         List<GrantedAuthority> newRoles = new ArrayList<>();

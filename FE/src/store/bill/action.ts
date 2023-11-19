@@ -1,12 +1,15 @@
+import { BASE_URL, getToken } from "@/utils";
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CreateOrderType, DeleteOrderType, GetOrderByUserIdType, GetOrderType, UpdateOrderType } from "./type";
+import { CreateBillType, DeleteBillType, GetBillByUserIdType, GetBillType, UpdateBillType } from "./type";
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = BASE_URL;
+const token = getToken();
 
-const getOne = createAsyncThunk("order/getOne", async (param: GetOrderType) => {
+const getOne = createAsyncThunk("bill/getOne", async (param: GetBillType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/order/self/${param.id}`);
+    const resp = await axios.get(`${baseUrl}/bill/self/${param.id}`,
+        { headers: { Authorization: `Bearer ${token}` } });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -15,9 +18,10 @@ const getOne = createAsyncThunk("order/getOne", async (param: GetOrderType) => {
   }
 });
 
-const getAll = createAsyncThunk("order/getAll", async () => {
+const getAll = createAsyncThunk("bill/getAll", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/order/get-all`);
+    const resp = await axios.get(`${baseUrl}/bill/get-all`,
+        { headers: { Authorization: `Bearer ${token}` } });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -27,11 +31,12 @@ const getAll = createAsyncThunk("order/getAll", async () => {
 });
 
 const getByUserId = createAsyncThunk(
-  "order/getByUserId",
-  async (params: GetOrderByUserIdType) => {
+  "bill/getByUserId",
+  async (params: GetBillByUserIdType) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/order/get-by-user-id/${params.userId}`
+        `${baseUrl}/bill/get-by-user-id/${params.userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -43,12 +48,13 @@ const getByUserId = createAsyncThunk(
 );
 
 const create = createAsyncThunk(
-  "order/create",
-  async (param: CreateOrderType) => {
+  "bill/create",
+  async (param: CreateBillType) => {
     try {
       const resp = await axios.post(
-        `${baseUrl}/order/create`,
-        JSON.stringify(param)
+        `${baseUrl}/bill/create`,
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -60,12 +66,13 @@ const create = createAsyncThunk(
 );
 
 const update = createAsyncThunk(
-  "order/update",
-  async (param: UpdateOrderType) => {
+  "bill/update",
+  async (param: UpdateBillType) => {
     try {
       const resp = await axios.post(
-        `${baseUrl}/order/update`,
-        JSON.stringify(param)
+        `${baseUrl}/bill/update`,
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -77,12 +84,13 @@ const update = createAsyncThunk(
 );
 
 const deletes = createAsyncThunk(
-  "order/delete",
-  async (param: DeleteOrderType) => {
+  "bill/delete",
+  async (param: DeleteBillType) => {
     try {
       const resp = await axios.post(
-        `${baseUrl}/order/delete`,
-        JSON.stringify(param)
+        `${baseUrl}/bill/delete`,
+        JSON.stringify(param),
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -93,7 +101,7 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const orderAsyncAction = {
+export const billAsyncAction = {
   getOne,
   getAll,
   getByUserId,

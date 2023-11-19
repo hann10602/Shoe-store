@@ -22,6 +22,18 @@ export const getCurrentLoginUser: () => LoginUserType = () => {
   return userInformation != null ? JSON.parse(userInformation) : null;
 };
 
+export const getToken: () => string | undefined = () => {
+  const userInformation: string | null = localStorage.getItem("login-user");
+  const currentUser: LoginUserType =
+    userInformation != null ? JSON.parse(userInformation) : null;
+
+  if (currentUser) {
+    return currentUser.token;
+  } else {
+    return undefined;
+  }
+};
+
 export const localStorageHelper = {
   setItem: (key: string, value: any) => {
     let valueStringify = value;
@@ -50,3 +62,5 @@ export const localStorageHelper = {
     );
   },
 };
+
+export const BASE_URL = "http://localhost:8081/api/v1";

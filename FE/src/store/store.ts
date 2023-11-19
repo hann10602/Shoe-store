@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { authReducer } from "./auth/slice";
+import { billReducer } from "./bill/slice";
 import { cartReducer } from "./cart/slice";
 import { categoryReducer } from "./category/slice";
+import { evaluateReducer } from "./evaluate/slice";
 import { shoeReducer } from "./shoe/slice";
 import { sizeReducer } from "./size/slice";
 import { userReducer } from "./user/slice";
-import { evaluateReducer } from "./evaluate/slice";
-import { orderReducer } from "./order/slice";
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +18,7 @@ export const store = configureStore({
     user: userReducer,
     shoe: shoeReducer,
     evaluate: evaluateReducer,
-    order: orderReducer,
+    bill: billReducer,
   },
 });
 

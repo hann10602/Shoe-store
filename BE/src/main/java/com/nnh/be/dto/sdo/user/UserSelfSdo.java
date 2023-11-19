@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class UserSelfSdo extends CommonSdo {
     private String fullName;
     private String username;
+    private String avatar;
     private String address;
     private String email;
     private String phoneNum;
