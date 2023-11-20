@@ -1,23 +1,14 @@
-import React from "react";
-import "./style.scss";
 import LeatherShoe1 from "@/assets/img/web/leather-shoe-1.jpg";
 import LeatherShoe2 from "@/assets/img/web/leather-shoe-2.jpg";
 import Sneaker1 from "@/assets/img/web/sneaker-1.jpg";
 import Sneaker2 from "@/assets/img/web/sneaker-2.jpg";
-import Banner from "./Banner";
+import React from "react";
 import AdditionService from "./AdditionService";
 import AdvertConcept from "./AdvertConcept";
-import ProductGroup from "./ProductGroup";
 import { ConceptType } from "./AdvertConcept/AdvertConcept";
-import { Carousel } from "antd";
-
-const contentStyle: React.CSSProperties = {
-  height: "160px",
-  color: "#fff",
-  lineHeight: "160px",
-  textAlign: "center",
-  background: "#364d79",
-};
+import Banner from "./Banner";
+import ProductGroup from "./ProductGroup";
+import "./style.scss";
 
 type Props = {};
 

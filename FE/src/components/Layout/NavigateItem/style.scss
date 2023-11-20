@@ -26,6 +26,10 @@
       background-color: white;
       transition: width 0.3s ease-in-out;
     }
+    
+    .mobile-nav-sub-menu {
+      display: none;
+    }
 
     .nav-sub-menu {
       display: none;
@@ -56,53 +60,23 @@
 @media (min-width: 768px) and (max-width: 1280px) {
   .nav-item {
     color: white;
-    width: 150px;
-    position: relative;
-    font-size: 20px;
+    width: 100%;
+    font-size: 32px;
     font-weight: 700;
-    cursor: pointer;
-
+    border-bottom: 1px solid rgb(133, 133, 133);
+ 
     #nav-content {
+      padding: 20px;
       width: 100%;
-      text-align: center;
       align-items: center;
-      justify-content: center;
       display: flex;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1;
     }
-
-    .underline {
-      height: 2px;
-      width: 0;
-      background-color: white;
-      transition: width 0.3s ease-in-out;
+    
+    .mobile-nav-sub-menu {
     }
 
     .nav-sub-menu {
       display: none;
-      position: absolute;
-      top: 20;
-      border-radius: 4px;
-      background-color: white;
-      padding: 8px 20px;
-      transition: display 2s;
-
-      .is-loading {
-        width: 110px;
-      }
-    }
-  }
-
-  .nav-item:hover {
-    .underline {
-      width: 100%;
-    }
-
-    .nav-sub-menu {
-      display: block;
     }
   }
 }
@@ -110,54 +84,20 @@
 @media (max-width: 769px) {
   .nav-item {
     color: white;
-    width: 150px;
-    margin: 0 20px;
-    position: relative;
-    font-size: 20px;
+    width: 100%;
+    font-size: 24px;
     font-weight: 700;
-    cursor: pointer;
+    border-bottom: 1px solid rgb(133, 133, 133);
 
     #nav-content {
+      padding: 20px;
       width: 100%;
-      text-align: center;
       align-items: center;
-      justify-content: center;
       display: flex;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1;
-    }
-
-    .underline {
-      height: 2px;
-      width: 0;
-      background-color: white;
-      transition: width 0.3s ease-in-out;
     }
 
     .nav-sub-menu {
       display: none;
-      position: absolute;
-      top: 20;
-      border-radius: 4px;
-      background-color: white;
-      padding: 8px 20px;
-      transition: display 2s;
-
-      .is-loading {
-        width: 110px;
-      }
-    }
-  }
-
-  .nav-item:hover {
-    .underline {
-      width: 100%;
-    }
-
-    .nav-sub-menu {
-      display: block;
     }
   }
 }

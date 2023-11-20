@@ -42,11 +42,9 @@ const create = createAsyncThunk(
   "user/create",
   async (param: CreateUserType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/user/create`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/user/create`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -60,11 +58,9 @@ const update = createAsyncThunk(
   "user/update",
   async (param: UpdateUserType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/user/update`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/user/update`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -78,11 +74,9 @@ const changePassword = createAsyncThunk(
   "user/change-password",
   async (param: ChangePasswordUserType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/user/change-password`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/user/change-password`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -96,11 +90,9 @@ const deletes = createAsyncThunk(
   "user/delete",
   async (param: DeleteUserType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/user/delete`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/user/delete`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }

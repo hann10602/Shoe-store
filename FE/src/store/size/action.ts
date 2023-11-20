@@ -14,8 +14,9 @@ const token = getToken();
 
 const getOne = createAsyncThunk("size/getOne", async (param: GetSizeType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/size/self/${param.id}`,
-        { headers: { Authorization: `Bearer ${token}` } });
+    const resp = await axios.get(`${baseUrl}/size/self/${param.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -26,8 +27,9 @@ const getOne = createAsyncThunk("size/getOne", async (param: GetSizeType) => {
 
 const getAll = createAsyncThunk("size/getAll", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/size/get-all`,
-        { headers: { Authorization: `Bearer ${token}` } });
+    const resp = await axios.get(`${baseUrl}/size/get-all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -57,11 +59,9 @@ const create = createAsyncThunk(
   "size/create",
   async (param: CreateSizeType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/size/create`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/size/create`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -75,11 +75,9 @@ const update = createAsyncThunk(
   "size/update",
   async (param: UpdateSizeType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/size/update`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/size/update`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -93,11 +91,9 @@ const deletes = createAsyncThunk(
   "size/delete",
   async (param: DeleteSizeType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/size/delete`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/size/delete`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }

@@ -15,8 +15,9 @@ const token = getToken();
 
 const getOne = createAsyncThunk("cart/getOne", async (param: GetCartType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`,
-        { headers: { Authorization: `Bearer ${token}` } });
+    const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -27,8 +28,9 @@ const getOne = createAsyncThunk("cart/getOne", async (param: GetCartType) => {
 
 const getAll = createAsyncThunk("cart/getAll", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/cart/get-all`,
-        { headers: { Authorization: `Bearer ${token}` } });
+    const resp = await axios.get(`${baseUrl}/cart/get-all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (resp.status === 200) {
       return resp.data;
     }
@@ -37,25 +39,12 @@ const getAll = createAsyncThunk("cart/getAll", async () => {
   }
 });
 
-const getByUserId = createAsyncThunk("cart/getByUserId", async (params: GetCartByUserIdType) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/cart/get-by-user-id/${params.userId}`,
-        { headers: { Authorization: `Bearer ${token}` } });
-    if (resp.status === 200) {
-      return resp.data;
-    }
-  } catch (err) {
-    return isRejectedWithValue(err);
-  }
-});
-
-const order = createAsyncThunk(
-  "cart/order",
-  async (param: OrderCartType) => {
+const getByUserId = createAsyncThunk(
+  "cart/getByUserId",
+  async (params: GetCartByUserIdType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/cart/order`,
-        JSON.stringify(param),
+      const resp = await axios.get(
+        `${baseUrl}/cart/get-by-user-id/${params.userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
@@ -67,15 +56,26 @@ const order = createAsyncThunk(
   }
 );
 
+const order = createAsyncThunk("cart/order", async (param: OrderCartType) => {
+  try {
+    const resp = await axios.post(`${baseUrl}/cart/order`, param, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (resp.status === 200) {
+      return resp.data;
+    }
+  } catch (err) {
+    return isRejectedWithValue(err);
+  }
+});
+
 const create = createAsyncThunk(
   "cart/create",
   async (param: CreateCartType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/cart/create`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/cart/create`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -89,11 +89,9 @@ const update = createAsyncThunk(
   "cart/update",
   async (param: UpdateCartType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/cart/update`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/cart/update`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -107,11 +105,9 @@ const deletes = createAsyncThunk(
   "cart/delete",
   async (param: DeleteCartType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/cart/delete`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/cart/delete`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -121,4 +117,12 @@ const deletes = createAsyncThunk(
   }
 );
 
-export const cartAsyncAction = { getOne, getAll, getByUserId, order, create, update, deletes };
+export const cartAsyncAction = {
+  getOne,
+  getAll,
+  getByUserId,
+  order,
+  create,
+  update,
+  deletes,
+};

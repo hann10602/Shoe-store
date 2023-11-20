@@ -1,0 +1,12 @@
+.shoe-item-wrapper {
+  width: 100%;
+  padding: 12px 20px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.shoe-item-wrapper:hover {
+    background-color: rgb(214, 214, 214);
+  }

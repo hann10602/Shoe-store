@@ -55,6 +55,7 @@ export const products: ShoeType[] = [
     shoeSizes: ["37", "38", "40", "41", "43"],
     quantity: 100,
   },
+  
   {
     id: 4,
     name: "VANS OLD SKOOL CLASSIC NAVY/WHITE",

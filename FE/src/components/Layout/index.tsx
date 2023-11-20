@@ -15,6 +15,13 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import NavigateItem, { NavType } from "./NavigateItem/NavigateItem";
 import "./style.scss";
+import { useDebounce } from "@/hooks";
+import { shoeAsyncAction } from "@/store/shoe/action";
+import {
+  isSearchShoesSelector,
+  shoesSearchSelector,
+} from "@/store/shoe/selector";
+import SearchResultItem from "./SearchResultItem";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
@@ -29,7 +36,7 @@ type HeaderMenuItemType = {
 
 export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
   const [isMenuDisplay, setIsMenuDisplay] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isMobileNav, setIsMobileNav] = useState<boolean>(false);
   const [searchContent, setSearchContent] = useState<string>("");
   const [isTextContain, setIsTextContain] = useState<boolean>(false);
   const [hidden, setHidden] = useState(false);
@@ -39,12 +46,18 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const categories = useSelector(categoriesSelector);
+  const shoes = useSelector(shoesSearchSelector);
+  console.log(shoes);
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
+  const isSearchShoes = useSelector(isSearchShoesSelector);
 
-  const user = getCurrentLoginUser(); 
+  const user = getCurrentLoginUser();
 
   const userImageRef = useRef<HTMLImageElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
+
+  const searchResult = useDebounce(searchContent, 1000);
 
   useEffect(() => {
     dispatch(categoryAsyncAction.getAll());
@@ -114,10 +127,20 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   const handleHiddenMenu = (event: MouseEvent) => {
     if (
+      isMenuDisplay === true &&
       !userImageRef.current?.contains(event.target as Node) &&
       !menuRef.current?.contains(event.target as Node)
     ) {
       setIsMenuDisplay(false);
+    }
+  };
+
+  const handleMobileNav = (event: MouseEvent) => {
+    if (
+      isMobileNav === true &&
+      !mobileNavRef.current?.contains(event.target as Node)
+    ) {
+      setIsMobileNav(false);
     }
   };
 
@@ -147,14 +170,46 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   useLayoutEffect(() => {
     document.addEventListener("mousedown", handleHiddenMenu);
+    document.addEventListener("mousedown", handleMobileNav);
 
     return () => {
       document.removeEventListener("mousedown", handleHiddenMenu);
+      document.removeEventListener("mousedown", handleMobileNav);
     };
   });
 
+  useEffect(() => {
+    if (searchResult !== "") {
+      dispatch(shoeAsyncAction.searchShoes({ search: searchResult }));
+    }
+  }, [searchResult, dispatch]);
+
   return (
     <div id="project-wrapper">
+      {isMobileNav && (
+        <div id="mobile-nav-wrapper-outside">
+          <div id="mobile-nav-wrapper-inside">
+            <div id="mobile-nav-background"></div>
+            <nav id="mobile-nav" ref={mobileNavRef}>
+              {user ? (
+                <NavigateItem
+                  item={{ id: 5, title: "Profile", path: "/user" }}
+                />
+              ) : (
+                <NavigateItem
+                  item={{ id: 5, title: "Sign in", path: "/sign-in" }}
+                />
+              )}
+              <NavigateItem
+                item={{ id: 6, title: "Cart", path: "/user?page=carts" }}
+              />
+              {navMenu.map((item) => (
+                <NavigateItem key={item.id} item={item} />
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
       <header className={`${hidden ? "header-hidden" : "header-display"}`}>
         <span className="logo" onClick={() => history.push("/home")}>
           <svg
@@ -194,7 +249,24 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
             />
           </svg>
         </span>
-        <nav>
+        <span id="mobile-menu" onClick={() => setIsMobileNav(true)}>
+          <svg
+            id="Layer_1"
+            enable-background="new 0 0 512 512"
+            height="40"
+            viewBox="0 0 512 512"
+            width="40"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m464.883 64.267h-289.233c-25.98 0-47.117 21.137-47.117 47.149 0 25.98 21.137 47.117 47.117 47.117h289.232c25.98 0 47.117-21.137 47.117-47.117.001-26.013-21.136-47.149-47.116-47.149z" />
+            <path d="m47.134 64.267c-25.989 0-47.134 21.144-47.134 47.133s21.145 47.133 47.134 47.133 47.133-21.144 47.133-47.133-21.144-47.133-47.133-47.133z" />
+            <path d="m47.134 208.867c-25.989 0-47.134 21.144-47.134 47.133s21.145 47.133 47.134 47.133 47.133-21.144 47.133-47.133-21.144-47.133-47.133-47.133z" />
+            <path d="m47.134 353.467c-25.989 0-47.134 21.144-47.134 47.133s21.145 47.133 47.134 47.133 47.133-21.144 47.133-47.133-21.144-47.133-47.133-47.133z" />
+            <path d="m464.883 208.867h-289.233c-25.98 0-47.117 21.137-47.117 47.149 0 25.98 21.137 47.117 47.117 47.117h289.232c25.98 0 47.117-21.137 47.117-47.117.001-26.013-21.136-47.149-47.116-47.149z" />
+            <path d="m464.883 353.467h-289.233c-25.98 0-47.117 21.137-47.117 47.149 0 25.98 21.137 47.117 47.117 47.117h289.232c25.98 0 47.117-21.137 47.117-47.117.001-26.012-21.136-47.149-47.116-47.149z" />
+          </svg>
+        </span>
+        <nav id="pc-nav">
           {navMenu.map((item) => (
             <NavigateItem key={item.id} item={item} />
           ))}
@@ -207,7 +279,16 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
               value={searchContent}
               onChange={(e) => setSearchContent(e.target.value.trim())}
             />
-            {isLoading && (
+            {!isSearchShoes &&
+              searchContent !== "" &&
+              shoes.length !== undefined && (
+                <div id="search-result">
+                  {shoes.slice(0, 5).map((shoe) => (
+                    <SearchResultItem key={shoe.id} item={shoe} />
+                  ))}
+                </div>
+              )}
+            {isSearchShoes && searchContent !== "" && (
               <svg
                 id="Capa_1"
                 enable-background="new 0 0 497 497"
@@ -259,7 +340,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
                 </g>
               </svg>
             )}
-            {isTextContain && (
+            {isTextContain && !isSearchShoes && (
               <svg
                 height="20"
                 viewBox="0 0 32 32"
@@ -273,7 +354,10 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
               </svg>
             )}
           </div>
-          <span id="shopping-bag" onClick={() => history.push("/user?page=carts")}>
+          <span
+            id="shopping-bag"
+            onClick={() => history.push("/user?page=carts")}
+          >
             <svg
               height="32"
               viewBox="0 0 512 512"

@@ -64,7 +64,7 @@ const Order = ({ order }: Props) => {
               +{" "}
             </button>
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="price-wrapper">
             <div
               className={`${
                 order.shoeSalePrice ? "origin-price" : "shoe-price"

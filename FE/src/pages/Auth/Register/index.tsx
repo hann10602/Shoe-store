@@ -5,9 +5,9 @@ import "./style.scss";
 import { authAsyncAction } from "@/store/auth/action";
 import { RegisterType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
+import { validateEmail } from "@/utils";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
-import { validateEmail, validatePassword } from "@/utils";
 
 type Props = {};
 

@@ -27,13 +27,14 @@ type Props = {};
 
 const ProductDetail = (props: Props) => {
   const [mainImage, setMainImage] = useState<string>();
-  const [itemShow, setItemShow] = useState<number>();
   const [buyQuantity, setBuyQuantity] = useState<number>(1);
   const [buySize, setBuySize] = useState<string>("");
   const [hasBuySize, setHasBuySize] = useState<boolean>(true);
   const [evaluatePage, setEvaluatePage] = useState<number>(1);
   const [evaluateOrderStar, setEvaluateOrderStar] = useState<number>(5);
   const [evaluateSection, setEvaluateSection] = useState<boolean>(false);
+  const [breakpoint, setBreakPoint] = useState<number>();
+  const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
 
   const suggestRef: React.Ref<CarouselRef> = useRef(null);
 
@@ -87,6 +88,10 @@ const ProductDetail = (props: Props) => {
     }
   };
 
+  const handleResize = () => {
+    setWindowSize(window.innerWidth);
+  };
+
   const handleSetEvaluateStar = useCallback((star: number) => {
     setEvaluateOrderStar(star);
   }, []);
@@ -106,16 +111,6 @@ const ProductDetail = (props: Props) => {
       setEvaluateSection(false);
     }
   };
-
-  useEffect(() => {
-    if (screenWidth > 1220) {
-      setItemShow(4);
-    } else if (screenWidth > 780) {
-      setItemShow(3);
-    } else {
-      setItemShow(2);
-    }
-  }, [screenWidth]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -140,6 +135,26 @@ const ProductDetail = (props: Props) => {
   useEffect(() => {
     setMainImage(shoe?.imageUrls[0]);
   }, [shoe]);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    if (0 < windowSize && windowSize < 1050) {
+      setBreakPoint(1);
+    }
+    if (900 < windowSize && windowSize < 1280) {
+      setBreakPoint(2);
+    }
+    if (1280 < windowSize && windowSize < 1600) {
+      setBreakPoint(3);
+    }
+    if (1600 < windowSize) {
+      setBreakPoint(4);
+    }
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [windowSize]);
 
   return (
     <div>
@@ -503,7 +518,7 @@ const ProductDetail = (props: Props) => {
                         </div>
                       </div>
                       <Carousel
-                        slidesToShow={itemShow}
+                        slidesToShow={breakpoint}
                         dots={false}
                         draggable
                         ref={suggestRef}

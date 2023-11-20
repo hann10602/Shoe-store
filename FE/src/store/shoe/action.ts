@@ -116,11 +116,9 @@ const create = createAsyncThunk(
   "shoe/create",
   async (param: CreateShoeType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/shoe/create`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/shoe/create`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -134,11 +132,9 @@ const update = createAsyncThunk(
   "shoe/update",
   async (param: UpdateShoeType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/shoe/update`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/shoe/update`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -152,11 +148,9 @@ const deletes = createAsyncThunk(
   "shoe/delete",
   async (param: DeleteShoeType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/shoe/delete`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/shoe/delete`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }

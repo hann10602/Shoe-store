@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import "./style.scss";
 import { TermType, terms } from "@/constants/policy";
+import React, { useState } from "react";
+import "./style.scss";
 
 type Props = {};
 

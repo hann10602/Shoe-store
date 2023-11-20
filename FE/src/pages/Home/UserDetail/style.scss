@@ -1,78 +1,208 @@
-.header-space {
-  width: 100%;
-  height: 132px;
-  background-image: linear-gradient(
-    to bottom,
-    rgb(172, 74, 103),
-    rgb(237, 200, 148)
-  );
-}
+@media (min-width: 1280px) {
+  #user {
+    padding: 60px 100px;
+    display: flex;
 
-#user {
-  padding: 60px 100px;
-  display: flex;
+    #user-side-bar {
+      color: rgb(59, 59, 59);
+      overflow: hidden;
+      background-color: rgb(243, 243, 243);
+      border-radius: 20px;
+      width: 360px;
+      height: max-content;
 
-  #user-side-bar {
-    color: rgb(59, 59, 59);
-    overflow: hidden;
-    background-color: rgb(243, 243, 243);
-    border-radius: 20px;
-    width: 360px;
-    height: max-content;
+      #user-side-header {
+        text-align: center;
+        padding: 24px 20px;
 
-    #user-side-header {
-      text-align: center;
-      padding: 24px 20px;
+        .title {
+          font-size: 28px;
+          font-weight: 700;
+        }
 
-      .title {
-        font-size: 28px;
-        font-weight: 700;
+        #user-title {
+          font-size: 18px;
+          font-weight: 500;
+        }
       }
 
-      #user-title {
-        font-size: 18px;
-        font-weight: 500;
+      #user-side-nav {
+        border-top: 1px solid rgb(214, 214, 214);
+
+        .page-nav {
+          cursor: pointer;
+          padding: 20px 28px;
+          font-weight: 500;
+          font-size: 16px;
+        }
+
+        .page-nav:not(.page-chosen):hover {
+          background-color: rgb(219, 219, 219);
+        }
+
+        .page-chosen {
+          color: rgb(240, 240, 240);
+          background-color: rgb(138, 138, 138);
+        }
+      }
+
+      #user-side-footer {
+        border-top: 1px solid rgb(214, 214, 214);
+
+        #logout {
+          cursor: pointer;
+          padding: 20px 28px;
+          font-weight: 500;
+          font-size: 16px;
+        }
+
+        #logout:hover {
+          background-color: rgb(219, 219, 219);
+        }
       }
     }
 
-    #user-side-nav {
-      border-top: 1px solid rgb(214, 214, 214);
-
-      .page-nav {
-        cursor: pointer;
-        padding: 20px 28px;
-        font-weight: 500;
-        font-size: 16px;
-      }
-
-      .page-nav:not(.page-chosen):hover {
-        background-color: rgb(219, 219, 219);
-      }
-
-      .page-chosen {
-        color: rgb(240, 240, 240);
-        background-color: rgb(138, 138, 138);
-      }
-    }
-
-    #user-side-footer {
-      border-top: 1px solid rgb(214, 214, 214);
-
-      #logout {
-        cursor: pointer;
-        padding: 20px 28px;
-        font-weight: 500;
-        font-size: 16px;
-      }
-
-      #logout:hover {
-        background-color: rgb(219, 219, 219);
-      }
+    #user-main {
+      margin-left: 40px;
+      flex: 1 1 0%;
     }
   }
+}
 
-  #user-main {
-    margin-left: 40px;
-    flex: 1 1 0%;
+@media (min-width: 768px) and (max-width: 1280px) {
+  #user {
+    padding: 60px 0 0;
+
+    #user-side-bar {
+      color: rgb(59, 59, 59);
+      overflow: hidden;
+      background-color: rgb(243, 243, 243);
+      width: 100%;
+      height: max-content;
+
+      #user-side-header {
+        text-align: center;
+        padding: 24px 20px;
+
+        .title {
+          font-size: 32px;
+          font-weight: 900;
+        }
+
+        #user-title {
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+
+      #user-side-nav {
+        border-top: 1px solid rgb(214, 214, 214);
+
+        .page-nav {
+          cursor: pointer;
+          padding: 20px 28px;
+          font-weight: 500;
+          font-size: 20px;
+        }
+
+        .page-nav:not(.page-chosen):hover {
+          background-color: rgb(219, 219, 219);
+        }
+
+        .page-chosen {
+          color: rgb(240, 240, 240);
+          background-color: rgb(138, 138, 138);
+        }
+      }
+
+      #user-side-footer {
+        border-top: 1px solid rgb(214, 214, 214);
+
+        #logout {
+          cursor: pointer;
+          padding: 20px 28px;
+          font-weight: 500;
+          font-size: 20px;
+        }
+
+        #logout:hover {
+          background-color: rgb(219, 219, 219);
+        }
+      }
+    }
+
+    #user-main {
+      margin-top: 60px;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 769px) {
+  #user {
+    padding: 60px 0 0;
+
+    #user-side-bar {
+      color: rgb(59, 59, 59);
+      overflow: hidden;
+      background-color: rgb(243, 243, 243);
+      width: 100%;
+      height: max-content;
+
+      #user-side-header {
+        text-align: center;
+        padding: 24px 20px;
+
+        .title {
+          font-size: 32px;
+          font-weight: 900;
+        }
+
+        #user-title {
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+
+      #user-side-nav {
+        border-top: 1px solid rgb(214, 214, 214);
+
+        .page-nav {
+          cursor: pointer;
+          padding: 20px 28px;
+          font-weight: 500;
+          font-size: 20px;
+        }
+
+        .page-nav:not(.page-chosen):hover {
+          background-color: rgb(219, 219, 219);
+        }
+
+        .page-chosen {
+          color: rgb(240, 240, 240);
+          background-color: rgb(138, 138, 138);
+        }
+      }
+
+      #user-side-footer {
+        border-top: 1px solid rgb(214, 214, 214);
+
+        #logout {
+          cursor: pointer;
+          padding: 20px 28px;
+          font-weight: 500;
+          font-size: 20px;
+        }
+
+        #logout:hover {
+          background-color: rgb(219, 219, 219);
+        }
+      }
+    }
+
+    #user-main {
+      margin-top: 60px;
+      width: 100%;
+    }
   }
 }

@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
-import { validatePassword } from "@/utils";
 
 export const Login = () => {
   const [message, setMessage] = useState<string | null>(null);

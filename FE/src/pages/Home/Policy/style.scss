@@ -1,63 +1,120 @@
-.header-space {
-  width: 100%;
-  height: 132px;
-  background-image: linear-gradient(
-    to bottom,
-    rgb(172, 74, 103),
-    rgb(237, 200, 148)
-  );
-}
-
-#policy {
-  display: flex;
-  padding: 40px 80px;
-
-  #policy-index {
-    width: 300px;
-    border: 1px solid rgb(204, 204, 204);
-    border-radius: 8px;
-    height: max-content;
-
-    .policy-index-option {
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      width: 100%;
-      border-bottom: 1px solid rgb(230, 230, 230);
-      padding: 8px 20px;
-      transition: background-color 0.15s;
+@media (min-width: 1280px) {
+  .header-space {
+    width: 100%;
+    height: 132px;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(172, 74, 103),
+      rgb(237, 200, 148)
+    );
+  }
+  
+  #policy {
+    display: flex;
+    padding: 40px 80px;
+  
+    #policy-index {
+      width: 300px;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 8px;
+      height: max-content;
+  
+      .policy-index-option {
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        width: 100%;
+        border-bottom: 1px solid rgb(230, 230, 230);
+        padding: 8px 20px;
+        transition: background-color 0.15s;
+      }
+  
+      .policy-index-option:hover {
+        background-color: rgb(243, 243, 243);
+      }
     }
-
-    .policy-index-option:hover {
-      background-color: rgb(243, 243, 243);
+  
+    #policy-wrapper {
+      flex: 1 1 0%;
+      margin-left: 40px;
+  
+      .policy-option {
+        .policy-header {
+          border: 1px solid rgb(221, 221, 221);
+          padding: 12px 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+  
+          .policy-title {
+              font-size: 24px;
+              font-weight: 700;
+            }
+      
+        }
+  
+        
+        .policy-content {
+          border-left: 1px solid rgb(221, 221, 221);
+          border-right: 1px solid rgb(221, 221, 221);
+          padding: 8px 40px;
+          font-size: 24px;
+        }
+      }
     }
   }
+}
 
-  #policy-wrapper {
-    flex: 1 1 0%;
-    margin-left: 40px;
-
-    .policy-option {
-      .policy-header {
-        border: 1px solid rgb(221, 221, 221);
-        padding: 12px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .policy-title {
-            font-size: 24px;
-            font-weight: 700;
-          }
-    
-      }
-
-      
-      .policy-content {
-        border-left: 1px solid rgb(221, 221, 221);
-        border-right: 1px solid rgb(221, 221, 221);
-        padding: 8px 40px;
+@media (max-width: 1280px) {
+  #policy {
+    padding: 72px 0 0;
+  
+    #policy-index {
+      width: 100%;
+      border: 1px solid rgb(204, 204, 204);
+      height: max-content;
+  
+      .policy-index-option {
+        cursor: pointer;
         font-size: 24px;
+        font-weight: 500;
+        width: 100%;
+        border-bottom: 1px solid rgb(230, 230, 230);
+        padding: 20px 20px;
+        transition: background-color 0.15s;
+      }
+  
+      .policy-index-option:hover {
+        background-color: rgb(243, 243, 243);
+      }
+    }
+  
+    #policy-wrapper {
+      margin-top: 40px;
+      width: 100%;
+  
+      .policy-option {
+        .policy-header {
+          border: 1px solid rgb(221, 221, 221);
+          padding: 12px 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+  
+          .policy-title {
+              font-size: 24px;
+              font-weight: 700;
+            }
+      
+        }
+  
+        
+        .policy-content {
+          border-left: 1px solid rgb(221, 221, 221);
+          border-right: 1px solid rgb(221, 221, 221);
+          padding: 8px 40px;
+          font-size: 24px;
+        }
       }
     }
   }

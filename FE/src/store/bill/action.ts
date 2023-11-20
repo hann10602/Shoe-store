@@ -53,7 +53,7 @@ const create = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/bill/create`,
-        JSON.stringify(param),
+        param,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
@@ -71,7 +71,7 @@ const update = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/bill/update`,
-        JSON.stringify(param),
+        param,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
@@ -89,7 +89,7 @@ const deletes = createAsyncThunk(
     try {
       const resp = await axios.post(
         `${baseUrl}/bill/delete`,
-        JSON.stringify(param),
+        param,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {

@@ -1,134 +1,277 @@
-.order-wrapper {
-  position: relative;
+@media (min-width: 1280px) {
+  .order-wrapper {
+    position: relative;
 
-  .order-header {
-    padding: 0 28px;
-    border: 1px solid rgb(235, 235, 235);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    .order-header {
+      padding: 0 28px;
+      border: 1px solid rgb(235, 235, 235);
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
 
-    .order-information {
-      padding: 16px 0;
+      .order-information {
+        padding: 16px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .shoe-information {
+          display: flex;
+
+          .shoe-image {
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgb(216, 216, 216);
+            border-radius: 8px;
+            overflow: hidden;
+          }
+
+          .shoe-detail {
+            margin-left: 20px;
+
+            .shoe-name {
+              font-size: 20px;
+              font-weight: 500;
+              margin-top: 8px;
+            }
+
+            .shoe-size {
+              color: rgb(128, 128, 128);
+            }
+          }
+        }
+
+        .product-buy-quantity {
+          display: flex;
+          height: 60px;
+
+          .fix-quantity-btn {
+            width: 40px;
+            height: 100%;
+            background-color: rgb(236, 236, 236);
+            cursor: pointer;
+            border: none;
+          }
+
+          .buy-quantity {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgb(236, 236, 236);
+            width: 80px;
+            height: 100%;
+            cursor: pointer;
+            background-color: rgb(255, 255, 255);
+          }
+        }
+
+        .price-wrapper {
+          display: "flex";
+          align-items: "center";
+
+          .origin-price {
+            color: rgb(148, 148, 148);
+            margin-right: 8px;
+            text-decoration: line-through;
+          }
+
+          .shoe-price {
+            color: rgb(255, 65, 65);
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
+    .order-options-wrapper {
+      background-color: rgb(245, 245, 245);
+      margin-bottom: 12px;
+      padding: 20px 28px 16px 28px;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
 
-      .shoe-information {
-        display: flex;
-
-        .shoe-image {
+      .order-options-btn {
+        .buy-btn {
           cursor: pointer;
           width: 100px;
-          height: 100px;
-          border: 1px solid rgb(216, 216, 216);
-          border-radius: 8px;
-          overflow: hidden;
-        }
-
-        .shoe-detail {
-          margin-left: 20px;
-
-          .shoe-name {
-            font-size: 20px;
-            font-weight: 500;
-            margin-top: 8px;
-          }
-
-          .shoe-size {
-            color: rgb(128, 128, 128);
-          }
-        }
-      }
-
-      .product-buy-quantity {
-        display: flex;
-        height: 60px;
-  
-        .fix-quantity-btn {
-          width: 40px;
-          height: 100%;
-          background-color: rgb(236, 236, 236);
-          cursor: pointer;
+          padding: 20px;
+          border-radius: 16px;
           border: none;
+          font-size: 16px;
+          font-weight: 500;
+          color: rgb(71, 71, 71);
+          margin-right: 12px;
+          background-color: rgb(255, 223, 176);
+          transition: background-color 0.15s;
         }
-  
-        .buy-quantity {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border: 1px solid rgb(236, 236, 236);
-          width: 80px;
-          height: 100%;
+
+        .buy-btn:hover {
+          background-color: rgb(237, 200, 148);
+        }
+
+        .remove-btn {
           cursor: pointer;
-          background-color: rgb(255, 255, 255);
+          width: 100px;
+          padding: 20px;
+          border-radius: 16px;
+          border: none;
+          font-size: 16px;
+          font-weight: 500;
+          color: rgb(71, 71, 71);
+          background-color: white;
+          transition: background-color 0.15s;
+        }
+
+        .remove-btn:hover {
+          background-color: rgb(237, 200, 148);
         }
       }
 
-      .origin-price {
-        color: rgb(148, 148, 148);
-        margin-right: 8px;
-        text-decoration: line-through;
-      }
-
-      .shoe-price {
-        color: rgb(255, 65, 65);
-        font-size: 20px;
+      .total-price {
+        color: rgb(255, 96, 96);
+        font-size: 24px;
+        display: flex;
+        align-items: center;
       }
     }
   }
+}
 
-  .order-options-wrapper {
-    background-color: rgb(245, 245, 245);
-    margin-bottom: 12px;
-    padding: 20px 28px 16px 28px;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+@media (max-width: 1280px) {
+  .order-wrapper {
+    position: relative;
 
-    .order-options-btn {
-      .buy-btn {
-        cursor: pointer;
-        width: 100px;
-        padding: 20px;
-        border-radius: 16px;
-        border: none;
-        font-size: 16px;
-        font-weight: 500;
-        color: rgb(71, 71, 71);
-        margin-right: 12px;
-        background-color: rgb(255, 223, 176);
-        transition: background-color 0.15s;
-      }
+    .order-header {
+      padding: 0 28px;
+      border: 1px solid rgb(235, 235, 235);
 
-      .buy-btn:hover {
-        background-color: rgb(237, 200, 148);
-      }
+      .order-information {
+        padding: 16px 0;
 
-      .remove-btn {
-        cursor: pointer;
-        width: 100px;
-        padding: 20px;
-        border-radius: 16px;
-        border: none;
-        font-size: 16px;
-        font-weight: 500;
-        color: rgb(71, 71, 71);
-        background-color: white;
-        transition: background-color 0.15s;
-      }
+        .shoe-information {
+          display: flex;
 
-      .remove-btn:hover {
-        background-color: rgb(237, 200, 148);
+          .shoe-image {
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgb(216, 216, 216);
+            border-radius: 8px;
+            overflow: hidden;
+          }
+
+          .shoe-detail {
+            margin-left: 20px;
+
+            .shoe-name {
+              font-size: 28px;
+              font-weight: 500;
+              margin-top: 8px;
+            }
+
+            .shoe-size {
+              font-size: 20px;
+              color: rgb(128, 128, 128);
+            }
+          }
+        }
+
+        .product-buy-quantity {
+          margin-top: 20px;
+          display: flex;
+          justify-content: center;
+          height: 80px;
+
+          .fix-quantity-btn {
+            width: 100px;
+            height: 100%;
+            background-color: rgb(236, 236, 236);
+            cursor: pointer;
+            border: none;
+          }
+
+          .buy-quantity {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgb(236, 236, 236);
+            width: 100px;
+            height: 100%;
+            cursor: pointer;
+            background-color: rgb(255, 255, 255);
+          }
+        }
+
+        .price-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: end;
+
+          .origin-price {
+            color: rgb(148, 148, 148);
+            margin-top: 28px;
+            margin-right: 12px;
+            font-size: 20px;
+            text-decoration: line-through;
+            display: flex;
+          }
+
+          .shoe-price {
+            color: rgb(255, 65, 65);
+            margin-top: 28px;
+            font-size: 24px;
+            display: flex;
+          }
+        }
       }
     }
 
-    .total-price {
-      color: rgb(255, 96, 96);
-      font-size: 24px;
+    .order-options-wrapper {
+      background-color: rgb(245, 245, 245);
+      margin-bottom: 12px;
+      padding: 20px 28px 16px 28px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
+
+      .order-options-btn {
+        .buy-btn {
+          cursor: pointer;
+          width: 100px;
+          padding: 20px;
+          border-radius: 16px;
+          border: none;
+          font-size: 16px;
+          font-weight: 500;
+          color: rgb(71, 71, 71);
+          margin-right: 12px;
+          background-color: rgb(255, 223, 176);
+          transition: background-color 0.15s;
+        }
+
+        .remove-btn {
+          cursor: pointer;
+          width: 100px;
+          padding: 20px;
+          border-radius: 16px;
+          border: none;
+          font-size: 16px;
+          font-weight: 500;
+          color: rgb(71, 71, 71);
+          background-color: white;
+          transition: background-color 0.15s;
+        }
+      }
+
+      .total-price {
+        color: rgb(255, 96, 96);
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+      }
     }
   }
 }

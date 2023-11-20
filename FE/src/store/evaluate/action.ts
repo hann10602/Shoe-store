@@ -48,11 +48,9 @@ const create = createAsyncThunk(
   "evaluate/create",
   async (param: CreateEvaluateType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/evaluate/create`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/evaluate/create`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -66,11 +64,9 @@ const deletes = createAsyncThunk(
   "evaluate/delete",
   async (param: DeleteEvaluateType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/evaluate/delete`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/evaluate/delete`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }

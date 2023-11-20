@@ -44,11 +44,9 @@ const create = createAsyncThunk(
   "category/create",
   async (param: CreateCategoryType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/category/create`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/category/create`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -62,11 +60,9 @@ const update = createAsyncThunk(
   "category/update",
   async (param: UpdateCategoryType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/category/update`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/category/update`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }
@@ -80,11 +76,9 @@ const deletes = createAsyncThunk(
   "category/delete",
   async (param: DeleteCategoryType) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/category/delete`,
-        JSON.stringify(param),
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const resp = await axios.post(`${baseUrl}/category/delete`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (resp.status === 200) {
         return resp.data;
       }

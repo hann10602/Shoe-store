@@ -35,6 +35,8 @@ const ProductGroup = (props: Props) => {
   const [chooseSizesPage, setChooseSizesPage] = useState<boolean>(false);
   const [groupShoeList, setGroupShoeList] = useState<GroupShoe[]>([]);
   const [shoeId, setShoeId] = useState<number | undefined>(undefined);
+  const [breakpoint, setBreakPoint] = useState<number>();
+  const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
 
   const carouselRef1: React.Ref<CarouselRef> = useRef(null);
   const carouselRef2: React.Ref<CarouselRef> = useRef(null);
@@ -62,6 +64,10 @@ const ProductGroup = (props: Props) => {
 
   const loginUser = getCurrentLoginUser();
 
+  const handleResize = () => {
+    setWindowSize(window.innerWidth);
+  };
+
   useEffect(() => {
     dispatch(shoeAsyncAction.getByCategory1({ categoryCode: "SNEAKER" }));
     dispatch(shoeAsyncAction.getByCategory2({ categoryCode: "BOOT" }));
@@ -69,7 +75,26 @@ const ProductGroup = (props: Props) => {
   }, [shoesByCategory1, shoesByCategory2, shoesByCategory3, dispatch]);
 
   useEffect(() => {
-    console.log(shoesByCategory3);
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    if (0 < windowSize && windowSize < 900) {
+      setBreakPoint(1);
+    }
+    if (900 < windowSize && windowSize < 1280) {
+      setBreakPoint(2);
+    }
+    if (1280 < windowSize && windowSize < 1600) {
+      setBreakPoint(3);
+    }
+    if (1600 < windowSize) {
+      setBreakPoint(4);
+    }
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [windowSize]);
+
+  useEffect(() => {
     setGroupShoeList([
       {
         id: 1,
@@ -144,7 +169,7 @@ const ProductGroup = (props: Props) => {
       )}
       <div>
         {groupShoeList.map((group) => (
-          <>
+          <div key={group.id}>
             <p className="group-title">{group.category}</p>
             <div className="product-group" key={group.id}>
               <div
@@ -199,12 +224,7 @@ const ProductGroup = (props: Props) => {
                   </button>
                 </div>
               </div>
-              <Carousel
-                slidesToShow={4}
-                dots={false}
-                ref={group.ref}
-                draggable
-              >
+              <Carousel slidesToShow={breakpoint} dots={false} ref={group.ref} draggable>
                 {!group.isGetting && group.shoes ? (
                   group.shoes.map((item) => (
                     <div className="product-wrapper" key={item.id}>
@@ -296,7 +316,7 @@ const ProductGroup = (props: Props) => {
                 )}
               </Carousel>
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>
