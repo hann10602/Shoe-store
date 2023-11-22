@@ -1,4 +1,4 @@
-import Avatar from "@/assets/img/auth/login-background-1.jpg";
+
 import AppStore from "@/assets/img/web/appstore.png";
 import QRCode from "@/assets/img/web/bancode.png";
 import GooglePlay from "@/assets/img/web/googleplay.png";
@@ -13,7 +13,7 @@ import { getCurrentLoginUser } from "@/utils";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import NavigateItem, { NavType } from "./NavigateItem/NavigateItem";
+import NavigateItem, { NavType } from "../NavigateItem/NavigateItem";
 import "./style.scss";
 import { useDebounce } from "@/hooks";
 import { shoeAsyncAction } from "@/store/shoe/action";
@@ -47,11 +47,10 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   const categories = useSelector(categoriesSelector);
   const shoes = useSelector(shoesSearchSelector);
-  console.log(shoes);
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
   const isSearchShoes = useSelector(isSearchShoesSelector);
 
-  const user = getCurrentLoginUser();
+  const loginUser = getCurrentLoginUser();
 
   const userImageRef = useRef<HTMLImageElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -191,7 +190,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
           <div id="mobile-nav-wrapper-inside">
             <div id="mobile-nav-background"></div>
             <nav id="mobile-nav" ref={mobileNavRef}>
-              {user ? (
+              {loginUser ? (
                 <NavigateItem
                   item={{ id: 5, title: "Profile", path: "/user" }}
                 />
@@ -370,11 +369,11 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
               </g>
             </svg>
           </span>
-          {user !== null ? (
+          {loginUser !== null ? (
             <div id="header-user">
               <img
                 id="header-user-image"
-                src={Avatar}
+                src={loginUser.avatar}
                 alt=""
                 ref={userImageRef}
                 onClick={() => setIsMenuDisplay(!isMenuDisplay)}

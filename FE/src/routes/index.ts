@@ -7,6 +7,10 @@ import SearchPage from "@/pages/Home/SearchPage";
 import UserDetail from "@/pages/Home/UserDetail";
 import About from "@/pages/Home/About";
 import Policy from "@/pages/Home/Policy";
+import AdminLayout from "@/layouts/admin";
+import AdminHome from "@/pages/Admin/AdminHome";
+import UserList from "@/pages/Admin/UserList";
+import ProductList from "@/pages/Admin/ProductList";
 
 const Login = React.lazy(() => import("@/pages/Auth/Login"));
 const Home = React.lazy(() => import("@/pages/Home/HomePage"));
@@ -14,6 +18,7 @@ export interface IRoute {
   Component: ((props: any) => JSX.Element) | React.FC<any>;
   Layout: ((props: any) => JSX.Element) | React.FC<any>;
   Protected: boolean;
+  isAdmin?: boolean;
   path?: string | string[];
   routePath?: string;
   from?: string;
@@ -86,4 +91,40 @@ export const routes: IRoute[] = [
     routePath: "/policy",
     Protected: false,
   },
+  {
+    Component: AdminHome,
+    Layout: AdminLayout,
+    exact: true,
+    path: "/admin",
+    routePath: "/admin",
+    Protected: true,
+    isAdmin: true
+  },
+  {
+    Component: UserList,
+    Layout: AdminLayout,
+    exact: true,
+    path: "/admin?tab=user",
+    routePath: "/admin?tab=user",
+    Protected: true,
+    isAdmin: true
+  },
+  {
+    Component: ProductList,
+    Layout: AdminLayout,
+    exact: true,
+    path: "/admin?tab=shoe",
+    routePath: "/admin?tab=shoe",
+    Protected: true,
+    isAdmin: true
+  },
+  {
+    Component: AdminHome,
+    Layout: AdminLayout,
+    exact: true,
+    path: "/admin",
+    routePath: "/admin",
+    Protected: true,
+    isAdmin: true
+  }
 ];

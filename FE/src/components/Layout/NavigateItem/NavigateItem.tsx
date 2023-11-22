@@ -34,7 +34,7 @@ const NavigateItem = ({ item }: Props) => {
       }}
     >
       <div id="nav-content">
-        {item.title}
+        <p className="nav-title">{item.title}</p>
         {item.menuItem && (
           <svg
             version="1.1"

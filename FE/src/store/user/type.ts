@@ -30,7 +30,9 @@ export type UpdateUserType = {
   fullName: string;
   username: string;
   email: string;
+  avatar: string;
   phoneNum: string;
+  role: string;
   address: string;
 };
 

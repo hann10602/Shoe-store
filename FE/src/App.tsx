@@ -27,7 +27,7 @@ export default function App() {
       <AppProvider>
         <Switch>
           {routes.map(
-            ({ Component, Layout, Protected, routePath, exact, path }, key) => {
+            ({ Component, Layout, Protected, isAdmin, routePath, exact, path }, key) => {
               return (
                 <RouteWithLayout
                   // eslint-disable-next-line react/no-array-index-key
@@ -38,6 +38,7 @@ export default function App() {
                   path={path}
                   routePath={routePath}
                   protect={Protected}
+                  isAdmin={isAdmin}
                 />
               );
             }

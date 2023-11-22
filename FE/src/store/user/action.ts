@@ -33,8 +33,9 @@ const getAll = createAsyncThunk("user/getAll", async () => {
     if (resp.status === 200) {
       return resp.data;
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
+  } catch (err) { 
+    // return isRejectedWithValue(err);
+    return err;
   }
 });
 

@@ -64,7 +64,7 @@ const ProductDetail = (props: Props) => {
 
   const user: LoginUserType =
     userInformation != null ? JSON.parse(userInformation) : null;
-
+    
   const reviewPagination = Array.from(
     { length: Math.ceil(evaluates.length / 5) },
     (_, index) => index + 1

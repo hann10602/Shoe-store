@@ -1,11 +1,12 @@
-import React from 'react'
+import LayoutAdmin from "@/components/Layout/Admin";
+import React from "react";
 
-type Props = {}
+type Props = {
+  children: React.ReactNode;
+};
 
-const AdminLayout = (props: Props) => {
-  return (
-    <div>AdminLayout</div>
-  )
-}
+const AdminLayout = ({ children }: Props) => {
+  return <LayoutAdmin>{children}</LayoutAdmin>;
+};
 
-export default AdminLayout
+export default AdminLayout;

@@ -92,6 +92,7 @@ export const products: ShoeType[] = [
     shoeSizes: ["36", "38", "39", "41", "42"],
     quantity: 100,
   },
+  
   {
     id: 6,
     name: "VANS SLIP-ON MULE CLASSIC CHECKERBOARD",
@@ -110,4 +111,5 @@ export const products: ShoeType[] = [
     shoeSizes: ["37", "38", "40", "42", "43"],
     quantity: 100,
   },
+  
 ];

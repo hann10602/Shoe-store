@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { userAsyncAction } from "./action";
 import { UserType } from "./type";
+import { users } from "@/constants/user";
 
 type UserStateType = {
   isGettingUser: boolean;
@@ -46,7 +47,8 @@ const userSlice = createSlice({
         state.isGettingUsers = true;
       })
       .addCase(userAsyncAction.getAll.fulfilled, (state, action) => {
-        state.users = action.payload;
+        // state.users = action.payload;
+        state.users = users;
         state.isGettingUsers = false;
       })
       .addCase(userAsyncAction.getAll.rejected, (state) => {
