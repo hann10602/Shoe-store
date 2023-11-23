@@ -16,6 +16,7 @@ const concept: ConceptType[] = [
   {
     id: 1,
     title: "Leather Shoe",
+    path: "/search?s=?&category=LEATHER",
     description:
       "Leather shoes are a timeless and sophisticated choice in footwear. Crafted from high-quality leather, these shoes not only exude elegance but also offer durability and comfort. The supple texture of leather molds to the foot over time, providing a personalized fit. Whether in classic designs like oxfords or more casual styles like loafers, leather shoes seamlessly transition from formal occasions to everyday wear. The rich hues and fine craftsmanship of leather footwear make them a staple in any wardrobe, symbolizing both refinement and enduring style.",
     bgColor: "concept-white",
@@ -37,6 +38,7 @@ const concept: ConceptType[] = [
   {
     id: 2,
     title: "Sneaker",
+    path: "/search?s=?&category=SNEAKER",
     description:
       "Sneakers are versatile footwear designed for comfort and style. With their rubber soles and cushioned insoles, sneakers provide excellent support for various activities, from casual strolls to intense workouts. The wide array of designs, colors, and materials make sneakers a fashionable choice for individuals of all ages, allowing them to express their personality through their footwear.",
     bgColor: "concept-red",

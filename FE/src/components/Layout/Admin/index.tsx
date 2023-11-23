@@ -7,6 +7,9 @@ import UserList from "@/pages/Admin/UserList";
 import ProductList from "@/pages/Admin/ProductList";
 import CategoryList from "@/pages/Admin/CategoryList";
 import BillList from "@/pages/Admin/BillList";
+import { useAppDispatch } from "@/store/store";
+import { userAsyncAction } from "@/store/user/action";
+import { authAsyncAction } from "@/store/auth/action";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
@@ -128,12 +131,21 @@ export const LayoutAdmin: React.FC<IPropsLayoutMain> = ({ children }) => {
         </div>
       </aside>
       <div
-        className={`${
-          isOpenSidebar ? "ml-[96px] md:ml-[320px]" : "ml-[96px]"
-        }`}
+        className={`${isOpenSidebar ? "ml-[96px] md:ml-[320px]" : "ml-[96px]"}`}
       >
         <header className="border-solid border-b px-5 h-16 border-b-gray-300 flex items-center justify-end">
-          <img src={Avatar} alt="avatar" className="w-12 h-12 rounded-full" />
+          <div className="flex items-center">
+            <p
+              className="underline font-semibold mr-6 text-lg cursor-pointer text-gray-600"
+              onClick={() => {
+                localStorage.removeItem("login-user");
+                history.push("/sign-in");
+              }}
+            >
+              Logout
+            </p>
+            <img src={Avatar} alt="avatar" className="w-12 h-12 rounded-full" />
+          </div>
         </header>
         {!tab && <div className="p-6">{children}</div>}
         {tab === "user" && (

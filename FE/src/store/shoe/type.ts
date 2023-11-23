@@ -1,7 +1,8 @@
 export type ShoeType = {
   id: number;
   name: string;
-  price: string;
+  price: number;
+  salePrice?: number;
   description: string;
   quantity: number;
   averageStar: number;
@@ -29,18 +30,24 @@ export type SearchShoes = {
 export type CreateShoeType = {
   name: string;
   price: number;
+  salePrice?: number;
   description: string;
+  quantity: number;
   shoeSizes: string[];
   imageUrls: string[];
+  category: string;
 };
 
 export type UpdateShoeType = {
   id: number;
   name: string;
   price: number;
+  salePrice?: number;
   description: string;
+  quantity: number;
   shoeSizes: string[];
   imageUrls: string[];
+  category: string;
 };
 
 export type DeleteShoeType = GetShoeType;

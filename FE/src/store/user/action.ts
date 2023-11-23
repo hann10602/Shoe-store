@@ -59,6 +59,7 @@ const update = createAsyncThunk(
   "user/update",
   async (param: UpdateUserType) => {
     try {
+      
       const resp = await axios.post(`${baseUrl}/user/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
       });

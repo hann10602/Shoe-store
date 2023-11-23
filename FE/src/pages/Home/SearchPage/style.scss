@@ -379,9 +379,34 @@
             justify-content: center;
           }
 
-          .product-price {
-            font-size: 16px;
-            font-weight: 500;
+          .price-wrapper {
+            .origin-price {
+              color: rgb(148, 148, 148);
+              margin-top: 4px;
+              display: flex;
+              justify-content: center;
+              font-size: 16px;
+              text-decoration: line-through;
+              display: flex;
+            }
+
+            .shoe-price {
+              color: rgb(255, 65, 65);
+              margin-top: 32px;
+              display: flex;
+              justify-content: center;
+              font-size: 20px;
+              display: flex;
+            }
+
+            .shoe-price-only {
+              color: rgb(255, 65, 65);
+              margin-top: 4px;
+              display: flex;
+              justify-content: center;
+              font-size: 20px;
+              display: flex;
+            }
           }
 
           .btn-group {
@@ -726,10 +751,76 @@
             display: flex;
             justify-content: center;
           }
+          .price-wrapper {
+            .origin-price {
+              color: rgb(148, 148, 148);
+              margin-top: 4px;
+              display: flex;
+              justify-content: center;
+              font-size: 16px;
+              text-decoration: line-through;
+              display: flex;
+            }
 
-          .product-price {
-            font-size: 16px;
-            font-weight: 500;
+            .shoe-price {
+              color: rgb(255, 65, 65);
+              margin-top: 32px;
+              display: flex;
+              justify-content: center;
+              font-size: 20px;
+              display: flex;
+            }
+
+            .shoe-price-only {
+              color: rgb(255, 65, 65);
+              margin-top: 4px;
+              display: flex;
+              justify-content: center;
+              font-size: 20px;
+              display: flex;
+            }
+          }
+
+          .btn-group {
+            display: flex;
+            width: 100%;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+
+            .add-to-cart-btn {
+              cursor: pointer;
+              width: 50%;
+              border: none;
+              padding: 8px 20px;
+              font-weight: 500;
+              border-top-left-radius: 12px;
+              border-bottom-left-radius: 12px;
+              color: white;
+              border: 1px solid rgb(90, 90, 90);
+              background-color: rgb(90, 90, 90);
+              transition: background-color 0.2s;
+            }
+
+            .add-to-cart-btn:hover {
+              background-color: rgb(70, 70, 70);
+            }
+
+            .buy-btn {
+              cursor: pointer;
+              width: 50%;
+              border: none;
+              padding: 8px 20px;
+              font-weight: 500;
+              border-top-right-radius: 12px;
+              border-bottom-right-radius: 12px;
+              border: 1px solid rgb(90, 90, 90);
+              transition: background-color 0.2s;
+            }
+
+            .buy-btn:hover {
+              background-color: rgb(225, 225, 225);
+            }
           }
         }
       }
@@ -1032,10 +1123,76 @@
             display: flex;
             justify-content: center;
           }
+          .price-wrapper {
+            .origin-price {
+              color: rgb(148, 148, 148);
+              margin-top: 4px;
+              display: flex;
+              justify-content: center;
+              font-size: 16px;
+              text-decoration: line-through;
+              display: flex;
+            }
 
-          .product-price {
-            font-size: 16px;
-            font-weight: 500;
+            .shoe-price {
+              color: rgb(255, 65, 65);
+              margin-top: 32px;
+              display: flex;
+              justify-content: center;
+              font-size: 20px;
+              display: flex;
+            }
+
+            .shoe-price-only {
+              color: rgb(255, 65, 65);
+              margin-top: 4px;
+              display: flex;
+              justify-content: center;
+              font-size: 20px;
+              display: flex;
+            }
+          }
+
+          .btn-group {
+            display: flex;
+            width: 100%;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+
+            .add-to-cart-btn {
+              cursor: pointer;
+              width: 50%;
+              border: none;
+              padding: 8px 20px;
+              font-weight: 500;
+              border-top-left-radius: 12px;
+              border-bottom-left-radius: 12px;
+              color: white;
+              border: 1px solid rgb(90, 90, 90);
+              background-color: rgb(90, 90, 90);
+              transition: background-color 0.2s;
+            }
+
+            .add-to-cart-btn:hover {
+              background-color: rgb(70, 70, 70);
+            }
+
+            .buy-btn {
+              cursor: pointer;
+              width: 50%;
+              border: none;
+              padding: 8px 20px;
+              font-weight: 500;
+              border-top-right-radius: 12px;
+              border-bottom-right-radius: 12px;
+              border: 1px solid rgb(90, 90, 90);
+              transition: background-color 0.2s;
+            }
+
+            .buy-btn:hover {
+              background-color: rgb(225, 225, 225);
+            }
           }
         }
       }

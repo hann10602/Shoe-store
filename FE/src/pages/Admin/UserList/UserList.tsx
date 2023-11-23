@@ -3,7 +3,7 @@ import { userAsyncAction } from "@/store/user/action";
 import { isGettingUsersSelector, usersSelector } from "@/store/user/selector";
 import { UserType } from "@/store/user/type";
 import { Skeleton } from "antd";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DeletePage from "../DeletePage";
 import ChangeUserPage from "./ChangeUserPage";
@@ -24,8 +24,6 @@ const UserList = (props: Props) => {
   const isGettingUsers = useSelector(isGettingUsersSelector);
 
   const dispatch = useAppDispatch();
-
-  // const menuRef = useRef<HTMLDivElement>(null);
 
   const tablePagination = Array.from(
     { length: Math.ceil(users.length / 10) },
@@ -50,36 +48,17 @@ const UserList = (props: Props) => {
     setSelectedEntity(undefined);
   };
 
-  // const handleHiddenMenu = (event: MouseEvent) => {
-  //   if (
-  //     isMenuBar !== undefined &&
-  //     !menuRef.current?.contains(event.target as Node)
-  //   ) {
-  //     console.log(menuRef.current?.contains(event.target as Node));
-  //     setIsMenuBar(undefined);
-  //   }
-  // };
-
   useEffect(() => {
     dispatch(userAsyncAction.getAll());
   }, [dispatch, users]);
 
-  // useLayoutEffect(() => {
-  //   document.addEventListener("mousedown", handleHiddenMenu);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleHiddenMenu);
-  //   };
-  // });
   return (
     <>
-      {isChangePage && selectedEntity ? (
+      {isChangePage && (
         <ChangeUserPage
           handleCancel={handleChangeCancel}
           user={selectedEntity}
         />
-      ) : (
-        <ChangeUserPage handleCancel={handleChangeCancel} />
       )}
       {selectedId && isDeletePage && (
         <DeletePage
@@ -89,7 +68,10 @@ const UserList = (props: Props) => {
         />
       )}
       <div>
-        <button className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold">
+        <button
+          className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold"
+          onClick={() => setIsChangePage(true)}
+        >
           Add
         </button>
       </div>
@@ -142,19 +124,21 @@ const UserList = (props: Props) => {
                         <circle cx="384" cy="213.333" r="42.667" />
                       </svg>
                       <div
-                        // ref={menuRef}
                         className={`${
                           isMenuBar === user.id ? "block" : "hidden"
-                        } absolute left-0 top-6 bg-white z-10 border border-solid border-gray-300`}
+                        } absolute right-10 top-6 bg-white z-10 border border-solid border-gray-300`}
                       >
                         <div
-                          className="px-6 py-3 flex justify-center items-center hover:bg-gray-300 border-solid border-b border-gray-300"
-                          onClick={() => setIsChangePage(true)}
+                          className="w-28 px-5 py-3 text-center hover:bg-gray-300 border-solid border-b border-gray-300"
+                          onClick={() => {
+                            setIsChangePage(true);
+                            setSelectedEntity(user);
+                          }}
                         >
                           Update
                         </div>
                         <div
-                          className="px-6 py-3 flex justify-center items-center hover:bg-gray-300"
+                          className="w-28 px-5 py-3 text-center hover:bg-gray-300"
                           onClick={() => {
                             setIsDeletePage(true);
                             setSelectedId(user.id);
@@ -169,8 +153,8 @@ const UserList = (props: Props) => {
               ))
             ) : (
               <>
-                {skeletonArray.map(() => (
-                  <tr className="h-14">
+                {skeletonArray.map((value) => (
+                  <tr key={value} className="h-14">
                     <td>
                       <div className="flex items-center">
                         <Skeleton

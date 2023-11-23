@@ -3,7 +3,7 @@ import { authAsyncAction } from "@/store/auth/action";
 import { LoginType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 
@@ -21,8 +21,11 @@ export const Login = () => {
   const history = useHistory();
   const location = useLocation();
 
-  const onSubmit = (data: LoginType) => {
-    dispatch(authAsyncAction.login(data))
+  const onSubmit = (e: FieldValues) => {
+    dispatch(authAsyncAction.login({
+      username: e.username,
+      password: e.password
+    }))
       .then(() => {
         history.push(`/home`);
       })

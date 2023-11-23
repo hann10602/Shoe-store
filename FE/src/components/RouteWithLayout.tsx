@@ -30,9 +30,9 @@ export const RouteWithLayout: React.FC<RouteWithLayoutProps> = (props) => {
     return <Redirect to="/sign-in" />;
   }
 
-  // if (isAdmin && (!loginUser || loginUser.role !== "ROLE_ADMIN")) {
-  //   return <Redirect to="/home" />;
-  // }
+  if (isAdmin && (!loginUser || loginUser.role !== "ROLE_ADMIN")) {
+    return <Redirect to="/home" />;
+  }
 
   return (
     <Route

@@ -23,4 +23,5 @@ export type RegisterType = {
   email: string;
   phoneNum: string;
   address: string;
+  role: string;
 };

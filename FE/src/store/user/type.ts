@@ -32,7 +32,7 @@ export type UpdateUserType = {
   email: string;
   avatar: string;
   phoneNum: string;
-  role: string;
+  role?: string;
   address: string;
 };
 

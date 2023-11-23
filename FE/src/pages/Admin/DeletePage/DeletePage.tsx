@@ -8,7 +8,7 @@ type Props = {
 
 const DeletePage = ({ id, handleCancel, handleDelete }: Props) => {
   return (
-    <div className="w-full h-full fixed top-0 left-0 flex items-center justify-center">
+    <div className="w-full h-full fixed top-0 left-0 z-10 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
         <div className="w-[400px] bg-white rounded-lg absolute top-1/4 left-1/2 -translate-x-1/2 p-4 pb-10">

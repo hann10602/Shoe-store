@@ -4,7 +4,8 @@ export const products: ShoeType[] = [
   {
     id: 1,
     name: "VANS AUTHENTIC CLASSIC BLACK/WHITE",
-    price: "75.00",
+    price: 75,
+    salePrice: 85,
     category: "SNEAKER",
     description:
       "Vans Authentic Classic Black/White: A symbol of timeless skate style. The sleek black canvas upper meets an iconic white sole, creating a low-top silhouette for ultimate comfort. Simple, yet distinctive, these shoes redefine casual cool.",
@@ -22,7 +23,7 @@ export const products: ShoeType[] = [
   {
     id: 2,
     name: "VANS CHECKERBOARD SLIP-ON CLASSIC BLACK/OFF WHITE",
-    price: "59.00",
+    price: 59,
     category: "SNEAKER",
     description:
       "Vans Checkerboard Slip-On Classic Black/Off White: Effortlessly stylish with an iconic checkerboard pattern. The slip-on design, sturdy canvas, and signature waffle outsole combine comfort with a bold, timeless look.",
@@ -40,7 +41,7 @@ export const products: ShoeType[] = [
   {
     id: 3,
     name: "VANS SK8-HI CLASSIC NAVY/WHITE",
-    price: "63.00",
+    price: 63,
     category: "SNEAKER",
     description:
       "Vans Classic Black sneakers epitomize casual coolness. The sleek black canvas upper exudes timeless style, complemented by a durable white rubber sole. With the signature waffle outsole for traction, these classics feature distinctive white stitching and the iconic Vans logo on the heel, creating an effortlessly stylish and versatile footwear option.",
@@ -59,7 +60,7 @@ export const products: ShoeType[] = [
   {
     id: 4,
     name: "VANS OLD SKOOL CLASSIC NAVY/WHITE",
-    price: "82.00",
+    price: 82,
     category: "SNEAKER",
     description:
       "Vans Old Skool Classic Navy/White: An urban icon with navy canvas, white sidestripes, and a low-top silhouette. Comfort meets timeless style in these street-ready sneakers, perfect for versatile, everyday wear.",
@@ -77,7 +78,7 @@ export const products: ShoeType[] = [
   {
     id: 5,
     name: "VANS CLASSIC SK8-HI BLACK/WHITE",
-    price: "68.00",
+    price: 68,
     category: "SNEAKER",
     description:
       "Vans Classic SK8-Hi Black/White: Elevate your street style with these iconic high-top sneakers. The black canvas, white leather sidestripe, and padded collars merge comfort and bold design seamlessly. A timeless choice for urban fashion.",
@@ -96,7 +97,7 @@ export const products: ShoeType[] = [
   {
     id: 6,
     name: "VANS SLIP-ON MULE CLASSIC CHECKERBOARD",
-    price: "55.00",
+    price: 55,
     category: "SNEAKER",
     description:
       "Vans Slip-On Mule Classic Checkerboard: Redefining casual comfort with a slip-on design and the iconic checkerboard pattern. These shoes seamlessly blend urban style with laid-back ease, making them a distinctive choice for everyday wear.",

@@ -6,7 +6,7 @@ import { authAsyncAction } from "@/store/auth/action";
 import { RegisterType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
 import { validateEmail } from "@/utils";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
 
 type Props = {};
@@ -24,8 +24,26 @@ const Register = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const onSubmit = (data: RegisterType) => {
-    dispatch(authAsyncAction.register(data))
+  const onSubmit = (e: FieldValues) => {
+    console.log({
+      fullName: e.fullName,
+      username: e.username,
+      password: e.password,
+      email: e.email,
+      phoneNum: e.phoneNum,
+      role: "ROLE_USER",
+    });
+    dispatch(
+      authAsyncAction.register({
+        fullName: e.fullName,
+        username: e.username,
+        password: e.password,
+        email: e.email,
+        phoneNum: e.phoneNum,
+        address: e.address,
+        role: "ROLE_USER",
+      })
+    )
       .then(() => history.push(`/sign-in`))
       .catch((err) => history.push(`/register?error=${err}`));
   };
@@ -99,7 +117,7 @@ const Register = (props: Props) => {
               type="password"
               {...register("password", {
                 required: "Please enter password",
-                minLength: 6
+                minLength: 6,
               })}
             />
             <p className="field-message">{errors.password?.message}</p>

@@ -51,7 +51,9 @@ const billSlice = createSlice({
         state.isGettingBills = true;
       })
       .addCase(billAsyncAction.getAll.fulfilled, (state, action) => {
-        state.bills = action.payload;
+        // state.bills = action.payload;
+        state.bills = bills;
+
         state.isGettingBills = false;
       })
       .addCase(billAsyncAction.getAll.rejected, (state) => {

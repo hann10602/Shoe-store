@@ -1,10 +1,12 @@
 import React, { memo } from "react";
 import "./style.scss";
+import { useHistory } from "react-router-dom";
 
 export type ConceptType = {
   id: number;
   title: string;
   description: string;
+  path: string;
   bgColor: string;
   imageLeft?: React.ReactElement;
   imageRight?: React.ReactElement;
@@ -15,6 +17,7 @@ type Props = {
 };
 
 const AdvertConcept = ({ item }: Props) => {
+  const history = useHistory();
   return (
     <div className={`${item.bgColor} concept`}>
       {item.imageLeft}
@@ -24,6 +27,7 @@ const AdvertConcept = ({ item }: Props) => {
         <div className="btn-wrapper">
           <button
             id={`${item.bgColor === "concept-white" ? "btn-white" : "btn-red"}`}
+            onClick={() => history.push(item.path)}
           >
             Explore
           </button>

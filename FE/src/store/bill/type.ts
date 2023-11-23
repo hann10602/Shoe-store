@@ -1,11 +1,12 @@
 export type BillType = {
   id: number;
   quantity: number;
-  userId: number;
+  userName: string;
   shoeId: number;
   shoeName: string;
   shoeImage: string;
   shoePrice: number;
+  shoeSize: number;
   shoeSalePrice?: number;
   billStatus: string;
   billReceived: boolean;
@@ -27,6 +28,9 @@ export type CreateBillType = {
 };
 
 export type UpdateBillType = {
+  id: number;
+  quantity: number;
+  sizeCode: string;
   billStatus: string;
   billReceived: boolean;
 };

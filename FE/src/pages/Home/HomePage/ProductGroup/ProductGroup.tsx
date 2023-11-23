@@ -224,7 +224,12 @@ const ProductGroup = (props: Props) => {
                   </button>
                 </div>
               </div>
-              <Carousel slidesToShow={breakpoint} dots={false} ref={group.ref} draggable>
+              <Carousel
+                slidesToShow={breakpoint}
+                dots={false}
+                ref={group.ref}
+                draggable
+              >
                 {!group.isGetting && group.shoes ? (
                   group.shoes.map((item) => (
                     <div className="product-wrapper" key={item.id}>
@@ -237,7 +242,26 @@ const ProductGroup = (props: Props) => {
                       <div className="star-wrapper">
                         <AverageStar averageStar={item.averageStar} />
                       </div>
-                      <p className="product-price">{item.price}$</p>
+                      <div className="price-wrapper">
+                        <div
+                          className={`${
+                            item.salePrice ? "origin-price" : "shoe-price"
+                          }`}
+                        >
+                          {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD",
+                          }).format(item.price)}
+                        </div>
+                        {item.salePrice && (
+                          <div className="shoe-price-only">
+                            {new Intl.NumberFormat("en-US", {
+                              style: "currency",
+                              currency: "USD",
+                            }).format(item.salePrice)}
+                          </div>
+                        )}
+                      </div>
                       <div className="btn-group">
                         <button
                           className="add-to-cart-btn"

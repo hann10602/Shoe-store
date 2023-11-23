@@ -15,7 +15,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
-import { isGettingSizesSelector, sizesByShoeIdSelector, sizesSelector } from "@/store/size/selector";
+import {
+  isGettingSizesSelector,
+  sizesByShoeIdSelector,
+  sizesSelector,
+} from "@/store/size/selector";
 import { sizeAsyncAction } from "@/store/size/action";
 import { cartAsyncAction } from "@/store/cart/action";
 import { getCurrentLoginUser } from "@/utils";
@@ -396,45 +400,64 @@ const SearchPage = (props: Props) => {
               </div>
             </div>
           </div>
-          
-        {searchParam && (
-          <div id="mobile-search-text">Search result for: {searchParam}</div>
-        )}
+
+          {searchParam && (
+            <div id="mobile-search-text">Search result for: {searchParam}</div>
+          )}
           <div id="search-result">
             {!isSearchShoes && shoesSearch ? (
               shoesSearch.map((item) => (
                 <div className="product-wrapper" key={item.id}>
-                      <img
-                        className="product-image"
-                        src={item.imageUrls[0]}
-                        alt=""
-                      />
-                      <p className="product-name">{item.name}</p>
-                      <div className="star-wrapper">
-                        <AverageStar averageStar={item.averageStar} />
-                      </div>
-                      <p className="product-price">{item.price}$</p>
-                      <div className="btn-group">
-                        <button
-                          className="add-to-cart-btn"
-                          onClick={() => {
-                            dispatch(
-                              sizeAsyncAction.getByShoeId({ shoeId: item.id })
-                            );
-                            setShoeId(item.id);
-                            setChooseSizesPage(true);
-                          }}
-                        >
-                          Add to cart
-                        </button>
-                        <button
-                          className="buy-btn"
-                          onClick={() => history.push(`/shoe?id=${item.id}`)}
-                        >
-                          Buy
-                        </button>
-                      </div>
+                  <img
+                    className="product-image"
+                    src={item.imageUrls[0]}
+                    alt=""
+                  />
+                  <p className="product-name">{item.name}</p>
+                  <div className="star-wrapper">
+                    <AverageStar averageStar={item.averageStar} />
+                  </div>
+                  <div className="price-wrapper">
+                    <div
+                      className={`${
+                        item.salePrice ? "origin-price" : "shoe-price"
+                      }`}
+                    >
+                      {new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      }).format(item.price)}
                     </div>
+                    {item.salePrice && (
+                      <div className="shoe-price-only">
+                        {new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        }).format(item.salePrice)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="btn-group">
+                    <button
+                      className="add-to-cart-btn"
+                      onClick={() => {
+                        dispatch(
+                          sizeAsyncAction.getByShoeId({ shoeId: item.id })
+                        );
+                        setShoeId(item.id);
+                        setChooseSizesPage(true);
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                    <button
+                      className="buy-btn"
+                      onClick={() => history.push(`/shoe?id=${item.id}`)}
+                    >
+                      Buy
+                    </button>
+                  </div>
+                </div>
               ))
             ) : (
               <div className="is-loading">

@@ -64,7 +64,7 @@ const ProductDetail = (props: Props) => {
 
   const user: LoginUserType =
     userInformation != null ? JSON.parse(userInformation) : null;
-    
+
   const reviewPagination = Array.from(
     { length: Math.ceil(evaluates.length / 5) },
     (_, index) => index + 1
@@ -231,7 +231,26 @@ const ProductDetail = (props: Props) => {
               <div className="star-wrapper">
                 <AverageStar averageStar={shoe.averageStar} size="large" />
               </div>
-              <p className="product-price">{shoe.price}$</p>
+              <div className="price-wrapper">
+                <div
+                  className={`${
+                    shoe.salePrice ? "origin-price" : "shoe-price"
+                  }`}
+                >
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(shoe.price)}
+                </div>
+                {shoe.salePrice && (
+                  <div className="shoe-price-only">
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(shoe.salePrice)}
+                  </div>
+                )}
+              </div>
               <div className="product-size-group">
                 {shoe.shoeSizes.map((size) => (
                   <div
@@ -541,7 +560,26 @@ const ProductDetail = (props: Props) => {
                               <div className="star-wrapper">
                                 <AverageStar averageStar={sp.averageStar} />
                               </div>
-                              <p className="product-price">{sp.price}$</p>
+                              <div className="price-wrapper">
+                                <div
+                                  className={`${
+                                    sp.salePrice ? "origin-price" : "shoe-price"
+                                  }`}
+                                >
+                                  {new Intl.NumberFormat("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  }).format(sp.price)}
+                                </div>
+                                {sp.salePrice && (
+                                  <div className="shoe-price-only">
+                                    {new Intl.NumberFormat("en-US", {
+                                      style: "currency",
+                                      currency: "USD",
+                                    }).format(sp.salePrice)}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         ))}
