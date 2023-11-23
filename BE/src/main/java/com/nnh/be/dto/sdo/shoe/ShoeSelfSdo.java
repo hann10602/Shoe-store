@@ -11,8 +11,11 @@ import java.util.List;
 public class ShoeSelfSdo extends CommonSdo {
     private Long id;
     private String name;
-    private String price;
+    private Integer price;
+    private Integer salePrice;
     private String description;
-    private Long sizeId;
-    private List<String> imageUrl;
+    private Integer quantity;
+    private Integer averageStar;
+    private List<Integer> shoeSizes;
+    private List<String> imageUrls;
 }

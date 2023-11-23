@@ -19,31 +19,26 @@ public class User extends BaseEntity implements UserDetails {
     private String avatar;
     @Column
     private String fullName;
-
     @Column
     private String username;
-
     @Column
     private String password;
-
     @Column
     private String address;
-
     @Column
     private String email;
-
     @Column
     private String phoneNum;
-
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role userRole;
-
     @OneToMany(mappedBy = "userCart")
     private List<Cart> carts = new ArrayList<>();
-
     @OneToMany(mappedBy = "userOrder")
     private List<Bill> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userEvaluate")
+    private List<Evaluate> evaluates = new ArrayList<>();
 
     public List<GrantedAuthority> convertRoles(List<Role> oldRoles) {
         List<GrantedAuthority> newRoles = new ArrayList<>();

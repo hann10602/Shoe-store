@@ -1,12 +1,12 @@
 package com.nnh.be.service.impl;
 
 
+import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
 import com.nnh.be.dto.sdi.user.DeleteUserSdi;
 import com.nnh.be.dto.sdi.user.SelfUserSdi;
 import com.nnh.be.dto.sdi.user.UpdateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
-import com.nnh.be.exception.AppException;
 import com.nnh.be.model.User;
 import com.nnh.be.repository.CartRepository;
 import com.nnh.be.repository.RoleRepository;
@@ -17,11 +17,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.nnh.be.utils.LabelKeys.*;
 
 @Service
 @AllArgsConstructor
@@ -61,6 +58,22 @@ public class UserServiceImpl implements UserService {
         try {
             User user = findOne(req.getId());
             BeanUtils.copyProperties(req, user);
+
+            userRepo.save(user);
+
+            return MessageSdo.of("Success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MessageSdo.of("Failed");
+        }
+    }
+
+    @Override
+    public MessageSdo changePassword(ChangePasswordUserSdi req) {
+        try {
+            User user = findOne(req.getId());
+
+            user.setPassword(req.getPassword());
 
             userRepo.save(user);
 

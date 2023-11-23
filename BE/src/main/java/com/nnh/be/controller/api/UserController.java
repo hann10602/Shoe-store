@@ -4,10 +4,7 @@ import com.nnh.be.dto.sdi.shoe.CreateShoeSdi;
 import com.nnh.be.dto.sdi.shoe.DeleteShoeSdi;
 import com.nnh.be.dto.sdi.shoe.SelfShoeSdi;
 import com.nnh.be.dto.sdi.shoe.UpdateShoeSdi;
-import com.nnh.be.dto.sdi.user.CreateUserSdi;
-import com.nnh.be.dto.sdi.user.DeleteUserSdi;
-import com.nnh.be.dto.sdi.user.SelfUserSdi;
-import com.nnh.be.dto.sdi.user.UpdateUserSdi;
+import com.nnh.be.dto.sdi.user.*;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
@@ -39,6 +36,12 @@ public class UserController {
     @PutMapping("/update")
     public MessageSdo update(@RequestBody UpdateUserSdi req) {
         return userService.update(req);
+    }
+
+
+    @PutMapping("/change-password")
+    public MessageSdo changePassword(@RequestBody ChangePasswordUserSdi req) {
+        return userService.changePassword(req);
     }
 
     @DeleteMapping("/delete")

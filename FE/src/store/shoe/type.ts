@@ -3,7 +3,7 @@ export type ShoeType = {
   name: string;
   price: number;
   salePrice?: number;
-  description: string;
+  description?: string;
   quantity: number;
   averageStar: number;
   category: string;

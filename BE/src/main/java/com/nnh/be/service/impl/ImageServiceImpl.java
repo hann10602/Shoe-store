@@ -75,4 +75,9 @@ public class ImageServiceImpl implements ImageService {
     public void deleteAllByShoe(Shoe shoe) {
         imageRepo.deleteAllByShoeImage(shoe);
     }
+
+    @Override
+    public List<String> getImageUrlsByShoeId(Long shoeId) {
+        return imageRepo.getImageUrlsByShoeId(shoeId);
+    }
 }

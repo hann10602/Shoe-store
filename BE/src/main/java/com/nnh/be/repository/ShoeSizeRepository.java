@@ -14,4 +14,7 @@ import java.util.List;
 public interface ShoeSizeRepository extends JpaRepository<ShoeSize, Long> {
     List<ShoeSize> findAllByShoeSize(Shoe shoe);
     void deleteAllByShoeSize(Shoe shoe);
+
+    @Query(value = "SELECT s.code FROM shoe_size ss JOIN size s ON ss.size_id = s.id WHERE ss.shoe_id = :shoeId", nativeQuery = true)
+    List<Integer> getSizesByShoeId(Long shoeId);
 }

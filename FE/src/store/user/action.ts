@@ -12,7 +12,7 @@ import { BASE_URL, getToken } from "@/utils";
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("size/getOne", async (param: GetUserType) => {
+const getOne = createAsyncThunk("size/self", async (param: GetUserType) => {
   try {
     const resp = await axios.get(`${baseUrl}/user/self/${param.id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -25,7 +25,7 @@ const getOne = createAsyncThunk("size/getOne", async (param: GetUserType) => {
   }
 });
 
-const getAll = createAsyncThunk("user/getAll", async () => {
+const getAll = createAsyncThunk("user/get-all", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/user/get-all`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -33,7 +33,7 @@ const getAll = createAsyncThunk("user/getAll", async () => {
     if (resp.status === 200) {
       return resp.data;
     }
-  } catch (err) { 
+  } catch (err) {
     // return isRejectedWithValue(err);
     return err;
   }

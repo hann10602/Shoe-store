@@ -25,14 +25,6 @@ const Register = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const onSubmit = (e: FieldValues) => {
-    console.log({
-      fullName: e.fullName,
-      username: e.username,
-      password: e.password,
-      email: e.email,
-      phoneNum: e.phoneNum,
-      role: "ROLE_USER",
-    });
     dispatch(
       authAsyncAction.register({
         fullName: e.fullName,

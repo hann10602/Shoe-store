@@ -79,5 +79,10 @@ public class ShoeSizeServiceImpl implements ShoeSizeService {
     public void deleteAllByShoe(Shoe shoe) {
         shoeSizeRepo.deleteAllByShoeSize(shoe);
     }
+
+    @Override
+    public List<Integer> getSizesByShoeId(Long shoeId) {
+        return shoeSizeRepo.getSizesByShoeId(shoeId);
+    }
 }
 

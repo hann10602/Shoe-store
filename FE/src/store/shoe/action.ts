@@ -13,7 +13,7 @@ import { BASE_URL, getToken } from "@/utils";
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("size/getOne", async (param: GetShoeType) => {
+const getOne = createAsyncThunk("size/self", async (param: GetShoeType) => {
   try {
     const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -26,7 +26,7 @@ const getOne = createAsyncThunk("size/getOne", async (param: GetShoeType) => {
   }
 });
 
-const getAll = createAsyncThunk("shoe/getAll", async () => {
+const getAll = createAsyncThunk("shoe/get-all", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/shoe/get-all`, {
       headers: { Authorization: `Bearer ${token}` },

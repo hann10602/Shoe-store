@@ -12,7 +12,7 @@ const baseUrl = BASE_URL;
 const token = getToken();
 
 const getOne = createAsyncThunk(
-  "category/getOne",
+  "category/self",
   async (param: GetCategoryType) => {
     try {
       const resp = await axios.get(`${baseUrl}/category/self/${param.id}`, {
@@ -27,7 +27,7 @@ const getOne = createAsyncThunk(
   }
 );
 
-const getAll = createAsyncThunk("category/getAll", async () => {
+const getAll = createAsyncThunk("category/get-all", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/category/get-all`, {
       headers: { Authorization: `Bearer ${token}` },

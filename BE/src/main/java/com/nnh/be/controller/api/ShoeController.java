@@ -31,7 +31,7 @@ public class ShoeController {
 
     @GetMapping("/get-by-category/{category}")
     public List<ShoeSelfSdo> findByCategory(@PathVariable(value = "category", required = false) String category) {
-        return shoeService.findAll();
+        return shoeService.findByCategory(category);
     }
 
     @PostMapping("/create")

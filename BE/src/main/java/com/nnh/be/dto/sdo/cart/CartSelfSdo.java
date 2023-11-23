@@ -12,6 +12,6 @@ public class CartSelfSdo {
     private String shoeName;
     private String shoeImage;
     private String sizeCode;
-    private Long shoePrice;
-    private Long shoeSalePrice;
+    private Integer shoePrice;
+    private Integer shoeSalePrice;
 }

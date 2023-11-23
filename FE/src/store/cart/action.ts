@@ -13,7 +13,7 @@ import { BASE_URL, getToken } from "@/utils";
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("cart/getOne", async (param: GetCartType) => {
+const getOne = createAsyncThunk("cart/self", async (param: GetCartType) => {
   try {
     const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -26,7 +26,7 @@ const getOne = createAsyncThunk("cart/getOne", async (param: GetCartType) => {
   }
 });
 
-const getAll = createAsyncThunk("cart/getAll", async () => {
+const getAll = createAsyncThunk("cart/get-all", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/cart/get-all`, {
       headers: { Authorization: `Bearer ${token}` },

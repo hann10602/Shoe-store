@@ -2,7 +2,6 @@ export type CartType = {
   id: number;
   quantity: number;
   maxQuantity: number;
-  userId: number;
   shoeId: number;
   shoeName: string;
   shoeImage: string;

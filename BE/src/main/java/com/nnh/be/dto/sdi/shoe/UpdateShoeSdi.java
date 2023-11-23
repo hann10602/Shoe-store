@@ -11,8 +11,8 @@ import java.util.List;
 public class UpdateShoeSdi {
     private Long id;
     private String name;
-    private String code;
-    private Long price;
+    private Integer price;
+    private Integer salePrice;
     private String description;
     private List<String> imageUrls;
     private List<String> sizes;

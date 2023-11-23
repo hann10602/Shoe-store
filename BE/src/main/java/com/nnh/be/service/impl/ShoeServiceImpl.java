@@ -9,14 +9,13 @@ import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.model.Cart;
 import com.nnh.be.model.Category;
+import com.nnh.be.model.Evaluate;
 import com.nnh.be.model.Shoe;
 import com.nnh.be.repository.CategoryRepository;
+import com.nnh.be.repository.EvaluateRepository;
 import com.nnh.be.repository.ShoeRepository;
 import com.nnh.be.repository.ShoeSizeRepository;
-import com.nnh.be.service.ImageService;
-import com.nnh.be.service.ShoeService;
-import com.nnh.be.service.ShoeSizeService;
-import com.nnh.be.service.SizeService;
+import com.nnh.be.service.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +31,7 @@ public class ShoeServiceImpl implements ShoeService {
     private final ShoeRepository shoeRepo;
     private final CategoryRepository categoryRepo;
     private final ImageService imageService;
+    private final EvaluateRepository evaluateRepo;
     private final SizeService sizeService;
     private final ShoeSizeService shoeSizeService;
 
@@ -56,6 +56,9 @@ public class ShoeServiceImpl implements ShoeService {
         shoeRepo.findByShoeCategory(category).forEach((entity) -> {
             ShoeSelfSdo dto = new ShoeSelfSdo();
             BeanUtils.copyProperties(entity, dto);
+            dto.setShoeSizes(shoeSizeService.getSizesByShoeId(entity.getId()));
+            dto.setAverageStar(evaluateRepo.getAverageStarByShoeId(entity.getId()));
+            dto.setImageUrls(imageService.getImageUrlsByShoeId(entity.getId()));
 
             dtoList.add(dto);
         });
@@ -141,4 +144,7 @@ public class ShoeServiceImpl implements ShoeService {
     public List<Shoe> findByIds(List<Long> idList) {
         return shoeRepo.findByIdIn(idList);
     }
+
+
+
 }

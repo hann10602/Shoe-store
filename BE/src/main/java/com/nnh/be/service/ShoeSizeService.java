@@ -9,6 +9,6 @@ import java.util.List;
 public interface ShoeSizeService {
     MessageSdo create(Shoe shoe, List<Size> sizes);
     MessageSdo update(Shoe shoe, List<Size> sizes);
-
     void deleteAllByShoe(Shoe shoe);
+    List<Integer> getSizesByShoeId(Long id);
 }

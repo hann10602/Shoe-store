@@ -12,7 +12,7 @@ const baseUrl = BASE_URL;
 const token = getToken();
 
 const getOne = createAsyncThunk(
-  "evaluate/getOne",
+  "evaluate/self",
   async (param: GetEvaluateType) => {
     try {
       const resp = await axios.get(`${baseUrl}/evaluate/self/${param.id}`, {
@@ -32,7 +32,7 @@ const getByShoeId = createAsyncThunk(
   async (param: GetEvaluatesByShoeIdType) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/evaluate/get-by-shoe-id?${param.shoeId}`,
+        `${baseUrl}/evaluate/get-by-shoe-id/${param.shoeId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {

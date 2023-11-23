@@ -19,12 +19,12 @@ public class Shoe extends BaseEntity{
     private String code;
 
     @Column
-    private Long price;
+    private Integer price;
 
     @Column
-    private Long salePrice;
+    private Integer salePrice;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(mappedBy = "shoeSize")
@@ -42,5 +42,8 @@ public class Shoe extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category shoeCategory;
+
+    @OneToMany(mappedBy = "shoeEvaluate")
+    private List<Evaluate> evaluates = new ArrayList<>();
 
 }

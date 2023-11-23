@@ -76,8 +76,7 @@ const shoeSlice = createSlice({
         state.isGettingShoesByCategory1 = true;
       })
       .addCase(shoeAsyncAction.getByCategory1.fulfilled, (state, action) => {
-        // state.shoes = action.payload;
-        state.shoesByCategory1 = products;
+        state.shoesByCategory1 = action.payload;
         state.isGettingShoesByCategory1 = false;
       })
       .addCase(shoeAsyncAction.getByCategory1.rejected, (state) => {
@@ -88,8 +87,7 @@ const shoeSlice = createSlice({
         state.isGettingShoesByCategory2 = true;
       })
       .addCase(shoeAsyncAction.getByCategory2.fulfilled, (state, action) => {
-        // state.shoes = action.payload;
-        state.shoesByCategory2 = products;
+        state.shoesByCategory2 = action.payload;
         state.isGettingShoesByCategory2 = false;
       })
       .addCase(shoeAsyncAction.getByCategory2.rejected, (state) => {
@@ -100,8 +98,7 @@ const shoeSlice = createSlice({
         state.isGettingShoesByCategory3 = true;
       })
       .addCase(shoeAsyncAction.getByCategory3.fulfilled, (state, action) => {
-        // state.shoes = action.payload;
-        state.shoesByCategory3 = products;
+        state.shoesByCategory3 = action.payload;
         state.isGettingShoesByCategory3 = false;
       })
       .addCase(shoeAsyncAction.getByCategory3.rejected, (state) => {

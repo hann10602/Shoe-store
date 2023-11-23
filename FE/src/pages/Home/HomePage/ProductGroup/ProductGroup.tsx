@@ -72,7 +72,7 @@ const ProductGroup = (props: Props) => {
     dispatch(shoeAsyncAction.getByCategory1({ categoryCode: "SNEAKER" }));
     dispatch(shoeAsyncAction.getByCategory2({ categoryCode: "BOOT" }));
     dispatch(shoeAsyncAction.getByCategory3({ categoryCode: "SPORT" }));
-  }, [shoesByCategory1, shoesByCategory2, shoesByCategory3, dispatch]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
