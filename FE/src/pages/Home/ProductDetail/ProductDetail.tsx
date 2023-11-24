@@ -10,18 +10,18 @@ import {
 import { shoeAsyncAction } from "@/store/shoe/action";
 import {
   isGettingShoeSelector,
-  isSearchShoesSelector,
+  isGettingShoesSelector,
   shoeSelector,
-  shoesSearchSelector,
+  shoesSelector,
 } from "@/store/shoe/selector";
 import { useAppDispatch } from "@/store/store";
+import { Carousel } from "antd";
+import { CarouselRef } from "antd/lib/carousel";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
-import { FieldValues, useForm } from "react-hook-form";
-import { Carousel } from "antd";
-import { CarouselRef } from "antd/lib/carousel";
 
 type Props = {};
 
@@ -53,11 +53,11 @@ const ProductDetail = (props: Props) => {
   const history = useHistory();
 
   const shoe = useSelector(shoeSelector);
-  const shoesSearch = useSelector(shoesSearchSelector);
+  const shoesSearch = useSelector(shoesSelector);
   const evaluates = useSelector(evaluatesSelector);
 
   const isGettingShoe = useSelector(isGettingShoeSelector);
-  const isSearchShoes = useSelector(isSearchShoesSelector);
+  const isSearchShoes = useSelector(isGettingShoesSelector);
   const isGettingEvaluates = useSelector(isGettingEvaluatesSelector);
 
   const userInformation: string | null = localStorage.getItem("login-user");
@@ -122,7 +122,7 @@ const ProductDetail = (props: Props) => {
     );
 
     if (shoe) {
-      dispatch(shoeAsyncAction.searchShoes({ category: shoe.category }));
+      dispatch(shoeAsyncAction.getAll());
       dispatch(evaluateAsyncAction.getByShoeId({ shoeId: shoe.id }));
     }
 
@@ -130,7 +130,7 @@ const ProductDetail = (props: Props) => {
       top: 0,
       behavior: "smooth",
     });
-  }, [location, dispatch, shoe]);
+  }, []);
 
   useEffect(() => {
     setMainImage(shoe?.imageUrls[0]);
@@ -542,47 +542,54 @@ const ProductDetail = (props: Props) => {
                         draggable
                         ref={suggestRef}
                       >
-                        {shoesSearch.map((sp) => (
-                          <div className="suggest-product" key={sp.id}>
-                            <div className="product-wrapper">
-                              <div
-                                onClick={() =>
-                                  history.push(`/shoe?id=${sp.id}`)
-                                }
-                              >
-                                <img
-                                  className="product-image"
-                                  src={sp.imageUrls[0]}
-                                  alt=""
-                                />
-                                <p className="product-name">{sp.name}</p>
-                              </div>
-                              <div className="star-wrapper">
-                                <AverageStar averageStar={sp.averageStar} />
-                              </div>
-                              <div className="price-wrapper">
+                        {shoesSearch
+                          .filter(
+                            (shoeSearch) =>
+                              shoeSearch.category === shoe.category
+                          )
+                          .map((sp) => (
+                            <div className="suggest-product" key={sp.id}>
+                              <div className="product-wrapper">
                                 <div
-                                  className={`${
-                                    sp.salePrice ? "origin-price" : "shoe-price"
-                                  }`}
+                                  onClick={() =>
+                                    history.push(`/shoe?id=${sp.id}`)
+                                  }
                                 >
-                                  {new Intl.NumberFormat("en-US", {
-                                    style: "currency",
-                                    currency: "USD",
-                                  }).format(sp.price)}
+                                  <img
+                                    className="product-image"
+                                    src={sp.imageUrls[0]}
+                                    alt=""
+                                  />
+                                  <p className="product-name">{sp.name}</p>
                                 </div>
-                                {sp.salePrice && (
-                                  <div className="shoe-price-only">
+                                <div className="star-wrapper">
+                                  <AverageStar averageStar={sp.averageStar} />
+                                </div>
+                                <div className="price-wrapper">
+                                  <div
+                                    className={`${
+                                      sp.salePrice
+                                        ? "origin-price"
+                                        : "shoe-price"
+                                    }`}
+                                  >
                                     {new Intl.NumberFormat("en-US", {
                                       style: "currency",
                                       currency: "USD",
-                                    }).format(sp.salePrice)}
+                                    }).format(sp.price)}
                                   </div>
-                                )}
+                                  {sp.salePrice && (
+                                    <div className="shoe-price-only">
+                                      {new Intl.NumberFormat("en-US", {
+                                        style: "currency",
+                                        currency: "USD",
+                                      }).format(sp.salePrice)}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
                       </Carousel>
                     </div>
                   </div>

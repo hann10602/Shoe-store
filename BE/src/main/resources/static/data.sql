@@ -54,7 +54,7 @@ INSERT INTO `vmo-project`.`image` (`url`, `shoe_id`) VALUES ('https://bizweb.dkt
 INSERT INTO `vmo-project`.`image` (`url`, `shoe_id`) VALUES ('https://bizweb.dktcdn.net/100/140/774/products/van-sk8-hi-classic-navywhite-vn000d5invy-2.jpg?v=1625937190500', 3);
 INSERT INTO `vmo-project`.`image` (`url`, `shoe_id`) VALUES ('https://bizweb.dktcdn.net/100/140/774/products/van-sk8-hi-classic-navywhite-vn000d5invy-3.jpg?v=1625937194193', 3);
 INSERT INTO `vmo-project`.`image` (`url`, `shoe_id`) VALUES ('https://bizweb.dktcdn.net/100/140/774/products/van-sk8-hi-classic-navywhite-vn000d5invy-4.jpg?v=1625937197617', 3);
-INSERT INTO `vmo-project`.`image` (`url`, `shoe_id`) VALUES ('https://vansvietnam.com.vn/vans-sk8-hi-classic-navy-white-vn000d5invy', 3);
+INSERT INTO `vmo-project`.`image` (`url`, `shoe_id`) VALUES ('https://bizweb.dktcdn.net/thumb/1024x1024/100/140/774/products/van-sk8-hi-classic-navywhite-vn000d5invy-5.jpg?v=1625937200573', 3);
 
 INSERT INTO `vmo-project`.`shoe_size` (`quantity`, `shoe_id`, `size_id`) VALUES (50, 3, 3);
 INSERT INTO `vmo-project`.`shoe_size` (`quantity`, `shoe_id`, `size_id`) VALUES (50, 3, 4);

@@ -14,18 +14,29 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/shoe")
+@RequestMapping("/api/v1/shoe/")
 @CrossOrigin
 public class ShoeController {
     private final ShoeService shoeService;
 
     @GetMapping("/self")
-    public ShoeSelfSdo self(@RequestBody SelfShoeSdi req) {
-        return shoeService.self(req);
+    public ShoeSelfSdo self(@RequestParam("id") Long id) {
+        return shoeService.self(SelfShoeSdi.of(id));
     }
 
     @GetMapping("/get-all")
     public List<ShoeSelfSdo> findAll() {
+        return shoeService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<ShoeSelfSdo> search(@RequestParam(value = "search", required = false) String search,
+                                    @RequestParam(value = "size", required = false) String size,
+                                    @RequestParam(value = "category", required = false) String category,
+                                    @RequestParam(value = "from", required = false) Integer from,
+                                    @RequestParam(value = "to", required = false) Integer to
+                                    ) {
+//        return shoeService.search(search, size, category, from, to);
         return shoeService.findAll();
     }
 

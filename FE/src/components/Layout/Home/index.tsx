@@ -1,4 +1,3 @@
-
 import AppStore from "@/assets/img/web/appstore.png";
 import QRCode from "@/assets/img/web/bancode.png";
 import GooglePlay from "@/assets/img/web/googleplay.png";
@@ -282,9 +281,16 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
               searchContent !== "" &&
               shoes.length !== undefined && (
                 <div id="search-result">
-                  {shoes.slice(0, 5).map((shoe) => (
-                    <SearchResultItem key={shoe.id} item={shoe} />
-                  ))}
+                  {shoes
+                    .filter((shoe) =>
+                      shoe.name
+                        .toUpperCase()
+                        .includes(searchContent.toUpperCase())
+                    )
+                    .slice(0, 5)
+                    .map((shoe) => (
+                      <SearchResultItem key={shoe.id} item={shoe} />
+                    ))}
                 </div>
               )}
             {isSearchShoes && searchContent !== "" && (

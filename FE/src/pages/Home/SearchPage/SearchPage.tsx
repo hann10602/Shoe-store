@@ -1,61 +1,59 @@
 import AverageStar from "@/components/AverageStar";
+import { sizes } from "@/constants/size";
+import { cartAsyncAction } from "@/store/cart/action";
 import { categoryAsyncAction } from "@/store/category/action";
 import {
   categoriesSelector,
   isGettingCategoriesSelector,
 } from "@/store/category/selector";
-import { shoeAsyncAction } from "@/store/shoe/action";
-import {
-  isSearchShoesSelector,
-  shoesSearchSelector,
-} from "@/store/shoe/selector";
-import { SearchShoes } from "@/store/shoe/type";
+import { isGettingShoesSelector, shoesSelector } from "@/store/shoe/selector";
+import { ShoeType } from "@/store/shoe/type";
+import { sizeAsyncAction } from "@/store/size/action";
+import { sizesByShoeIdSelector } from "@/store/size/selector";
 import { useAppDispatch } from "@/store/store";
+import { getCurrentLoginUser } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
-import {
-  isGettingSizesSelector,
-  sizesByShoeIdSelector,
-  sizesSelector,
-} from "@/store/size/selector";
-import { sizeAsyncAction } from "@/store/size/action";
-import { cartAsyncAction } from "@/store/cart/action";
-import { getCurrentLoginUser } from "@/utils";
+import { shoeAsyncAction } from "@/store/shoe/action";
 
 type Props = {};
 
 const SearchPage = (props: Props) => {
   const [chooseSizesPage, setChooseSizesPage] = useState<boolean>(false);
   const [shoeId, setShoeId] = useState<number | undefined>(undefined);
+  const [shoes, setShoes] = useState<ShoeType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [sizeChoose, setSizeChoose] = useState<string>("");
   const [categoryChoose, setCategoryChoose] = useState<string>("");
   const [priceFrom, setPriceFrom] = useState<string>("");
   const [priceTo, setPriceTo] = useState<string>("");
+  const [shoePage, setShoePage] = useState<number>(1);
 
   const history = useHistory();
   const location = useLocation();
-
   const dispatch = useAppDispatch();
 
   const categories = useSelector(categoriesSelector);
-  const shoesSearch = useSelector(shoesSearchSelector);
-  const sizes = useSelector(sizesSelector);
+  const shoesSearch = useSelector(shoesSelector);
   const sizeList = useSelector(sizesByShoeIdSelector);
 
   const loginUser = getCurrentLoginUser();
 
-  const isSearchShoes = useSelector(isSearchShoesSelector);
+  const isSearchShoes = useSelector(isGettingShoesSelector);
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
-  const isGettingSizes = useSelector(isGettingSizesSelector);
 
   const searchParam = new URLSearchParams(location.search).get("search");
   const sizeParam = new URLSearchParams(location.search).get("size");
   const categoryParam = new URLSearchParams(location.search).get("category");
   const priceFromParam = new URLSearchParams(location.search).get("price-from");
   const priceToParam = new URLSearchParams(location.search).get("price-to");
+
+  const shoesPagination = Array.from(
+    { length: Math.ceil(shoes.length / 8) },
+    (_, index) => index + 1
+  );
 
   useEffect(() => {
     let searchResultString: string = "";
@@ -89,43 +87,69 @@ const SearchPage = (props: Props) => {
 
   useEffect(() => {
     dispatch(categoryAsyncAction.getAll());
-    dispatch(sizeAsyncAction.getAll());
+    dispatch(shoeAsyncAction.getAll());
   }, [dispatch]);
 
   useEffect(() => {
-    const searchResultParams: SearchShoes = {};
+    // const searchResultParams: SearchShoes = {};
 
     if (searchParam) {
-      searchResultParams.search = searchParam;
+      // searchResultParams.search = searchParam;
       setSearch(searchParam);
     }
     if (sizeParam) {
-      searchResultParams.size = sizeParam;
+      // searchResultParams.size = sizeParam;
       setSizeChoose(sizeParam);
     }
     if (categoryParam) {
-      searchResultParams.category = categoryParam;
+      // searchResultParams.category = categoryParam;
       setCategoryChoose(categoryParam);
     }
     if (priceFromParam) {
-      searchResultParams.priceFrom = priceFromParam;
+      // searchResultParams.priceFrom = priceFromParam;
       setPriceFrom(priceFromParam);
     }
     if (priceToParam) {
-      searchResultParams.priceTo = priceToParam;
+      // searchResultParams.priceTo = priceToParam;
       setPriceTo(priceToParam);
     }
 
-    dispatch(shoeAsyncAction.searchShoes(searchResultParams));
-  }, [
-    location,
-    dispatch,
-    searchParam,
-    sizeParam,
-    categoryParam,
-    priceFromParam,
-    priceToParam,
-  ]);
+    setShoes(
+      shoesSearch.filter((shoe) => {
+        if (searchParam) {
+          if (!shoe.name.includes(searchParam)) {
+            console.log("alo");
+            return false;
+          }
+        }
+        if (sizeParam) {
+          if (!shoe.shoeSizes.includes(sizeParam)) {
+            return false;
+          }
+        }
+        if (categoryParam) {
+          console.log(shoe.category, categoryParam);
+          if (!(shoe.category === categoryParam)) {
+            return false;
+          }
+        }
+        if (priceFrom) {
+          if (!(shoe.price > Number(priceFromParam))) {
+            return false;
+          }
+        }
+        if (priceTo) {
+          if (!(shoe.price < Number(priceToParam))) {
+            return false;
+          }
+        }
+
+        return true;
+      })
+    );
+
+    setShoePage(1);
+  }, [location.search, shoesSearch]);
 
   return (
     <>
@@ -224,78 +248,23 @@ const SearchPage = (props: Props) => {
             <div id="size-filter">
               <p id="size-title">Size:</p>
               <div id="size-wrapper">
-                {!isGettingSizes && sizes ? (
-                  sizes.map((size) => (
-                    <div
-                      className={`size-item ${
-                        size.code === sizeChoose ? "size-choose" : ""
-                      }`}
-                      key={size.id}
-                      onClick={() => {
-                        if (size.code === sizeChoose) {
-                          setSizeChoose("");
-                        } else {
-                          setSizeChoose(size.code);
-                        }
-                      }}
-                    >
-                      {size.name}
-                    </div>
-                  ))
-                ) : (
-                  <div className="is-loading">
-                    <svg
-                      id="Capa_1"
-                      enable-background="new 0 0 497 497"
-                      height="40"
-                      viewBox="0 0 497 497"
-                      width="40"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g>
-                        <circle cx="98" cy="376" fill="#909ba6" r="53" />
-                        <circle cx="439" cy="336" fill="#c8d2dc" r="46" />
-                        <circle cx="397" cy="112" fill="#e9edf1" r="38" />
-                        <ellipse
-                          cx="56.245"
-                          cy="244.754"
-                          fill="#7e8b96"
-                          rx="56.245"
-                          ry="54.874"
-                        />
-                        <ellipse
-                          cx="217.821"
-                          cy="447.175"
-                          fill="#a2abb8"
-                          rx="51.132"
-                          ry="49.825"
-                        />
-                        <ellipse
-                          cx="349.229"
-                          cy="427.873"
-                          fill="#b9c3cd"
-                          rx="48.575"
-                          ry="47.297"
-                        />
-                        <ellipse
-                          cx="117.092"
-                          cy="114.794"
-                          fill="#5f6c75"
-                          rx="58.801"
-                          ry="57.397"
-                        />
-                        <ellipse
-                          cx="453.538"
-                          cy="216.477"
-                          fill="#dce6eb"
-                          rx="43.462"
-                          ry="42.656"
-                        />
-                        <circle cx="263" cy="62" fill="#4e5a61" r="62" />
-                      </g>
-                    </svg>
+                {sizes.map((size) => (
+                  <div
+                    className={`size-item ${
+                      size.code === sizeChoose ? "size-choose" : ""
+                    }`}
+                    key={size.id}
+                    onClick={() => {
+                      if (size.code === sizeChoose) {
+                        setSizeChoose("");
+                      } else {
+                        setSizeChoose(size.code);
+                      }
+                    }}
+                  >
+                    {size.name}
                   </div>
-                )}
+                ))}
               </div>
             </div>
             <div id="price-filter">
@@ -406,59 +375,61 @@ const SearchPage = (props: Props) => {
           )}
           <div id="search-result">
             {!isSearchShoes && shoesSearch ? (
-              shoesSearch.map((item) => (
-                <div className="product-wrapper" key={item.id}>
-                  <img
-                    className="product-image"
-                    src={item.imageUrls[0]}
-                    alt=""
-                  />
-                  <p className="product-name">{item.name}</p>
-                  <div className="star-wrapper">
-                    <AverageStar averageStar={item.averageStar} />
-                  </div>
-                  <div className="price-wrapper">
-                    <div
-                      className={`${
-                        item.salePrice ? "origin-price" : "shoe-price"
-                      }`}
-                    >
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(item.price)}
+              shoes
+                .slice(8 * (shoePage - 1), 8 * (shoePage - 1) + 8)
+                .map((item) => (
+                  <div className="product-wrapper" key={item.id}>
+                    <img
+                      className="product-image"
+                      src={item.imageUrls[0]}
+                      alt=""
+                    />
+                    <p className="product-name">{item.name}</p>
+                    <div className="star-wrapper">
+                      <AverageStar averageStar={item.averageStar} />
                     </div>
-                    {item.salePrice && (
-                      <div className="shoe-price-only">
+                    <div className="price-wrapper">
+                      <div
+                        className={`${
+                          item.salePrice ? "origin-price" : "shoe-price"
+                        }`}
+                      >
                         {new Intl.NumberFormat("en-US", {
                           style: "currency",
                           currency: "USD",
-                        }).format(item.salePrice)}
+                        }).format(item.price)}
                       </div>
-                    )}
+                      {item.salePrice && (
+                        <div className="shoe-price-only">
+                          {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD",
+                          }).format(item.salePrice)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="btn-group">
+                      <button
+                        className="add-to-cart-btn"
+                        onClick={() => {
+                          dispatch(
+                            sizeAsyncAction.getByShoeId({ shoeId: item.id })
+                          );
+                          setShoeId(item.id);
+                          setChooseSizesPage(true);
+                        }}
+                      >
+                        Add to cart
+                      </button>
+                      <button
+                        className="buy-btn"
+                        onClick={() => history.push(`/shoe?id=${item.id}`)}
+                      >
+                        Buy
+                      </button>
+                    </div>
                   </div>
-                  <div className="btn-group">
-                    <button
-                      className="add-to-cart-btn"
-                      onClick={() => {
-                        dispatch(
-                          sizeAsyncAction.getByShoeId({ shoeId: item.id })
-                        );
-                        setShoeId(item.id);
-                        setChooseSizesPage(true);
-                      }}
-                    >
-                      Add to cart
-                    </button>
-                    <button
-                      className="buy-btn"
-                      onClick={() => history.push(`/shoe?id=${item.id}`)}
-                    >
-                      Buy
-                    </button>
-                  </div>
-                </div>
-              ))
+                ))
             ) : (
               <div className="is-loading">
                 <svg
@@ -513,6 +484,17 @@ const SearchPage = (props: Props) => {
                 </svg>
               </div>
             )}
+            <div id="review-pagination">
+              {shoesPagination.map((item) => (
+                <div
+                  className="pagination-option"
+                  onClick={() => setShoePage(item)}
+                  key={item}
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

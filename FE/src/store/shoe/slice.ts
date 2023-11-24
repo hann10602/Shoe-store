@@ -3,6 +3,7 @@ import { ResponseType } from "../type";
 import { ShoeType } from "./type";
 import { shoeAsyncAction } from "./action";
 import { products } from "@/constants/shoe";
+// import { products } from "@/constants/shoe";
 
 type ShoeStateType = {
   isGettingShoe: boolean;
@@ -52,8 +53,7 @@ const shoeSlice = createSlice({
         state.isGettingShoe = true;
       })
       .addCase(shoeAsyncAction.getOne.fulfilled, (state, action) => {
-        // state.shoe = action.payload;
-        state.shoe = products[0];
+        state.shoe = action.payload;
         state.isGettingShoe = false;
       })
       .addCase(shoeAsyncAction.getOne.rejected, (state) => {
@@ -64,8 +64,7 @@ const shoeSlice = createSlice({
         state.isGettingShoes = true;
       })
       .addCase(shoeAsyncAction.getAll.fulfilled, (state, action) => {
-        // state.shoes = action.payload;
-        state.shoes = products;
+        state.shoes = action.payload;
         state.isGettingShoes = false;
       })
       .addCase(shoeAsyncAction.getAll.rejected, (state) => {
@@ -109,8 +108,7 @@ const shoeSlice = createSlice({
         state.isSearchShoes = true;
       })
       .addCase(shoeAsyncAction.searchShoes.fulfilled, (state, action) => {
-        // state.shoesByCategory = action.payload;
-        state.shoesSearch = products;
+        state.shoesSearch = action.payload;
         state.isSearchShoes = false;
       })
       .addCase(shoeAsyncAction.searchShoes.rejected, (state) => {

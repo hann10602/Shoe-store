@@ -29,9 +29,7 @@ const getOne = createAsyncThunk(
 
 const getAll = createAsyncThunk("category/get-all", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/category/get-all`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const resp = await axios.get(`${baseUrl}/category/get-all`);
     if (resp.status === 200) {
       return resp.data;
     }

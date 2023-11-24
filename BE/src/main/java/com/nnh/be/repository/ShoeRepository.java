@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ShoeRepository extends JpaRepository<Shoe, Long> {
+public interface ShoeRepository extends JpaRepository<Shoe, Long>, ShoeRepositoryCustom {
     Optional<Shoe> findByCode(String code);
     List<Shoe> findByIdIn(List<Long> ids);
     List<Shoe> findByShoeCategory(Category category);

@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 public class CategorySelfSdo extends CommonSdo {
     private String name;
     private String code;
+    private Integer productQuantity;
 }

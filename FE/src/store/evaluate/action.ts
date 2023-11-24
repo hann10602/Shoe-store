@@ -32,8 +32,7 @@ const getByShoeId = createAsyncThunk(
   async (param: GetEvaluatesByShoeIdType) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/evaluate/get-by-shoe-id/${param.shoeId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `${baseUrl}/evaluate/get-by-shoe-id/${param.shoeId}`
       );
       if (resp.status === 200) {
         return resp.data;

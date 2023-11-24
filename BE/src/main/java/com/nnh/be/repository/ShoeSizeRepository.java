@@ -16,5 +16,5 @@ public interface ShoeSizeRepository extends JpaRepository<ShoeSize, Long> {
     void deleteAllByShoeSize(Shoe shoe);
 
     @Query(value = "SELECT s.code FROM shoe_size ss JOIN size s ON ss.size_id = s.id WHERE ss.shoe_id = :shoeId", nativeQuery = true)
-    List<Integer> getSizesByShoeId(Long shoeId);
+    List<String> getSizesByShoeId(Long shoeId);
 }

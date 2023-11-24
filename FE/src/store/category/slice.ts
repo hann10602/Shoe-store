@@ -47,8 +47,7 @@ const categorySlice = createSlice({
         state.isGettingCategories = true;
       })
       .addCase(categoryAsyncAction.getAll.fulfilled, (state, action) => {
-        // state.categories = action.payload;
-        state.categories = categories;
+        state.categories = action.payload;
 
         state.isGettingCategories = false;
       })

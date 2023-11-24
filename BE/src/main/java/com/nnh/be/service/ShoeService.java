@@ -9,12 +9,18 @@ import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
 import com.nnh.be.model.Cart;
 import com.nnh.be.model.Shoe;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 public interface ShoeService {
     List<ShoeSelfSdo> findAll();
     List<ShoeSelfSdo> findByCategory(String categoryCode);
     ShoeSelfSdo self(SelfShoeSdi req);
+    List<ShoeSelfSdo> search(String search,
+                             String size,
+                             String category,
+                             Integer from,
+                             Integer to);
     MessageSdo create(CreateShoeSdi req);
     MessageSdo update(UpdateShoeSdi req);
     MessageSdo delete(DeleteShoeSdi req);

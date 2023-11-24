@@ -9,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.util.Date;
+
 @MappedSuperclass
 @Data
 @NoArgsConstructor
@@ -27,11 +29,11 @@ public class BaseEntity {
 
     @Column
     @CreatedDate
-    private String createdDate;
+    private Date createdDate;
 
     @Column
     @LastModifiedDate
-    private String updatedDate;
+    private Date updatedDate;
     
     
 }

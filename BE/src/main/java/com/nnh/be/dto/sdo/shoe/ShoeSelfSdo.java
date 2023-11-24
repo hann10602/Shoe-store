@@ -14,8 +14,9 @@ public class ShoeSelfSdo extends CommonSdo {
     private Integer price;
     private Integer salePrice;
     private String description;
+    private String category;
     private Integer quantity;
     private Integer averageStar;
-    private List<Integer> shoeSizes;
+    private List<String> shoeSizes;
     private List<String> imageUrls;
 }

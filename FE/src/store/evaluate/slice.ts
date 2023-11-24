@@ -47,8 +47,7 @@ const evaluateSlice = createSlice({
         state.isGettingEvaluates = true;
       })
       .addCase(evaluateAsyncAction.getByShoeId.fulfilled, (state, action) => {
-        // state.evaluates = action.payload;
-        state.evaluates = evaluates;
+        state.evaluates = action.payload;
         state.isGettingEvaluates = false;
       })
       .addCase(evaluateAsyncAction.getByShoeId.rejected, (state) => {

@@ -336,7 +336,7 @@
         .product-wrapper {
           width: 260px;
           text-align: center;
-          margin: 0 40px;
+          margin: 0 40px 24px;
 
           .product-image {
             width: 100%;
@@ -349,6 +349,7 @@
             cursor: pointer;
             width: 100%;
             font-size: 20px;
+            height: 3.4rem;
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;
@@ -449,6 +450,36 @@
             .buy-btn:hover {
               background-color: rgb(225, 225, 225);
             }
+          }
+        }
+
+        #review-pagination {
+          margin-top: 60px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+  
+          .pagination-option {
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            background-color: rgb(216, 216, 216);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+          }
+  
+          :not(.pagination-option:last-child) {
+            margin-right: 12px;
+          }
+  
+          .pagination-option:hover {
+            background-color: rgb(184, 184, 184);
+          }
+  
+          :not(.pagination-option:last-child) {
+            border-right: 1px solid rgb(180, 180, 180);
           }
         }
       }
@@ -709,7 +740,7 @@
         .product-wrapper {
           width: 260px;
           text-align: center;
-          margin: 0 40px;
+          margin: 0 40px 24px;
 
           .product-image {
             width: 100%;
@@ -722,6 +753,7 @@
             cursor: pointer;
             width: 100%;
             font-size: 20px;
+            height: 3.4rem;
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;
@@ -1081,7 +1113,7 @@
         .product-wrapper {
           width: 260px;
           text-align: center;
-          margin: 0 40px;
+          margin: 0 40px 24px;
 
           .product-image {
             width: 100%;
@@ -1094,6 +1126,7 @@
             cursor: pointer;
             width: 100%;
             font-size: 20px;
+            height: 3.4rem;
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;

@@ -37,11 +37,14 @@ public class ShoeServiceImpl implements ShoeService {
 
     @Override
     public List<ShoeSelfSdo> findAll() {
-
         List<ShoeSelfSdo> dtoList = new ArrayList<>();
         shoeRepo.findAll().forEach((entity) -> {
             ShoeSelfSdo dto = new ShoeSelfSdo();
             BeanUtils.copyProperties(entity, dto);
+            dto.setCategory(entity.getShoeCategory().getCode());
+            dto.setShoeSizes(shoeSizeService.getSizesByShoeId(entity.getId()));
+            dto.setAverageStar(evaluateRepo.getAverageStarByShoeId(entity.getId()));
+            dto.setImageUrls(imageService.getImageUrlsByShoeId(entity.getId()));
 
             dtoList.add(dto);
         });
@@ -68,11 +71,21 @@ public class ShoeServiceImpl implements ShoeService {
 
     @Override
     public ShoeSelfSdo self(SelfShoeSdi req) {
-
         ShoeSelfSdo dto = new ShoeSelfSdo();
-        BeanUtils.copyProperties(findOne(req.getId()), dto);
+        Shoe entity = findOne(req.getId());
+
+        BeanUtils.copyProperties(entity, dto);
+        dto.setShoeSizes(shoeSizeService.getSizesByShoeId(entity.getId()));
+        dto.setAverageStar(evaluateRepo.getAverageStarByShoeId(entity.getId()));
+        dto.setImageUrls(imageService.getImageUrlsByShoeId(entity.getId()));
 
         return dto;
+    }
+
+    @Override
+    public List<ShoeSelfSdo> search(String search, String size, String category, Integer from, Integer to) {
+
+        return shoeRepo.search(search, size, category, from, to);
     }
 
     @Override

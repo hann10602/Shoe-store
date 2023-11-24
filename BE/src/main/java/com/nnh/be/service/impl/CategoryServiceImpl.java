@@ -5,6 +5,7 @@ import com.nnh.be.dto.sdo.category.CategorySelfSdo;
 import com.nnh.be.model.Category;
 import com.nnh.be.repository.CategoryRepository;
 import com.nnh.be.service.CategoryService;
+import jakarta.persistence.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -37,13 +38,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategorySelfSdo> findAll() {
         try {
-            List<Category> entityList = categoryRepo.findAll();
+            List<Integer> statisticalList = categoryRepo.findAllWithStatistical();
             List<CategorySelfSdo> dtoList = new ArrayList<>();
 
-            entityList.forEach(entity -> {
+            categoryRepo.findAll().forEach((entity) -> {
                 CategorySelfSdo dto = new CategorySelfSdo();
-
                 BeanUtils.copyProperties(entity, dto);
+                dto.setProductQuantity(statisticalList.get(entity.getId().intValue() - 1));
+
                 dtoList.add(dto);
             });
 

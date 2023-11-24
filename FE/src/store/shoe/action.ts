@@ -15,9 +15,7 @@ const token = getToken();
 
 const getOne = createAsyncThunk("size/self", async (param: GetShoeType) => {
   try {
-    const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`);
     if (resp.status === 200) {
       return resp.data;
     }
@@ -28,9 +26,7 @@ const getOne = createAsyncThunk("size/self", async (param: GetShoeType) => {
 
 const getAll = createAsyncThunk("shoe/get-all", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/shoe/get-all`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const resp = await axios.get(`${baseUrl}/shoe/get-all`);
     if (resp.status === 200) {
       return resp.data;
     }
@@ -44,8 +40,7 @@ const getByCategory1 = createAsyncThunk(
   async (params: GetShoesByCategoryType) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/shoe/get-by-category/${params.categoryCode}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `${baseUrl}/shoe/get-by-category/${params.categoryCode}`
       );
       if (resp.status === 200) {
         return resp.data;
@@ -62,7 +57,6 @@ const getByCategory2 = createAsyncThunk(
     try {
       const resp = await axios.get(
         `${baseUrl}/shoe/get-by-category/${params.categoryCode}`,
-        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -79,7 +73,6 @@ const getByCategory3 = createAsyncThunk(
     try {
       const resp = await axios.get(
         `${baseUrl}/shoe/get-by-category/${params.categoryCode}`,
-        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -95,13 +88,7 @@ const searchShoes = createAsyncThunk(
   async (param: SearchShoes) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/shoe/search?s=?
-        ${param.search && `search=${param.search}`}
-        ${param.category && `&category=${param.category}`}
-        ${param.size && `&size=${param.size}`}
-        ${param.priceFrom && `&price-from=${param.priceFrom}`}
-        ${param.priceTo && `&price-to=${param.priceTo}`}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `${baseUrl}/shoe/search?s=?${param.search ? `&search=${param.search}` : ""}${param.category ? `&category=${param.category}` : ""}${param.size ? `&size=${param.size}` : ""}${param.priceFrom ? `&price-from=${param.priceFrom}` : ""}${param.priceTo ? `&price-to=${param.priceTo}` : ""}`
       );
       if (resp.status === 200) {
         return resp.data;

@@ -28,7 +28,6 @@ const getOne = createAsyncThunk("size/self", async (param: GetSizeType) => {
 const getAll = createAsyncThunk("size/get-all", async () => {
   try {
     const resp = await axios.get(`${baseUrl}/size/get-all`, {
-      headers: { Authorization: `Bearer ${token}` },
     });
     if (resp.status === 200) {
       return resp.data;
