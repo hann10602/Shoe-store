@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface EvaluateRepository extends JpaRepository<Evaluate, Long> {
-    List<Evaluate> findByShoeEvaluate(Shoe shoe);
+    @Query(value = "SELECT * FROM evaluate WHERE shoe_id = :shoeId", nativeQuery = true)
+    List<Evaluate> findByShoeId(Long shoeId);
 
     @Query(value = "SELECT AVG(star) FROM evaluate WHERE shoe_id = :shoeId", nativeQuery = true)
     Integer getAverageStarByShoeId(Long shoeId);
