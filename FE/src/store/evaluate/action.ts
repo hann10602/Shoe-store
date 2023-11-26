@@ -45,7 +45,7 @@ const getByShoeId = createAsyncThunk(
 
 const create = createAsyncThunk(
   "evaluate/create",
-  async (param: CreateEvaluateType) => {
+  async (param: CreateEvaluateType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/evaluate/create`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +54,7 @@ const create = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );

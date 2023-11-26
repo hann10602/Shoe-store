@@ -75,9 +75,10 @@ public class ShoeServiceImpl implements ShoeService {
         Shoe entity = findOne(req.getId());
 
         BeanUtils.copyProperties(entity, dto);
+        dto.setCategory(entity.getShoeCategory().getCode());
         dto.setShoeSizes(shoeSizeService.getSizesByShoeId(entity.getId()));
         dto.setAverageStar(evaluateRepo.getAverageStarByShoeId(entity.getId()));
-        dto.setImageUrls(imageService.getImageUrlsByShoeId(entity.getId()));
+        dto.setImageUrls(entity.getImages().stream().map(image ->  image.getUrl()).toList());
 
         return dto;
     }

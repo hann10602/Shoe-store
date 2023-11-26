@@ -4,8 +4,17 @@ export type SizeType = {
   code: string;
 };
 
+export type SizeQuantityType = {
+  quantity: number;
+};
+
 export type GetSizeType = {
   id: number;
+};
+
+export type GetQuantityType = {
+  shoeId: number;
+  sizeCode: string;
 };
 
 export type GetSizeByShoeIdType = {

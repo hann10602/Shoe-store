@@ -1,9 +1,6 @@
 package com.nnh.be.controller.api;
 
-import com.nnh.be.dto.sdi.shoe.CreateShoeSdi;
-import com.nnh.be.dto.sdi.shoe.DeleteShoeSdi;
-import com.nnh.be.dto.sdi.shoe.SelfShoeSdi;
-import com.nnh.be.dto.sdi.shoe.UpdateShoeSdi;
+import com.nnh.be.dto.sdi.shoe.*;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.service.ShoeService;
@@ -30,11 +27,7 @@ public class ShoeController {
     }
 
     @GetMapping("/search")
-    public List<ShoeSelfSdo> search(@RequestParam(value = "search", required = false) String search,
-                                    @RequestParam(value = "size", required = false) String size,
-                                    @RequestParam(value = "category", required = false) String category,
-                                    @RequestParam(value = "from", required = false) Integer from,
-                                    @RequestParam(value = "to", required = false) Integer to
+    public List<ShoeSelfSdo> search(SearchShoeSdi req
                                     ) {
 //        return shoeService.search(search, size, category, from, to);
         return shoeService.findAll();

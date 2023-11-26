@@ -114,6 +114,7 @@
         border-top: 1px solid black;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         padding: 40px 0 20px 0;
 
         .size-choose {
@@ -167,6 +168,8 @@
       .product-quantity {
         font-size: 18px;
         font-weight: 500;
+        display: flex;
+        align-items: center;
         margin-bottom: 40px;
       }
 
@@ -316,8 +319,31 @@
       width: 100%;
       padding: 40px 60px;
 
-      #review-title {
-        font-size: 24px;
+      #review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        #review-title {
+          font-size: 24px;
+        }
+
+        #review-filter {
+          display: flex;
+          #review-filter-title {
+            margin-right: 8px;
+
+            svg {
+              width: 20px;
+              height: 28px;
+            }
+          }
+
+          svg {
+            width: 28px;
+            height: 28px;
+          }
+        }
       }
 
       .review-wrapper {
@@ -344,7 +370,7 @@
         }
 
         .review-information {
-          width: 160px;
+          width: 200px;
           font-size: 12px;
 
           .review-date {
@@ -716,6 +742,7 @@
       .product-quantity {
         font-size: 20px;
         font-weight: 500;
+        display: flex;
         margin-bottom: 40px;
       }
 
@@ -866,8 +893,31 @@
       width: 100%;
       padding: 40px 60px;
 
-      #review-title {
-        font-size: 32px;
+      #review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        #review-title {
+          font-size: 24px;
+        }
+
+        #review-filter {
+          display: flex;
+          #review-filter-title {
+            margin-right: 8px;
+            
+            svg {
+              width: 16px;
+              height: 24px;
+            }
+          }
+
+          svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
       }
 
       .review-wrapper {
@@ -1257,6 +1307,7 @@
 
       .product-quantity {
         font-size: 20px;
+        display: flex;
         font-weight: 500;
         margin-bottom: 40px;
       }
@@ -1403,10 +1454,33 @@
     #review {
       background-color: antiquewhite;
       width: 100%;
-      padding: 40px 60px;
+      padding: 20px;
 
-      #review-title {
-        font-size: 32px;
+      #review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        #review-title {
+          font-size: 24px;
+        }
+
+        #review-filter {
+          display: flex;
+          #review-filter-title {
+            margin-right: 8px;
+            
+            svg {
+              width: 20px;
+              height: 28px;
+            }
+          }
+
+          svg {
+            width: 28px;
+            height: 28px;
+          }
+        }
       }
 
       .review-wrapper {

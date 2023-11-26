@@ -11,7 +11,7 @@ import java.util.Date;
 public class CommonSdo {
     private Long id;
     private String createdBy;
-    private Date createdDate;
+    private String createdDate;
     private String updatedBy;
-    private Date updatedDate;
+    private String updatedDate;
 }

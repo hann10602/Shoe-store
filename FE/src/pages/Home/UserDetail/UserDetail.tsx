@@ -2,10 +2,11 @@ import { LoginUserType } from "@/store/auth/type";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import ChangePassword from "./ChangePassword";
-import OrderList from "./OrderLIst";
+import OrderList from "./OrderList";
 import UserInformation from "./UserInformation";
 import "./style.scss";
 import { getCurrentLoginUser } from "@/utils";
+import CartList from "./CartList";
 
 type Props = {};
 
@@ -44,6 +45,12 @@ const UserDetail = (props: Props) => {
               User information
             </p>
             <p
+              className={`${page === "orders" ? "page-chosen" : ""} page-nav`}
+              onClick={() => history.push("/user?page=orders")}
+            >
+              Orders
+            </p>
+            <p
               className={`${page === "carts" ? "page-chosen" : ""} page-nav`}
               onClick={() => history.push("/user?page=carts")}
             >
@@ -75,10 +82,13 @@ const UserDetail = (props: Props) => {
             <UserInformation user={user} />
           )}
           {page === "carts" && user !== undefined && (
-            <OrderList userId={user?.id} />
+            <CartList userId={user?.id} />
           )}
           {page === "change-password" && user !== undefined && (
             <ChangePassword originPassword={user?.password} userId={user.id} />
+          )}
+          {page === "orders" && user !== undefined && (
+            <OrderList userId={user.id} />
           )}
         </div>
       </div>

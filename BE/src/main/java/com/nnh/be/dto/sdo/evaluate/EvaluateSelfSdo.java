@@ -13,5 +13,4 @@ public class EvaluateSelfSdo extends CommonSdo {
     private Integer star;
     private String evaluate;
     private String userName;
-    private Date createdDate;
 }

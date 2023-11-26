@@ -24,8 +24,6 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
       dispatch(
         billAsyncAction.update({
           id: bill?.id,
-          quantity: e.quantity,
-          sizeCode: e.sizeCode,
           billStatus: e.billStatus,
           billReceived: e.billReceived,
         })
@@ -58,54 +56,15 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control mb-5">
               <label className="mb-2 text-lg font-semibold" htmlFor="">
-                User: 
+                User:
               </label>
-              <p className="inline h-10 text-lg px-3">
-                {bill.userName}
-              </p>
+              <p className="inline h-10 text-lg px-3">{bill.userName}</p>
             </div>
             <div className="form-control mb-5">
               <label className="mb-2 text-lg font-semibold" htmlFor="">
-                Shoe: 
+                Shoe:
               </label>
-              <p className="inline h-10 text-lg px-3">
-                {bill.shoeName}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Quantity
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="number"
-                defaultValue={bill?.quantity}
-                {...register("quantity", {
-                  required: "Please enter quantity",
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.quantity?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Size
-              </label>
-              <select
-                defaultValue={bill.shoeSize}
-                className="mb-6 w-50 h-10 border border-solid border-gray-300 text-lg rounded-md"
-                {...register("sizeCode", {
-                  required: "Please choose sizeCode",
-                })}
-              >
-                {sizes.map((item) => (
-                  <option value={item.code}>{item.name}</option>
-                ))}
-              </select>
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.sizeCode?.message?.toString()}
-              </p>
+              <p className="inline h-10 text-lg px-3">{bill.shoeName}</p>
             </div>
             <div className="form-control relative">
               <label className="block mb-2 text-lg font-semibold" htmlFor="">

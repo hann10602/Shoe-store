@@ -63,6 +63,7 @@ const evaluateSlice = createSlice({
       })
       .addCase(evaluateAsyncAction.create.rejected, (state) => {
         state.isCreatingEvaluate = false;
+        throw new Error("You had evaluate");
       });
     builder
       .addCase(evaluateAsyncAction.deletes.pending, (state) => {

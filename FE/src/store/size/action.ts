@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   CreateSizeType,
   DeleteSizeType,
+  GetQuantityType,
   GetSizeByShoeIdType,
   GetSizeType,
   UpdateSizeType,
@@ -27,8 +28,7 @@ const getOne = createAsyncThunk("size/self", async (param: GetSizeType) => {
 
 const getAll = createAsyncThunk("size/get-all", async () => {
   try {
-    const resp = await axios.get(`${baseUrl}/size/get-all`, {
-    });
+    const resp = await axios.get(`${baseUrl}/size/get-all`, {});
     if (resp.status === 200) {
       return resp.data;
     }
@@ -36,6 +36,22 @@ const getAll = createAsyncThunk("size/get-all", async () => {
     return isRejectedWithValue(err);
   }
 });
+
+const getSizeQuantity = createAsyncThunk(
+  "size/get-quantity",
+  async (param: GetQuantityType) => {
+    try {
+      const resp = await axios.get(
+        `${baseUrl}/size/get-quantity?shoeId=${param.shoeId}&sizeCode=${param.sizeCode}`
+      );
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return isRejectedWithValue(err);
+    }
+  }
+);
 
 const getByShoeId = createAsyncThunk(
   "size/getByShoeId",
@@ -106,6 +122,7 @@ export const sizeAsyncAction = {
   getOne,
   getAll,
   getByShoeId,
+  getSizeQuantity,
   create,
   update,
   deletes,

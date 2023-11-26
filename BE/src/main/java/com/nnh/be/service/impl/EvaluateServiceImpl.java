@@ -4,8 +4,8 @@ import com.nnh.be.dto.sdi.evaluate.CreateEvaluateSdi;
 import com.nnh.be.dto.sdi.evaluate.DeleteEvaluateSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.evaluate.EvaluateSelfSdo;
+import com.nnh.be.exception.MessageException;
 import com.nnh.be.model.Evaluate;
-import com.nnh.be.model.Shoe;
 import com.nnh.be.repository.EvaluateRepository;
 import com.nnh.be.service.EvaluateService;
 import com.nnh.be.service.ShoeService;
@@ -15,6 +15,7 @@ import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class EvaluateServiceImpl implements EvaluateService {
 
     @Override
     public List<EvaluateSelfSdo> findByShoeId(Long shoeId) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<Evaluate> entityList = evaluateRepo.findByShoeId(shoeId);
         List<EvaluateSelfSdo> sdoList = new ArrayList<>();
 
@@ -34,6 +36,7 @@ public class EvaluateServiceImpl implements EvaluateService {
             EvaluateSelfSdo sdo = new EvaluateSelfSdo();
             BeanUtils.copyProperties(evaluate, sdo);
             sdo.setUserName(evaluate.getUserEvaluate().getFullName());
+            sdo.setCreatedDate(sdf.format(evaluate.getCreatedDate()));
 
             sdoList.add(sdo);
         });
@@ -44,6 +47,10 @@ public class EvaluateServiceImpl implements EvaluateService {
     @Override
     public MessageSdo create(CreateEvaluateSdi req) {
         try {
+            if(evaluateRepo.findByUserIdAndShoeId(req.getUserId(), req.getShoeId()).isPresent()) {
+                throw new MessageException("You had evaluate");
+            }
+
             Evaluate evaluate = new Evaluate();
             BeanUtils.copyProperties(req, evaluate);
             evaluate.setUserEvaluate(userService.findOne(req.getUserId()));

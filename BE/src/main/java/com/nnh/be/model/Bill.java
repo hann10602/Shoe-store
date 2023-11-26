@@ -11,6 +11,12 @@ import lombok.NoArgsConstructor;
 public class Bill extends BaseEntity{
     @Column
     private Integer quantity;
+    @Column
+    private Boolean received;
+    @Column
+    private String status;
+    @Column
+    private Integer totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "size_id")
