@@ -84,6 +84,17 @@ const billSlice = createSlice({
         state.isCreatingBill = false;
       });
     builder
+      .addCase(billAsyncAction.createFromCart.pending, (state) => {
+        state.isCreatingBill = true;
+      })
+      .addCase(billAsyncAction.createFromCart.fulfilled, (state, action) => {
+        state.response = action.payload;
+        state.isCreatingBill = false;
+      })
+      .addCase(billAsyncAction.createFromCart.rejected, (state) => {
+        state.isCreatingBill = false;
+      });
+    builder
       .addCase(billAsyncAction.update.pending, (state) => {
         state.isUpdatingBill = true;
       })

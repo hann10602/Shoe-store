@@ -33,6 +33,7 @@ type Props = {};
 
 const ProductGroup = (props: Props) => {
   const [chooseSizesPage, setChooseSizesPage] = useState<boolean>(false);
+  const [shoeSizes, setShoeSizes] = useState<string[]>([]);
   const [groupShoeList, setGroupShoeList] = useState<GroupShoe[]>([]);
   const [shoeId, setShoeId] = useState<number | undefined>(undefined);
   const [breakpoint, setBreakPoint] = useState<number>();
@@ -59,8 +60,6 @@ const ProductGroup = (props: Props) => {
   const shoesByCategory1 = useSelector(shoesByCategory1Selector);
   const shoesByCategory2 = useSelector(shoesByCategory2Selector);
   const shoesByCategory3 = useSelector(shoesByCategory3Selector);
-
-  const sizeList = useSelector(sizesByShoeIdSelector);
 
   const loginUser = getCurrentLoginUser();
 
@@ -137,6 +136,7 @@ const ProductGroup = (props: Props) => {
               className="choose-size-btn"
               onClick={() => {
                 setChooseSizesPage(false);
+                setShoeSizes([]);
                 setShoeId(undefined);
               }}
             >
@@ -144,23 +144,24 @@ const ProductGroup = (props: Props) => {
             </button>
             <p className="choose-size-title">Choose size</p>
             <div className="size-wrapper">
-              {sizeList.map((size) => (
+              {shoeSizes.map((size) => (
                 <div
                   className="size-item"
-                  key={size.id}
+                  key={size}
                   onClick={() => {
                     dispatch(
                       cartAsyncAction.create({
                         userId: loginUser.id,
                         shoeId: shoeId,
-                        sizeCode: size.code,
+                        sizeCode: size,
                         quantity: 1,
                       })
                     );
+                    setShoeSizes([]);
                     setChooseSizesPage(false);
                   }}
                 >
-                  {size.name}
+                  {size}
                 </div>
               ))}
             </div>
@@ -266,10 +267,8 @@ const ProductGroup = (props: Props) => {
                         <button
                           className="add-to-cart-btn"
                           onClick={() => {
-                            dispatch(
-                              sizeAsyncAction.getByShoeId({ shoeId: item.id })
-                            );
                             setShoeId(item.id);
+                            setShoeSizes(item.shoeSizes);
                             setChooseSizesPage(true);
                           }}
                         >

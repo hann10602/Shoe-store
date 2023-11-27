@@ -20,7 +20,6 @@ public class ShoeController {
     public ShoeSelfSdo self(@RequestParam("id") Long id) {
         return shoeService.self(SelfShoeSdi.of(id));
     }
-
     @GetMapping("/get-all")
     public List<ShoeSelfSdo> findAll() {
         return shoeService.findAll();

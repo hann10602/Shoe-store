@@ -1,7 +1,8 @@
 import { BASE_URL, getToken } from "@/utils";
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
+  CreateBillFromCartType,
   CreateBillType,
   DeleteBillType,
   GetBillByUserIdType,
@@ -12,35 +13,41 @@ import {
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("bill/self", async (param: GetBillType) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/bill/self/${param.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (resp.status === 200) {
-      return resp.data;
+const getOne = createAsyncThunk(
+  "bill/self",
+  async (param: GetBillType, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/bill/self/${param.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
   }
-});
+);
 
-const getAll = createAsyncThunk("bill/get-all", async () => {
-  try {
-    const resp = await axios.get(`${baseUrl}/bill/get-all`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (resp.status === 200) {
-      return resp.data;
+const getAll = createAsyncThunk(
+  "bill/get-all",
+  async (param, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/bill/get-all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
   }
-});
+);
 
 const getByUserId = createAsyncThunk(
   "bill/getByUserId",
-  async (params: GetBillByUserIdType) => {
+  async (params: GetBillByUserIdType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
         `${baseUrl}/bill/get-by-user-id/${params.userId}`,
@@ -50,14 +57,14 @@ const getByUserId = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      // return rejectWithValue(err);
     }
   }
 );
 
 const create = createAsyncThunk(
   "bill/create",
-  async (param: CreateBillType) => {
+  async (param: CreateBillType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/bill/create`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -66,14 +73,30 @@ const create = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
+    }
+  }
+);
+
+const createFromCart = createAsyncThunk(
+  "bill/createFromCart",
+  async (param: CreateBillFromCartType, { rejectWithValue }) => {
+    try {
+      const resp = await axios.post(`${baseUrl}/bill/create-from-cart`, param, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
   }
 );
 
 const update = createAsyncThunk(
   "bill/update",
-  async (param: UpdateBillType) => {
+  async (param: UpdateBillType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/bill/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -82,14 +105,14 @@ const update = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const deletes = createAsyncThunk(
   "bill/delete",
-  async (param: DeleteBillType) => {
+  async (param: DeleteBillType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/bill/delete`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -98,7 +121,7 @@ const deletes = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
@@ -108,6 +131,7 @@ export const billAsyncAction = {
   getAll,
   getByUserId,
   create,
+  createFromCart,
   update,
   deletes,
 };

@@ -24,8 +24,8 @@ public class CartController {
         return cartService.findAll();
     }
 
-    @GetMapping("/get-by-user-id")
-    public List<CartSelfSdo> findByUser(@RequestParam("user-id") Long id) {
+    @GetMapping("/get-by-user-id/{user-id}")
+    public List<CartSelfSdo> findByUser(@PathVariable("user-id") Long id) {
         return cartService.findAllByUser(id);
     }
 
@@ -39,8 +39,8 @@ public class CartController {
         return cartService.update(req);
     }
 
-    @DeleteMapping("/delete")
-    public MessageSdo update(@RequestBody DeleteCartSdi req) {
-        return cartService.delete(req);
+    @DeleteMapping("/delete/{id}")
+    public MessageSdo update(@PathVariable  Long id) {
+        return cartService.delete(id);
     }
 }

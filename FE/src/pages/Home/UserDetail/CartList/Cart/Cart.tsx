@@ -1,15 +1,21 @@
 import { cartAsyncAction } from "@/store/cart/action";
 import { CartType } from "@/store/cart/type";
 import { useAppDispatch } from "@/store/store";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.scss";
+import { billAsyncAction } from "@/store/bill/action";
+import { getCurrentLoginUser } from "@/utils";
 
 type Props = {
   order: CartType;
 };
 
-const Order = ({ order }: Props) => {
+const Cart = ({ order }: Props) => {
+  const [currentQuantity, setCurrentQuantity] = useState<number>(
+    order.quantity
+  );
+
   const history = useHistory();
   const dispatch = useAppDispatch();
 
@@ -34,6 +40,7 @@ const Order = ({ order }: Props) => {
               className="fix-quantity-btn"
               onClick={() => {
                 if (order.quantity > 1) {
+                  setCurrentQuantity(order.quantity - 1);
                   dispatch(
                     cartAsyncAction.update({
                       id: order.id,
@@ -46,11 +53,12 @@ const Order = ({ order }: Props) => {
               {" "}
               -{" "}
             </button>
-            <div className="buy-quantity">{order.quantity}</div>
+            <div className="buy-quantity">{currentQuantity}</div>
             <button
               className="fix-quantity-btn"
               onClick={() => {
                 if (order.quantity < order.maxQuantity) {
+                  setCurrentQuantity(order.quantity + 1);
                   dispatch(
                     cartAsyncAction.update({
                       id: order.id,
@@ -90,9 +98,14 @@ const Order = ({ order }: Props) => {
         <div className="order-options-btn">
           <button
             className="buy-btn"
-            onClick={() =>
-              dispatch(cartAsyncAction.order({ idList: [order.id] }))
-            }
+            onClick={() => {
+              dispatch(
+                billAsyncAction.createFromCart({
+                  cartIdList: [order.id],
+                })
+              );
+              history.push("/user?page=orders");
+            }}
           >
             Buy
           </button>
@@ -121,4 +134,4 @@ const Order = ({ order }: Props) => {
   );
 };
 
-export default memo(Order);
+export default memo(Cart);

@@ -12,8 +12,10 @@ import java.util.List;
 
 public interface CartService {
     List<CartSelfSdo> findAll();
-    List<CartSelfSdo> findAllByUser(Long id);
+    List<CartSelfSdo> findAllByUser(Long userId);
+
+    List<Cart> findAllByIdIn(List<Long> ids);
     MessageSdo create(CreateCartSdi req);
     MessageSdo update(UpdateCartSdi req);
-    MessageSdo delete(DeleteCartSdi req);
+    MessageSdo delete(Long id);
 }

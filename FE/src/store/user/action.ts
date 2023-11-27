@@ -12,7 +12,7 @@ import { BASE_URL, getToken } from "@/utils";
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("size/self", async (param: GetUserType) => {
+const getOne = createAsyncThunk("size/self", async (param: GetUserType, {rejectWithValue}) => {
   try {
     const resp = await axios.get(`${baseUrl}/user/self/${param.id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -21,11 +21,11 @@ const getOne = createAsyncThunk("size/self", async (param: GetUserType) => {
       return resp.data;
     }
   } catch (err) {
-    return isRejectedWithValue(err);
+    return rejectWithValue(err);
   }
 });
 
-const getAll = createAsyncThunk("user/get-all", async () => {
+const getAll = createAsyncThunk("user/get-all", async (param, {rejectWithValue}) => {
   try {
     const resp = await axios.get(`${baseUrl}/user/get-all`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -34,14 +34,14 @@ const getAll = createAsyncThunk("user/get-all", async () => {
       return resp.data;
     }
   } catch (err) {
-    // return isRejectedWithValue(err);
+    // return rejectWithValue(err);
     return err;
   }
 });
 
 const create = createAsyncThunk(
   "user/create",
-  async (param: CreateUserType) => {
+  async (param: CreateUserType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/user/create`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -50,14 +50,14 @@ const create = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const update = createAsyncThunk(
   "user/update",
-  async (param: UpdateUserType) => {
+  async (param: UpdateUserType, {rejectWithValue}) => {
     try {
       
       const resp = await axios.post(`${baseUrl}/user/update`, param, {
@@ -67,14 +67,14 @@ const update = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const changePassword = createAsyncThunk(
   "user/change-password",
-  async (param: ChangePasswordUserType) => {
+  async (param: ChangePasswordUserType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/user/change-password`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -83,14 +83,14 @@ const changePassword = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const deletes = createAsyncThunk(
   "user/delete",
-  async (param: DeleteUserType) => {
+  async (param: DeleteUserType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/user/delete`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -99,7 +99,7 @@ const deletes = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );

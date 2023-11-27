@@ -13,7 +13,7 @@ import { BASE_URL, getToken } from "@/utils";
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("cart/self", async (param: GetCartType) => {
+const getOne = createAsyncThunk("cart/self", async (param: GetCartType, {rejectWithValue}) => {
   try {
     const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -22,11 +22,11 @@ const getOne = createAsyncThunk("cart/self", async (param: GetCartType) => {
       return resp.data;
     }
   } catch (err) {
-    return isRejectedWithValue(err);
+    return rejectWithValue(err);
   }
 });
 
-const getAll = createAsyncThunk("cart/get-all", async () => {
+const getAll = createAsyncThunk("cart/get-all", async (param, {rejectWithValue}) => {
   try {
     const resp = await axios.get(`${baseUrl}/cart/get-all`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -35,13 +35,13 @@ const getAll = createAsyncThunk("cart/get-all", async () => {
       return resp.data;
     }
   } catch (err) {
-    return isRejectedWithValue(err);
+    return rejectWithValue(err);
   }
 });
 
 const getByUserId = createAsyncThunk(
   "cart/getByUserId",
-  async (params: GetCartByUserIdType) => {
+  async (params: GetCartByUserIdType, {rejectWithValue}) => {
     try {
       const resp = await axios.get(
         `${baseUrl}/cart/get-by-user-id/${params.userId}`,
@@ -51,27 +51,14 @@ const getByUserId = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
-const order = createAsyncThunk("cart/order", async (param: OrderCartType) => {
-  try {
-    const resp = await axios.post(`${baseUrl}/cart/order`, param, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (resp.status === 200) {
-      return resp.data;
-    }
-  } catch (err) {
-    return isRejectedWithValue(err);
-  }
-});
-
 const create = createAsyncThunk(
   "cart/create",
-  async (param: CreateCartType) => {
+  async (param: CreateCartType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/cart/create`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -80,14 +67,14 @@ const create = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const update = createAsyncThunk(
   "cart/update",
-  async (param: UpdateCartType) => {
+  async (param: UpdateCartType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/cart/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -96,14 +83,14 @@ const update = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const deletes = createAsyncThunk(
   "cart/delete",
-  async (param: DeleteCartType) => {
+  async (param: DeleteCartType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/cart/delete`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -112,7 +99,7 @@ const deletes = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
@@ -121,7 +108,6 @@ export const cartAsyncAction = {
   getOne,
   getAll,
   getByUserId,
-  order,
   create,
   update,
   deletes,

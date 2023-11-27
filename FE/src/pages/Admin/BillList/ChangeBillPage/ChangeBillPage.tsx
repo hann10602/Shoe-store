@@ -1,4 +1,3 @@
-import { sizes } from "@/constants/size";
 import { billAsyncAction } from "@/store/bill/action";
 import { BillType } from "@/store/bill/type";
 import { useAppDispatch } from "@/store/store";
@@ -23,9 +22,10 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
     if (bill) {
       dispatch(
         billAsyncAction.update({
-          id: bill?.id,
-          billStatus: e.billStatus,
-          billReceived: e.billReceived,
+          id: bill.id,
+          status: e.status,
+          isEvaluate: bill.isEvaluate,
+          received: e.received,
         })
       );
     }
@@ -71,28 +71,28 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
                 Bill received
               </label>
               <select
-                defaultValue={bill.billReceived ? "TRUE" : "FALSE"}
+                defaultValue={bill.received ? "TRUE" : "FALSE"}
                 className="mb-6 w-50 h-10 border border-solid border-gray-300 text-lg rounded-md"
-                {...register("billReceived", {
-                  required: "Please choose billReceived",
+                {...register("received", {
+                  required: "Please choose order received",
                 })}
               >
                 <option value="FALSE">Have not received</option>
                 <option value="TRUE">Received</option>
               </select>
               <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.billReceived?.message?.toString()}
+                {errors.received?.message?.toString()}
               </p>
             </div>
             <div className="form-control relative">
               <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Bill status
+                Order status
               </label>
               <select
-                defaultValue={bill.billStatus}
+                defaultValue={bill.status}
                 className="mb-6 w-50 h-10 border border-solid border-gray-300 text-lg rounded-md"
-                {...register("billStatus", {
-                  required: "Please choose billStatus",
+                {...register("status", {
+                  required: "Please choose order status",
                 })}
               >
                 <option value="WAIT">Wait</option>
@@ -100,7 +100,7 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
                 <option value="COMPLETED">Completed</option>
               </select>
               <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.billStatus?.message?.toString()}
+                {errors.status?.message?.toString()}
               </p>
             </div>
             <div className="flex justify-between items-center">

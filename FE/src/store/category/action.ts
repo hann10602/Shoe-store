@@ -5,7 +5,7 @@ import {
   UpdateCategoryType,
 } from "@/store/category/type";
 import { BASE_URL, getToken } from "@/utils";
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const baseUrl = BASE_URL;
@@ -13,7 +13,7 @@ const token = getToken();
 
 const getOne = createAsyncThunk(
   "category/self",
-  async (param: GetCategoryType) => {
+  async (param: GetCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/category/self/${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -22,25 +22,28 @@ const getOne = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
-const getAll = createAsyncThunk("category/get-all", async () => {
-  try {
-    const resp = await axios.get(`${baseUrl}/category/get-all`);
-    if (resp.status === 200) {
-      return resp.data;
+const getAll = createAsyncThunk(
+  "category/get-all",
+  async (param, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/category/get-all`);
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return isRejectedWithValue(err);
   }
-});
+);
 
 const create = createAsyncThunk(
   "category/create",
-  async (param: CreateCategoryType) => {
+  async (param: CreateCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/category/create`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -49,14 +52,14 @@ const create = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const update = createAsyncThunk(
   "category/update",
-  async (param: UpdateCategoryType) => {
+  async (param: UpdateCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/category/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -65,14 +68,14 @@ const update = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const deletes = createAsyncThunk(
   "category/delete",
-  async (param: DeleteCategoryType) => {
+  async (param: DeleteCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/category/delete`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -81,7 +84,7 @@ const deletes = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );

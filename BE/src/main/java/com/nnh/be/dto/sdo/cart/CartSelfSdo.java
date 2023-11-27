@@ -1,9 +1,10 @@
 package com.nnh.be.dto.sdo.cart;
 
+import com.nnh.be.dto.common.CommonSdo;
 import lombok.Data;
 
 @Data
-public class CartSelfSdo {
+public class CartSelfSdo extends CommonSdo {
     private Long id;
     private Integer quantity;
     private Integer maxQuantity;

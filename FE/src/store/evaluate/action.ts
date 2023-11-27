@@ -1,4 +1,5 @@
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL, getToken } from "@/utils";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
   CreateEvaluateType,
@@ -6,14 +7,13 @@ import {
   GetEvaluateType,
   GetEvaluatesByShoeIdType,
 } from "./type";
-import { BASE_URL, getToken } from "@/utils";
 
 const baseUrl = BASE_URL;
 const token = getToken();
 
 const getOne = createAsyncThunk(
   "evaluate/self",
-  async (param: GetEvaluateType) => {
+  async (param: GetEvaluateType, {rejectWithValue}) => {
     try {
       const resp = await axios.get(`${baseUrl}/evaluate/self/${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -22,14 +22,14 @@ const getOne = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
 
 const getByShoeId = createAsyncThunk(
   "evaluate/getByShoeId",
-  async (param: GetEvaluatesByShoeIdType) => {
+  async (param: GetEvaluatesByShoeIdType, {rejectWithValue}) => {
     try {
       const resp = await axios.get(
         `${baseUrl}/evaluate/get-by-shoe-id/${param.shoeId}`
@@ -38,7 +38,7 @@ const getByShoeId = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
@@ -61,7 +61,7 @@ const create = createAsyncThunk(
 
 const deletes = createAsyncThunk(
   "evaluate/delete",
-  async (param: DeleteEvaluateType) => {
+  async (param: DeleteEvaluateType, {rejectWithValue}) => {
     try {
       const resp = await axios.post(`${baseUrl}/evaluate/delete`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -70,7 +70,7 @@ const deletes = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      return isRejectedWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );

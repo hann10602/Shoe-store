@@ -24,7 +24,6 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/size/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/category/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/size/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/evaluate/get-by-shoe-id/**")).permitAll()

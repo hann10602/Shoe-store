@@ -1,6 +1,6 @@
 import SuggestProduct from "@/assets/img/web/suggest-product.jpg";
 import AverageStar from "@/components/AverageStar";
-import { LoginUserType } from "@/store/auth/type";
+import { billAsyncAction } from "@/store/bill/action";
 import { cartAsyncAction } from "@/store/cart/action";
 import { evaluateAsyncAction } from "@/store/evaluate/action";
 import {
@@ -17,10 +17,10 @@ import {
 import { sizeAsyncAction } from "@/store/size/action";
 import { quantitySelector } from "@/store/size/selector";
 import { useAppDispatch } from "@/store/store";
+import { getCurrentLoginUser } from "@/utils";
 import { Carousel } from "antd";
 import { CarouselRef } from "antd/lib/carousel";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
@@ -30,15 +30,13 @@ type Props = {};
 const ProductDetail = (props: Props) => {
   const [render, setRender] = useState<boolean>(false);
   const [mainImage, setMainImage] = useState<string>();
-  const [buyQuantity, setBuyQuantity] = useState<number>(1);
+  const [buyQuantity, setBuyQuantity] = useState<number>(0);
   const [productQuantity, setProductQuantity] = useState<number | undefined>(
     undefined
   );
   const [buySize, setBuySize] = useState<string>("");
   const [hasBuySize, setHasBuySize] = useState<boolean>(true);
   const [evaluatePage, setEvaluatePage] = useState<number>(1);
-  const [evaluateOrderStar, setEvaluateOrderStar] = useState<number>(5);
-  const [evaluateSection, setEvaluateSection] = useState<boolean>(false);
   const [breakpoint, setBreakPoint] = useState<number>();
   const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
   const [filterTitle, setFilterTitle] = useState<
@@ -46,12 +44,6 @@ const ProductDetail = (props: Props) => {
   >("Normal");
 
   const suggestRef: React.Ref<CarouselRef> = useRef(null);
-
-  const form = useForm();
-
-  const { register, formState, handleSubmit, reset } = form;
-
-  const { errors } = formState;
 
   const screenWidth: number = window.innerWidth;
 
@@ -70,26 +62,22 @@ const ProductDetail = (props: Props) => {
   const isSearchShoes = useSelector(isGettingShoesSelector);
   const isGettingEvaluates = useSelector(isGettingEvaluatesSelector);
 
-  const userInformation: string | null = localStorage.getItem("login-user");
-
-  const user: LoginUserType =
-    userInformation != null ? JSON.parse(userInformation) : null;
+  const loginUser = getCurrentLoginUser();
 
   const reviewPagination = Array.from(
     { length: Math.ceil(evaluates.length / 5) },
     (_, index) => index + 1
   );
 
-  const handleBuyProduct = () => {
-    if (!user) {
+  const handleAddToCartProduct = () => {
+    if (!loginUser) {
       history.push("/sign-in");
     } else if (hasBuySize && buySize === "") {
       setHasBuySize(false);
     } else if (shoe) {
-      setEvaluateSection(true);
       dispatch(
         cartAsyncAction.create({
-          userId: user.id,
+          userId: loginUser.id,
           shoeId: shoe.id,
           sizeCode: buySize,
           quantity: buyQuantity,
@@ -98,28 +86,28 @@ const ProductDetail = (props: Props) => {
     }
   };
 
-  const handleResize = () => {
-    setWindowSize(window.innerWidth);
+  const handleBuyProduct = () => {
+    if (!loginUser) {
+      history.push("/sign-in");
+    } else if (hasBuySize && buySize === "") {
+      setHasBuySize(false);
+    } else if (shoe) {
+      dispatch(
+        billAsyncAction.create({
+          userId: loginUser.id,
+          shoeId: shoe.id,
+          sizeCode: buySize,
+          quantity: buyQuantity,
+          totalPrice: shoe.salePrice
+            ? buyQuantity * shoe.salePrice
+            : buyQuantity * shoe.price,
+        })
+      );
+    }
   };
 
-  const handleSetEvaluateStar = useCallback((star: number) => {
-    setEvaluateOrderStar(star);
-  }, []);
-
-  const handleSubmitEvaluate = (e: FieldValues) => {
-    if (user && shoe) {
-      dispatch(
-        evaluateAsyncAction.create({
-          userId: user.id,
-          shoeId: shoe.id,
-          star: evaluateOrderStar,
-          evaluate: e.evaluate,
-        })
-      ).catch((err) => console.log("alo"));
-
-      reset();
-      setEvaluateSection(false);
-    }
+  const handleResize = () => {
+    setWindowSize(window.innerWidth);
   };
 
   useEffect(() => {
@@ -172,50 +160,6 @@ const ProductDetail = (props: Props) => {
 
   return (
     <div>
-      {evaluateSection && <div id="evaluate-background"></div>}
-      {evaluateSection && (
-        <div id="evaluate-section">
-          <form
-            id="evaluate-wrapper"
-            onSubmit={handleSubmit(handleSubmitEvaluate)}
-          >
-            <div id="evaluate-close-wrapper">
-              <button
-                id="evaluate-close-btn"
-                onClick={() => setEvaluateSection(false)}
-              >
-                x
-              </button>
-            </div>
-            <p id="evaluate-title">Evaluate</p>
-            <div className="star-wrapper">
-              <AverageStar
-                averageStar={5}
-                size="large"
-                fixable={true}
-                handleEvaluate={handleSetEvaluateStar}
-              />
-            </div>
-            <div className="text-area-wrapper">
-              <textarea
-                id="evaluate-content"
-                rows={4}
-                {...register("evaluate", {
-                  required: "Please enter evaluate",
-                })}
-              ></textarea>
-              <p className="field-message">
-                {errors?.evaluate?.message?.toString()}
-              </p>
-            </div>
-            <div id="evaluate-btn-wrapper">
-              <button className="evaluate-btn" type="submit">
-                Send
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
       <div className="header-space"></div>
       {!isGettingShoe && shoe ? (
         <>
@@ -325,6 +269,12 @@ const ProductDetail = (props: Props) => {
               </div>
 
               <div className="buy-btn-wrapper">
+                <button
+                  className="cart-btn"
+                  onClick={() => handleAddToCartProduct()}
+                >
+                  Add to cart
+                </button>
                 <button className="buy-btn" onClick={() => handleBuyProduct()}>
                   Buy
                 </button>

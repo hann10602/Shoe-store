@@ -72,12 +72,14 @@ const BillList = (props: Props) => {
           <thead>
             <tr className="bg-gray-200">
               <th className="min-w-[12%] h-10">Id</th>
-              <th className="min-w-[12%] h-10">Quantity</th>
               <th className="min-w-[12%] h-10">User</th>
               <th className="min-w-[12%] h-10">Shoe</th>
+              <th className="min-w-[12%] h-10">Quantity</th>
               <th className="min-w-[12%] h-10">Size</th>
+              <th className="min-w-[12%] h-10">Order date</th>
               <th className="min-w-[12%] h-10">Bill status</th>
               <th className="min-w-[12%] h-10">Bill received</th>
+              <th className="min-w-[12%] h-10">Total price</th>
               <th className="min-w-[12%] h-10">Options</th>
             </tr>
           </thead>
@@ -86,22 +88,23 @@ const BillList = (props: Props) => {
               bills.slice(10 * (page - 1), 10 * (page - 1) + 10).map((bill) => (
                 <tr key={bill.id}>
                   <td className="text-center h-14">{bill.id}</td>
-                  <td className="text-center h-14">{bill.quantity}</td>
                   <td className="text-center h-14">{bill.userName}</td>
                   <td className="text-center h-14">{bill.shoeName}</td>
+                  <td className="text-center h-14">{bill.quantity}</td>
                   <td className="text-center h-14">{bill.shoeSize}</td>
+                  <td className="text-center h-14">{bill.createdDate}</td>
                   <td className="text-center h-14">
                     <div className="flex justify-center items-center">
                       <div
                         className={`${
-                          bill.billStatus === "WAIT" && "bg-blue-400"
+                          bill.status === "WAIT" && "bg-blue-400"
                         } ${
-                          bill.billStatus === "DELIVERY" && "bg-yellow-400"
+                          bill.status === "DELIVERY" && "bg-yellow-400"
                         } ${
-                          bill.billStatus === "COMPLETED" && "bg-green-400"
+                          bill.status === "COMPLETED" && "bg-green-400"
                         } rounded-full text-white font-semibold px-5 h-max w-max py-2`}
                       >
-                        {bill.billStatus}
+                        {bill.status}
                       </div>
                     </div>
                   </td>
@@ -109,13 +112,14 @@ const BillList = (props: Props) => {
                     <div className="flex justify-center items-center">
                       <div
                         className={`${
-                          bill.billReceived ? "bg-gray-400" : "bg-red-400"
+                          bill.received ? "bg-gray-400" : "bg-red-400"
                         } rounded-full text-white font-semibold px-5 h-max w-max py-2`}
                       >
-                        {bill.billReceived ? "Received" : "Have not received"}
+                        {bill.received ? "Received" : "Have not received"}
                       </div>
                     </div>
                   </td>
+                  <td className="text-center h-14">{bill.totalPrice}</td>
                   <td className="text-center h-14">
                     <div
                       className="flex justify-center cursor-pointer relative"

@@ -2,11 +2,13 @@ export type BillType = {
   id: number;
   quantity: number;
   userName: string;
+  shoeId: number;
   shoeName: string;
   shoeSize: number;
   createdDate: string;
-  billStatus: string;
-  billReceived: boolean;
+  status: string;
+  received: boolean;
+  isEvaluate: boolean;
   totalPrice: number;
 };
 
@@ -26,10 +28,15 @@ export type CreateBillType = {
   shoeId: number;
 };
 
+export type CreateBillFromCartType = {
+  cartIdList: number[];
+};
+
 export type UpdateBillType = {
   id: number;
-  billStatus: string;
-  billReceived: boolean;
+  status: string;
+  isEvaluate: boolean;
+  received: boolean;
 };
 
 export type DeleteBillType = GetBillType;

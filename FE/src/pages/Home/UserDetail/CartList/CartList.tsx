@@ -6,8 +6,9 @@ import {
 import { useAppDispatch } from "@/store/store";
 import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import Order from "./Cart/Order";
+import Order from "./Cart/Cart";
 import "./style.scss";
+import { billAsyncAction } from "@/store/bill/action";
 
 type Props = { userId: number };
 
@@ -48,8 +49,8 @@ const CartList = ({ userId }: Props) => {
                 id="buy-all-btn"
                 onClick={() =>
                   dispatch(
-                    cartAsyncAction.order({
-                      idList: orders.map((order) => order.id),
+                    billAsyncAction.createFromCart({
+                      cartIdList: orders.map((order) => order.id),
                     })
                   )
                 }

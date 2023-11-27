@@ -14,6 +14,8 @@ public class Bill extends BaseEntity{
     @Column
     private Boolean received;
     @Column
+    private Boolean isEvaluate;
+    @Column
     private String status;
     @Column
     private Integer totalPrice;
