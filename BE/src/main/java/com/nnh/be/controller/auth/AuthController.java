@@ -2,11 +2,13 @@ package com.nnh.be.controller.auth;
 
 import com.nnh.be.dto.auth.AuthenticationSdi;
 import com.nnh.be.dto.auth.AuthenticationSdo;
+import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
 import com.nnh.be.dto.sdi.user.CreateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.service.auth.AuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,47 +1,52 @@
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL, getToken } from "@/utils";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
   CreateCartType,
   DeleteCartType,
   GetCartByUserIdType,
   GetCartType,
-  OrderCartType,
-  UpdateCartType,
+  UpdateCartType
 } from "./type";
-import { BASE_URL, getToken } from "@/utils";
 
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("cart/self", async (param: GetCartType, {rejectWithValue}) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (resp.status === 200) {
-      return resp.data;
+const getOne = createAsyncThunk(
+  "cart/self",
+  async (param: GetCartType, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return rejectWithValue(err);
   }
-});
+);
 
-const getAll = createAsyncThunk("cart/get-all", async (param, {rejectWithValue}) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/cart/get-all`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (resp.status === 200) {
-      return resp.data;
+const getAll = createAsyncThunk(
+  "cart/getAll",
+  async (param, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/cart/get-all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return rejectWithValue(err);
   }
-});
+);
 
 const getByUserId = createAsyncThunk(
   "cart/getByUserId",
-  async (params: GetCartByUserIdType, {rejectWithValue}) => {
+  async (params: GetCartByUserIdType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
         `${baseUrl}/cart/get-by-user-id/${params.userId}`,
@@ -58,7 +63,7 @@ const getByUserId = createAsyncThunk(
 
 const create = createAsyncThunk(
   "cart/create",
-  async (param: CreateCartType, {rejectWithValue}) => {
+  async (param: CreateCartType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/cart/create`, param, {
         headers: { Authorization: `Bearer ${token}` },
@@ -74,9 +79,9 @@ const create = createAsyncThunk(
 
 const update = createAsyncThunk(
   "cart/update",
-  async (param: UpdateCartType, {rejectWithValue}) => {
+  async (param: UpdateCartType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/cart/update`, param, {
+      const resp = await axios.put(`${baseUrl}/cart/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {
@@ -90,9 +95,9 @@ const update = createAsyncThunk(
 
 const deletes = createAsyncThunk(
   "cart/delete",
-  async (param: DeleteCartType, {rejectWithValue}) => {
+  async (param: DeleteCartType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/cart/delete`, param, {
+      const resp = await axios.delete(`${baseUrl}/cart/delete/${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {

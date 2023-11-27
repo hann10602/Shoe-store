@@ -25,7 +25,7 @@ const UserInformation = ({ user }: Props) => {
     if (user !== undefined) {
       dispatch(
         userAsyncAction.update({
-          id: e.id,
+          id: user.id,
           fullName: e.fullName,
           username: e.username,
           avatar: e.avatar,
@@ -36,6 +36,7 @@ const UserInformation = ({ user }: Props) => {
       );
 
       setIsUpdateUser(false);
+      window.location.reload();
     }
   };
 

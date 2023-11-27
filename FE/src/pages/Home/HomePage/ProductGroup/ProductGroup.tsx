@@ -10,16 +10,14 @@ import {
   shoesByCategory3Selector,
 } from "@/store/shoe/selector";
 import { ShoeType } from "@/store/shoe/type";
-import { sizeAsyncAction } from "@/store/size/action";
-import { sizesByShoeIdSelector } from "@/store/size/selector";
 import { useAppDispatch } from "@/store/store";
 import { getCurrentLoginUser } from "@/utils";
 import { Carousel } from "antd";
+import { CarouselRef } from "antd/lib/carousel";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./style.scss";
-import { CarouselRef } from "antd/lib/carousel";
 
 type GroupShoe = {
   id: number;

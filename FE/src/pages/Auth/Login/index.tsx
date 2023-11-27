@@ -22,15 +22,18 @@ export const Login = () => {
   const location = useLocation();
 
   const onSubmit = (e: FieldValues) => {
-    dispatch(authAsyncAction.login({
-      username: e.username,
-      password: e.password
-    }))
+    dispatch(
+      authAsyncAction.login({
+        username: e.username,
+        password: e.password,
+      })
+    )
       .then(() => {
         history.push(`/home`);
+        window.location.reload();
       })
       .catch((err) => {
-        history.push(`/sign-in?error=${err}`);
+        history.push(`/sign-in?error=Wrong username or password`);
       });
   };
 
@@ -75,7 +78,6 @@ export const Login = () => {
               type="text"
               {...register("username", {
                 required: "Please enter username",
-                minLength: 6,
               })}
             />
             <p className="field-message">{errors.username?.message}</p>

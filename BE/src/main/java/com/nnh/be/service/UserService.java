@@ -11,7 +11,6 @@ public interface UserService {
     List<UserSelfSdo> findAll();
     UserSelfSdo self(SelfUserSdi req);
     MessageSdo update(UpdateUserSdi req);
-    MessageSdo changePassword(ChangePasswordUserSdi req);
     MessageSdo delete(DeleteUserSdi req);
     User findOne(Long id);
     User findOneByUsername(String username);

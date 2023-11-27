@@ -77,7 +77,7 @@ public class CartServiceImpl implements CartService {
 
             List<CartSelfSdo> dtoList = new ArrayList<>();
 
-            List<Cart> entityList = cartRepo.findByuserId(userId);
+            List<Cart> entityList = cartRepo.findByUserId(userId);
 
             entityList.forEach(entity -> {
                 CartSelfSdo dto = new CartSelfSdo();
@@ -170,5 +170,10 @@ public class CartServiceImpl implements CartService {
             e.printStackTrace();
             return MessageSdo.of("Failed");
         }
+    }
+
+    @Override
+    public void deleteAll(List<Long> req) {
+        cartRepo.deleteAllByIdInBatch(req);
     }
 }

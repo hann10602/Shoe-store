@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
-import "./style.scss";
-import { useAppDispatch } from "@/store/store";
+import AverageStar from "@/components/AverageStar";
 import { billAsyncAction } from "@/store/bill/action";
-import { useSelector } from "react-redux";
 import {
   billsByUserIdSelector,
   isGettingBillsByUserIdSelector,
 } from "@/store/bill/selector";
-import AverageStar from "@/components/AverageStar";
-import { FieldValues, useForm } from "react-hook-form";
-import { LoginUserType } from "@/store/auth/type";
 import { evaluateAsyncAction } from "@/store/evaluate/action";
+import { useAppDispatch } from "@/store/store";
 import { getCurrentLoginUser } from "@/utils";
+import React, { useCallback, useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import "./style.scss";
 
 type Props = {
   userId: number;
@@ -140,9 +139,7 @@ const OrderList = ({ userId }: Props) => {
                   <div
                     className={`${bill.status === "WAIT" && "yellow-bg"} ${
                       bill.status === "DELIVERY" && "green-bg"
-                    } ${
-                      bill.status === "COMPLETED" && "blue-bg"
-                    } status-body`}
+                    } ${bill.status === "COMPLETED" && "blue-bg"} status-body`}
                   >
                     {bill.status}
                   </div>

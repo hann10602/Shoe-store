@@ -18,4 +18,5 @@ public interface CartService {
     MessageSdo create(CreateCartSdi req);
     MessageSdo update(UpdateCartSdi req);
     MessageSdo delete(Long id);
+    void deleteAll(List<Long> req);
 }

@@ -51,8 +51,7 @@ const billSlice = createSlice({
         state.isGettingBills = true;
       })
       .addCase(billAsyncAction.getAll.fulfilled, (state, action) => {
-        // state.bills = action.payload;
-        state.bills = bills;
+        state.bills = action.payload;
 
         state.isGettingBills = false;
       })
@@ -64,8 +63,7 @@ const billSlice = createSlice({
         state.isGettingBillsByUserId = true;
       })
       .addCase(billAsyncAction.getByUserId.fulfilled, (state, action) => {
-        // state.billsByUserId = action.payload;
-        state.billsByUserId = bills;
+        state.billsByUserId = action.payload;
 
         state.isGettingBillsByUserId = false;
       })

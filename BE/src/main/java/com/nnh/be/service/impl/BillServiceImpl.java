@@ -26,6 +26,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillSelfSdo> findAll() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<BillSelfSdo> dtoList = new ArrayList<>();
         List<Bill> entityList = billRepo.findAll();
 
@@ -53,6 +55,7 @@ public class BillServiceImpl implements BillService {
             dto.setShoeId(entity.getShoeOrder().getId());
             dto.setShoeName(entity.getShoeOrder().getName());
             dto.setShoeSize(entity.getSizeOrder().getName());
+            dto.setCreatedDate(sdf.format(entity.getCreatedDate()));
 
             dtoList.add(dto);
         });
@@ -62,6 +65,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillSelfSdo> findByUser(Long userId) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<BillSelfSdo> dtoList = new ArrayList<>();
         List<Bill> entityList = billRepo.findByUserId(userId);
 
@@ -72,6 +76,7 @@ public class BillServiceImpl implements BillService {
             dto.setShoeId(entity.getShoeOrder().getId());
             dto.setShoeName(entity.getShoeOrder().getName());
             dto.setShoeSize(entity.getSizeOrder().getName());
+            dto.setCreatedDate(sdf.format(entity.getCreatedDate()));
 
             dtoList.add(dto);
         });
@@ -127,6 +132,8 @@ public class BillServiceImpl implements BillService {
 
                 billRepo.save(entity);
             });
+
+            cartService.deleteAll(req.getCartIdList());
 
             return MessageSdo.of("Success");
         } catch (Exception e) {

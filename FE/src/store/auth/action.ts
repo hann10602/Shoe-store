@@ -1,7 +1,7 @@
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL } from "@/utils";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LoginType, RegisterType } from "./type";
-import { BASE_URL } from "@/utils";
 
 const baseUrl = BASE_URL;
 
@@ -15,8 +15,7 @@ const login = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      // return rejectWithValue(err);
-      return err;
+      return rejectWithValue(err);
     }
   }
 );

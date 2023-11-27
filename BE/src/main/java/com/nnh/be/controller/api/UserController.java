@@ -10,8 +10,11 @@ import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
 import com.nnh.be.service.ShoeService;
 import com.nnh.be.service.UserService;
+import com.nnh.be.service.auth.AuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
     private final UserService userService;
+    private final AuthenticationService authService;
 
     @GetMapping("/self")
     public UserSelfSdo self(@RequestBody SelfUserSdi req) {
@@ -38,10 +42,9 @@ public class UserController {
         return userService.update(req);
     }
 
-
     @PutMapping("/change-password")
     public MessageSdo changePassword(@RequestBody ChangePasswordUserSdi req) {
-        return userService.changePassword(req);
+        return authService.changePassword(req);
     }
 
     @DeleteMapping("/delete")

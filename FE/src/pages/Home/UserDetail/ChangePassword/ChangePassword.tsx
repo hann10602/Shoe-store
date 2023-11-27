@@ -6,11 +6,10 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
-import { validatePassword } from "@/utils";
 
-type Props = { originPassword: string; userId: number };
+type Props = { userId: number };
 
-const ChangePassword = ({ originPassword, userId }: Props) => {
+const ChangePassword = ({ userId }: Props) => {
   const history = useHistory();
   const location = useLocation();
   const form = useForm();
@@ -29,12 +28,13 @@ const ChangePassword = ({ originPassword, userId }: Props) => {
     dispatch(
       userAsyncAction.changePassword({
         id: userId,
-        password: e.newPassword,
+        oldPassword: e.oldPassword,
+        newPassword: e.newPassword,
       })
     )
-      .then(() => history.push(`/user?page=change-password&message=success`))
+      .then(() => history.push(`/user?page=change-password&message=Changed success`))
       .catch((err) =>
-        history.push(`/user?page=change-password&message=${err}`)
+        history.push(`/user?page=change-password&message=Wrong password`)
       );
   };
 
@@ -55,10 +55,7 @@ const ChangePassword = ({ originPassword, userId }: Props) => {
             <input
               type="password"
               {...register("oldPassword", {
-                validate: {
-                  isSimilar: (fieldValue) =>
-                    fieldValue === originPassword || "Password not correct",
-                },
+                required: "Please enter the password",
               })}
             />
             <p className="field-message">
@@ -73,9 +70,9 @@ const ChangePassword = ({ originPassword, userId }: Props) => {
               {...register("newPassword", {
                 required: "New password is required",
                 validate: {
-                  validFormat: (fieldValue) =>
-                    validatePassword(fieldValue) ||
-                    "At least 8 characters and doesn`t include special character",
+                  moreThan8Char: (fieldValue) => {
+                    return fieldValue.length >= 8 || "At least 8 character";
+                  },
                 },
               })}
             />

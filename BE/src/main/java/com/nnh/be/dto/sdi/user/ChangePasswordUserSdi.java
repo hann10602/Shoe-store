@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChangePasswordUserSdi {
     private Long id;
-    private String password;
+    private String oldPassword;
+    private String newPassword;
 }

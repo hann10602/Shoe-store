@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
     @Query(value = "SELECT * FROM cart WHERE user_id = :userId", nativeQuery = true)
-    List<Cart> findByuserId(Long userId);
+    List<Cart> findByUserId(Long userId);
 
     @Query(value = "SELECT * FROM cart WHERE id in :ids", nativeQuery = true)
     List<Cart> findByIdIn(List<Long> ids);

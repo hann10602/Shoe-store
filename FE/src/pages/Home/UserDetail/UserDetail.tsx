@@ -1,12 +1,12 @@
 import { LoginUserType } from "@/store/auth/type";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import ChangePassword from "./ChangePassword";
 import UserInformation from "./UserInformation";
 import "./style.scss";
 import { getCurrentLoginUser } from "@/utils";
 import CartList from "./CartList";
-import OrderList from "./OrderLIst";
+import OrderList from "./OrderList";
 
 type Props = {};
 
@@ -17,8 +17,8 @@ const UserDetail = (props: Props) => {
   const location = useLocation();
   const page = new URLSearchParams(location.search).get("page");
 
-  useEffect(() => {
-    const loginUser = getCurrentLoginUser(); 
+  useLayoutEffect(() => {
+    const loginUser = getCurrentLoginUser();
 
     setUser(loginUser);
   }, []);
@@ -85,7 +85,7 @@ const UserDetail = (props: Props) => {
             <CartList userId={user.id} />
           )}
           {page === "change-password" && user !== undefined && (
-            <ChangePassword originPassword={user?.password} userId={user.id} />
+            <ChangePassword userId={user.id} />
           )}
           {page === "orders" && user !== undefined && (
             <OrderList userId={user.id} />

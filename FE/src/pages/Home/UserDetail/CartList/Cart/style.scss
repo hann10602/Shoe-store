@@ -27,12 +27,17 @@
           }
 
           .shoe-detail {
+            flex: 1 1 0%;
             margin-left: 20px;
 
             .shoe-name {
               font-size: 20px;
               font-weight: 500;
               margin-top: 8px;
+              overflow: hidden;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
             }
 
             .shoe-size {
@@ -41,43 +46,50 @@
           }
         }
 
-        .product-buy-quantity {
+        .right-order {
           display: flex;
-          height: 60px;
+          align-items: center;
 
-          .fix-quantity-btn {
-            width: 40px;
-            height: 100%;
-            background-color: rgb(236, 236, 236);
-            cursor: pointer;
-            border: none;
-          }
-
-          .buy-quantity {
+          .product-buy-quantity {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid rgb(236, 236, 236);
-            width: 80px;
-            height: 100%;
-            cursor: pointer;
-            background-color: rgb(255, 255, 255);
+            height: 60px;
+
+            .fix-quantity-btn {
+              width: 40px;
+              height: 100%;
+              background-color: rgb(236, 236, 236);
+              cursor: pointer;
+              border: none;
+            }
+
+            .buy-quantity {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border: 1px solid rgb(236, 236, 236);
+              width: 80px;
+              height: 100%;
+              cursor: pointer;
+              background-color: rgb(255, 255, 255);
+            }
           }
-        }
 
-        .price-wrapper {
-          display: "flex";
-          align-items: "center";
+          .price-wrapper {
+            display: "flex";
+            width: max-content;
+            margin-left: 200px;
+            align-items: "center";
 
-          .origin-price {
-            color: rgb(148, 148, 148);
-            margin-right: 8px;
-            text-decoration: line-through;
-          }
+            .origin-price {
+              color: rgb(148, 148, 148);
+              margin-right: 8px;
+              text-decoration: line-through;
+            }
 
-          .shoe-price {
-            color: rgb(255, 65, 65);
-            font-size: 20px;
+            .shoe-price {
+              color: rgb(255, 65, 65);
+              font-size: 20px;
+            }
           }
         }
       }

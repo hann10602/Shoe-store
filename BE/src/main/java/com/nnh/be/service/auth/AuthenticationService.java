@@ -2,9 +2,11 @@ package com.nnh.be.service.auth;
 
 import com.nnh.be.dto.auth.AuthenticationSdi;
 import com.nnh.be.dto.auth.AuthenticationSdo;
+import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
 import com.nnh.be.dto.sdi.user.CreateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.exception.AuthenticationExceptionCustom;
+import com.nnh.be.exception.MessageException;
 import com.nnh.be.model.User;
 import com.nnh.be.repository.RoleRepository;
 import com.nnh.be.repository.UserRepository;
@@ -50,23 +52,28 @@ public class AuthenticationService {
             } else {
                 for(User user : usersExist) {
                     if(Objects.equals(user.getUsername(), req.getUsername())) {
-                        return MessageSdo.of("Username is exist");
+//                        return MessageSdo.of("Username is exist");
+                        throw new MessageException("register fail");
                     }
 
                     if(Objects.equals(user.getEmail(), req.getEmail())) {
-                        return MessageSdo.of("Email is exist");
+//                        return MessageSdo.of("Email is exist");
+                        throw new MessageException("register fail");
                     }
 
                     if(Objects.equals(user.getPhoneNum(), req.getPhoneNum())) {
-                        return MessageSdo.of("Phone number is exist");
+//                        return MessageSdo.of("Phone number is exist");
+                        throw new MessageException("register fail");
                     }
                 };
 
-                return MessageSdo.of("Undefined");
+//                return MessageSdo.of("Undefined");
+                throw new MessageException("register fail");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return MessageSdo.of("Failed");
+            throw new MessageException("register fail");
+//            return MessageSdo.of("Failed");
         }
     }
 
@@ -90,9 +97,24 @@ public class AuthenticationService {
                     user.getPhoneNum(),
                     jwtToken);
         } catch(AuthenticationException e) {
-            e.getMessage();
+            throw e;
         }
+    }
 
-        return null;
+
+    public MessageSdo changePassword(ChangePasswordUserSdi req) {
+        try {
+            User user = userRepo.findById(req.getId()).get();
+
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), req.getOldPassword()));
+
+            user.setPassword(passwordEncoder.encode(req.getNewPassword()));
+
+            userRepo.save(user);
+
+            return MessageSdo.of("Success");
+        } catch(AuthenticationException e) {
+            throw e;
+        }
     }
 }

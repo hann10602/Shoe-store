@@ -78,11 +78,12 @@ const userSlice = createSlice({
       .addCase(userAsyncAction.changePassword.pending, (state) => {
         state.isChangingPasswordUsers = true;
       })
-      .addCase(userAsyncAction.changePassword.fulfilled, (state, action) => {
+      .addCase(userAsyncAction.changePassword.fulfilled, (state) => {
         state.isChangingPasswordUsers = false;
       })
       .addCase(userAsyncAction.changePassword.rejected, (state) => {
         state.isChangingPasswordUsers = false;
+        throw new Error("Wrong old password");
       });
     builder
       .addCase(userAsyncAction.deletes.pending, (state) => {

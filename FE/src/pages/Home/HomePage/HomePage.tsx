@@ -2,7 +2,7 @@ import LeatherShoe1 from "@/assets/img/web/leather-shoe-1.jpg";
 import LeatherShoe2 from "@/assets/img/web/leather-shoe-2.jpg";
 import Sneaker1 from "@/assets/img/web/sneaker-1.jpg";
 import Sneaker2 from "@/assets/img/web/sneaker-2.jpg";
-import React from "react";
+import React, { useEffect } from "react";
 import AdditionService from "./AdditionService";
 import AdvertConcept from "./AdvertConcept";
 import { ConceptType } from "./AdvertConcept/AdvertConcept";
@@ -52,6 +52,13 @@ const concept: ConceptType[] = [
 ];
 
 const HomePage = (props: Props) => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+  
   return (
     <main>
       <Banner />

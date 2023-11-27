@@ -37,7 +37,7 @@ const Register = (props: Props) => {
       })
     )
       .then(() => history.push(`/sign-in`))
-      .catch((err) => history.push(`/register?error=${err}`));
+      .catch((err) => history.push(`/register?error=Register fail`));
   };
 
   useEffect(() => {

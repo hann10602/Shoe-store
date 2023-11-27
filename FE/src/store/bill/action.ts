@@ -30,7 +30,7 @@ const getOne = createAsyncThunk(
 );
 
 const getAll = createAsyncThunk(
-  "bill/get-all",
+  "bill/getAll",
   async (param, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/bill/get-all`, {
@@ -57,7 +57,7 @@ const getByUserId = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
-      // return rejectWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );

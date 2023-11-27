@@ -38,7 +38,8 @@ export type UpdateUserType = {
 
 export type ChangePasswordUserType = {
   id: number;
-  password: string;
+  oldPassword: string;
+  newPassword: string;
 };
 
 export type DeleteUserType = GetUserType;

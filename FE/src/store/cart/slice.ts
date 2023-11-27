@@ -62,8 +62,7 @@ const cartSlice = createSlice({
         state.isGettingCartsByUserId = true;
       })
       .addCase(cartAsyncAction.getByUserId.fulfilled, (state, action) => {
-        // state.cartsByUserId = action.payload;
-        state.cartsByUserId = carts;
+        state.cartsByUserId = action.payload;
 
         state.isGettingCartsByUserId = false;
       })
@@ -74,8 +73,7 @@ const cartSlice = createSlice({
       .addCase(cartAsyncAction.create.pending, (state) => {
         state.isCreatingCart = true;
       })
-      .addCase(cartAsyncAction.create.fulfilled, (state, action) => {
-        state.response = action.payload;
+      .addCase(cartAsyncAction.create.fulfilled, (state) => {
         state.isCreatingCart = false;
       })
       .addCase(cartAsyncAction.create.rejected, (state) => {
@@ -85,8 +83,7 @@ const cartSlice = createSlice({
       .addCase(cartAsyncAction.update.pending, (state) => {
         state.isUpdatingCart = true;
       })
-      .addCase(cartAsyncAction.update.fulfilled, (state, action) => {
-        state.response = action.payload;
+      .addCase(cartAsyncAction.update.fulfilled, (state) => {
         state.isUpdatingCart = false;
       })
       .addCase(cartAsyncAction.update.rejected, (state) => {
@@ -96,8 +93,7 @@ const cartSlice = createSlice({
       .addCase(cartAsyncAction.deletes.pending, (state) => {
         state.isDeletingCart = true;
       })
-      .addCase(cartAsyncAction.deletes.fulfilled, (state, action) => {
-        state.response = action.payload;
+      .addCase(cartAsyncAction.deletes.fulfilled, (state) => {
         state.isDeletingCart = false;
       })
       .addCase(cartAsyncAction.deletes.rejected, (state) => {
