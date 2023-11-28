@@ -30,10 +30,10 @@ type GroupShoe = {
 type Props = {};
 
 const ProductGroup = (props: Props) => {
+  const [shoeId, setShoeId] = useState<number | undefined>(undefined);
   const [chooseSizesPage, setChooseSizesPage] = useState<boolean>(false);
   const [shoeSizes, setShoeSizes] = useState<string[]>([]);
   const [groupShoeList, setGroupShoeList] = useState<GroupShoe[]>([]);
-  const [shoeId, setShoeId] = useState<number | undefined>(undefined);
   const [breakpoint, setBreakPoint] = useState<number>();
   const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
 
@@ -147,16 +147,20 @@ const ProductGroup = (props: Props) => {
                   className="size-item"
                   key={size}
                   onClick={() => {
-                    dispatch(
-                      cartAsyncAction.create({
-                        userId: loginUser.id,
-                        shoeId: shoeId,
-                        sizeCode: size,
-                        quantity: 1,
-                      })
-                    );
-                    setShoeSizes([]);
-                    setChooseSizesPage(false);
+                    if(loginUser) {
+                      dispatch(
+                        cartAsyncAction.create({
+                          userId: loginUser.id,
+                          shoeId: shoeId,
+                          sizeCode: size,
+                          quantity: 1,
+                        })
+                      );
+                      setShoeSizes([]);
+                      setChooseSizesPage(false);
+                    } else {
+                      history.push("/sign-in")
+                    }
                   }}
                 >
                   {size}

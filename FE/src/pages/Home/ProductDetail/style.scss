@@ -9,6 +9,93 @@
     );
   }
 
+  #confirm-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .confirm-background {
+      background-color: black;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+    }
+
+    .confirm-wrapper {
+      position: relative;
+      width: 408px;
+      border-radius: 8px;
+      background-color: white;
+      padding: 40px 28px 20px 28px;
+      position: fixed;
+      align-items: center;
+
+      .close-btn {
+        cursor: pointer;
+        position: absolute;
+        width: 40px;
+        border: none;
+        font-size: 20px;
+        right: 10px;
+        top: 10px;
+        background-color: white;
+        padding: 4px;
+        color: rgb(121, 121, 121);
+        font-weight: 900;
+        border-radius: 40px;
+      }
+
+      .close-btn:hover {
+        background-color: rgb(211, 211, 211);
+      }
+
+      .confirm-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .confirm-group-btn {
+        display: flex;
+        justify-content: center;
+
+        .confirm-btn {
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          border: 1px solid rgb(223, 223, 223);
+          padding: 12px 40px;
+        }
+
+        .confirm-btn:hover {
+          background-color: rgb(223, 223, 223);
+        }
+
+        .cancel-btn {
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          border: 1px solid rgb(223, 223, 223);
+          padding: 12px 40px;
+          margin-left: 40px;
+        }
+
+        .cancel-btn:hover {
+          background-color: rgb(223, 223, 223);
+        }
+      }
+    }
+  }
+
   #product-detail {
     display: flex;
     padding: 40px 100px;
@@ -200,10 +287,10 @@
       .buy-btn-wrapper {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
 
         .cart-btn {
-          width: 280px;
+          width: 45%;
           cursor: pointer;
           font-weight: 900;
           font-size: 16px;
@@ -218,7 +305,7 @@
         }
 
         .buy-btn {
-          width: 280px;
+          width: 45%;
           cursor: pointer;
           font-weight: 900;
           font-size: 16px;
@@ -233,9 +320,14 @@
         }
 
         .buy-btn:hover {
-          width: 288px;
-          margin-top: 152px;
-          margin-bottom: 8px;
+          background: linear-gradient(
+            to right,
+            rgb(255, 218, 165),
+            rgb(100, 253, 202)
+          );
+        }
+
+        .cart-btn:hover {
           background: linear-gradient(
             to right,
             rgb(255, 218, 165),
@@ -613,6 +705,94 @@
 }
 
 @media (min-width: 768px) and (max-width: 1280px) {
+
+  #confirm-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .confirm-background {
+      background-color: black;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+    }
+
+    .confirm-wrapper {
+      position: relative;
+      width: 408px;
+      border-radius: 8px;
+      background-color: white;
+      padding: 40px 28px 20px 28px;
+      position: fixed;
+      align-items: center;
+
+      .close-btn {
+        cursor: pointer;
+        position: absolute;
+        width: 40px;
+        border: none;
+        font-size: 20px;
+        right: 10px;
+        top: 10px;
+        background-color: white;
+        padding: 4px;
+        color: rgb(121, 121, 121);
+        font-weight: 900;
+        border-radius: 40px;
+      }
+
+      .close-btn:hover {
+        background-color: rgb(211, 211, 211);
+      }
+
+      .confirm-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .confirm-group-btn {
+        display: flex;
+        justify-content: center;
+
+        .confirm-btn {
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          border: 1px solid rgb(223, 223, 223);
+          padding: 12px 40px;
+        }
+
+        .confirm-btn:hover {
+          background-color: rgb(223, 223, 223);
+        }
+
+        .cancel-btn {
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          border: 1px solid rgb(223, 223, 223);
+          padding: 12px 40px;
+          margin-left: 40px;
+        }
+
+        .cancel-btn:hover {
+          background-color: rgb(223, 223, 223);
+        }
+      }
+    }
+  }
+
   #product-detail {
     padding: 120px 40px;
     background-color: antiquewhite;
@@ -788,10 +968,10 @@
       .buy-btn-wrapper {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
 
         .cart-btn {
-          width: 280px;
+          width: 45%;
           cursor: pointer;
           font-weight: 900;
           font-size: 16px;
@@ -806,7 +986,7 @@
         }
 
         .buy-btn {
-          width: 280px;
+          width: 45%;
           cursor: pointer;
           font-weight: 900;
           font-size: 16px;
@@ -821,9 +1001,14 @@
         }
 
         .buy-btn:hover {
-          width: 288px;
-          margin-top: 152px;
-          margin-bottom: 8px;
+          background: linear-gradient(
+            to right,
+            rgb(255, 218, 165),
+            rgb(100, 253, 202)
+          );
+        }
+
+        .cart-btn:hover {
           background: linear-gradient(
             to right,
             rgb(255, 218, 165),
@@ -1194,6 +1379,95 @@
 }
 
 @media (max-width: 768px) {
+  
+
+  #confirm-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .confirm-background {
+      background-color: black;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+    }
+
+    .confirm-wrapper {
+      position: relative;
+      width: 408px;
+      border-radius: 8px;
+      background-color: white;
+      padding: 40px 28px 20px 28px;
+      position: fixed;
+      align-items: center;
+
+      .close-btn {
+        cursor: pointer;
+        position: absolute;
+        width: 40px;
+        border: none;
+        font-size: 20px;
+        right: 10px;
+        top: 10px;
+        background-color: white;
+        padding: 4px;
+        color: rgb(121, 121, 121);
+        font-weight: 900;
+        border-radius: 40px;
+      }
+
+      .close-btn:hover {
+        background-color: rgb(211, 211, 211);
+      }
+
+      .confirm-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .confirm-group-btn {
+        display: flex;
+        justify-content: center;
+
+        .confirm-btn {
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          border: 1px solid rgb(223, 223, 223);
+          padding: 12px 40px;
+        }
+
+        .confirm-btn:hover {
+          background-color: rgb(223, 223, 223);
+        }
+
+        .cancel-btn {
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          border: 1px solid rgb(223, 223, 223);
+          padding: 12px 40px;
+          margin-left: 40px;
+        }
+
+        .cancel-btn:hover {
+          background-color: rgb(223, 223, 223);
+        }
+      }
+    }
+  }
+  
   #product-detail {
     padding: 120px 40px;
     background-color: antiquewhite;
@@ -1369,10 +1643,10 @@
       .buy-btn-wrapper {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
 
         .cart-btn {
-          width: 280px;
+          width: 45%;
           cursor: pointer;
           font-weight: 900;
           font-size: 16px;
@@ -1387,13 +1661,12 @@
         }
 
         .buy-btn {
-          width: 280px;
+          width: 45%;
           cursor: pointer;
           font-weight: 900;
           font-size: 16px;
           color: rgb(77, 76, 76);
           height: 60px;
-          margin-right: 20px;
           margin-top: 160px;
           border-radius: 40px;
           background-color: rgb(255, 218, 165);
@@ -1403,9 +1676,14 @@
         }
 
         .buy-btn:hover {
-          width: 288px;
-          margin-top: 152px;
-          margin-bottom: 8px;
+          background: linear-gradient(
+            to right,
+            rgb(255, 218, 165),
+            rgb(100, 253, 202)
+          );
+        }
+
+        .cart-btn:hover {
           background: linear-gradient(
             to right,
             rgb(255, 218, 165),

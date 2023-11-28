@@ -29,6 +29,8 @@ type Props = {};
 
 const ProductDetail = (props: Props) => {
   const [render, setRender] = useState<boolean>(false);
+  const [cartPage, setCartPage] = useState<boolean>(false);
+  const [buyPage, setBuyPage] = useState<boolean>(false);
   const [mainImage, setMainImage] = useState<string>();
   const [buyQuantity, setBuyQuantity] = useState<number>(0);
   const [productQuantity, setProductQuantity] = useState<number | undefined>(
@@ -72,9 +74,8 @@ const ProductDetail = (props: Props) => {
   const handleAddToCartProduct = () => {
     if (!loginUser) {
       history.push("/sign-in");
-    } else if (hasBuySize && buySize === "") {
-      setHasBuySize(false);
     } else if (shoe) {
+      console.log(buyQuantity)
       dispatch(
         cartAsyncAction.create({
           userId: loginUser.id,
@@ -83,15 +84,16 @@ const ProductDetail = (props: Props) => {
           quantity: buyQuantity,
         })
       );
+
+      setCartPage(false);
     }
   };
 
   const handleBuyProduct = () => {
     if (!loginUser) {
       history.push("/sign-in");
-    } else if (hasBuySize && buySize === "") {
-      setHasBuySize(false);
     } else if (shoe) {
+      console.log(buyQuantity)
       dispatch(
         billAsyncAction.create({
           userId: loginUser.id,
@@ -103,6 +105,8 @@ const ProductDetail = (props: Props) => {
             : buyQuantity * shoe.price,
         })
       );
+
+      setBuyPage(false);
     }
   };
 
@@ -161,6 +165,60 @@ const ProductDetail = (props: Props) => {
   return (
     <div>
       <div className="header-space"></div>
+      {cartPage && (
+        <div id="confirm-page">
+          <div className="confirm-background"></div>
+          <div className="confirm-wrapper">
+            <button
+              className="close-btn"
+              onClick={() => {
+                setCartPage(false);
+              }}
+            >
+              x
+            </button>
+            <p className="confirm-title">Are you sure to buy this product ?</p>
+            <div className="confirm-group-btn">
+              <button
+                className="confirm-btn"
+                onClick={() => handleAddToCartProduct()}
+              >
+                Confirm
+              </button>
+              <button
+                className="cancel-btn"
+                onClick={() => setCartPage(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {buyPage && (
+        <div id="confirm-page">
+          <div className="confirm-background"></div>
+          <div className="confirm-wrapper">
+            <button
+              className="close-btn"
+              onClick={() => {
+                setBuyPage(false);
+              }}
+            >
+              x
+            </button>
+            <p className="confirm-title">Are you sure to buy this product ?</p>
+            <div className="confirm-group-btn">
+              <button className="confirm-btn" onClick={() => handleBuyProduct()}>
+                Confirm
+              </button>
+              <button className="cancel-btn" onClick={() => setBuyPage(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {!isGettingShoe && shoe ? (
         <>
           <div id="product-detail">
@@ -271,11 +329,26 @@ const ProductDetail = (props: Props) => {
               <div className="buy-btn-wrapper">
                 <button
                   className="cart-btn"
-                  onClick={() => handleAddToCartProduct()}
+                  onClick={() => {
+                    if (hasBuySize && buySize === "") {
+                      setHasBuySize(false);
+                    } else {
+                      setCartPage(true);
+                    }
+                  }}
                 >
                   Add to cart
                 </button>
-                <button className="buy-btn" onClick={() => handleBuyProduct()}>
+                <button
+                  className="buy-btn"
+                  onClick={() => {
+                    if (hasBuySize && buySize === "") {
+                      setHasBuySize(false);
+                    } else {
+                      setBuyPage(true);
+                    }
+                  }}
+                >
                   Buy
                 </button>
               </div>

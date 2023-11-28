@@ -125,10 +125,10 @@ public class CartServiceImpl implements CartService {
                 newCart.setUserCart(user);
                 newCart.setShoeCart(shoe);
                 newCart.setSizeCart(size);
-                newCart.setQuantity(1);
+                newCart.setQuantity(req.getQuantity());
             } else {
                 BeanUtils.copyProperties(currentCart, newCart);
-                newCart.setQuantity(currentCart.getQuantity() + 1);
+                newCart.setQuantity(currentCart.getQuantity() + req.getQuantity());
             }
 
             cartRepo.save(newCart);

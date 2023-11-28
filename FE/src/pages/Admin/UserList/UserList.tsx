@@ -50,7 +50,7 @@ const UserList = (props: Props) => {
 
   useEffect(() => {
     dispatch(userAsyncAction.getAll());
-  }, [dispatch, users]);
+  }, []);
 
   return (
     <>

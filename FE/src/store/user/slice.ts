@@ -47,8 +47,7 @@ const userSlice = createSlice({
         state.isGettingUsers = true;
       })
       .addCase(userAsyncAction.getAll.fulfilled, (state, action) => {
-        // state.users = action.payload;
-        state.users = users;
+        state.users = action.payload;
         state.isGettingUsers = false;
       })
       .addCase(userAsyncAction.getAll.rejected, (state) => {
