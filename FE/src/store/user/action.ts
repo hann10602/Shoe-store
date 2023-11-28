@@ -46,7 +46,7 @@ const create = createAsyncThunk(
   "user/create",
   async (param: CreateUserType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/user/create`, param, {
+      const resp = await axios.post(`${baseUrl}/auth/register`, param, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {

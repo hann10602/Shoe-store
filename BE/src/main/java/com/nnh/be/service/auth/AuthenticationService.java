@@ -68,8 +68,7 @@ public class AuthenticationService {
                 throw new MessageException("register fail");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new MessageException("register fail");
+            throw e;
 //            return MessageSdo.of("Failed");
         }
     }
@@ -117,10 +116,14 @@ public class AuthenticationService {
         List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
 
         try {
-            if (usersExist.isEmpty()) {
+            if (usersExist.size() <= 1 && req.getId() == usersExist.get(0).getId()) {
                 User user = new User();
                 BeanUtils.copyProperties(req, user);
-                user.setPassword(passwordEncoder.encode(req.getPassword()));
+                if(req.getPassword() == "") {
+                    user.setPassword(usersExist.get(0).getPassword());
+                } else {
+                    user.setPassword(passwordEncoder.encode(req.getPassword()));
+                }
                 user.setUserRole(roleRepo.findByCode(req.getRole()).get());
                 userRepo.save(user);
 
@@ -130,17 +133,17 @@ public class AuthenticationService {
                 for(User user : usersExist) {
                     if(Objects.equals(user.getUsername(), req.getUsername())) {
 //                        return MessageSdo.of("Username is exist");
-                        throw new MessageException("update fail");
+                        throw new MessageException("similar username");
                     }
 
                     if(Objects.equals(user.getEmail(), req.getEmail())) {
 //                        return MessageSdo.of("Email is exist");
-                        throw new MessageException("update fail");
+                        throw new MessageException("similar email");
                     }
 
                     if(Objects.equals(user.getPhoneNum(), req.getPhoneNum())) {
 //                        return MessageSdo.of("Phone number is exist");
-                        throw new MessageException("update fail");
+                          throw new MessageException("similar phone number");
                     }
                 };
 
@@ -148,8 +151,7 @@ public class AuthenticationService {
                 throw new MessageException("update fail");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new MessageException("update fail");
+            throw e;
 //            return MessageSdo.of("Failed");
         }
     }

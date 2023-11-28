@@ -1,15 +1,12 @@
 import Avatar from "@/assets/img/web/suggest-product.jpg";
-import React, { useState } from "react";
+import BillList from "@/pages/Admin/BillList";
+import CategoryList from "@/pages/Admin/CategoryList";
+import ProductList from "@/pages/Admin/ProductList";
+import UserList from "@/pages/Admin/UserList";
 import { getCurrentLoginUser } from "@/utils";
+import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import AdminNav from "./AdminNav";
-import UserList from "@/pages/Admin/UserList";
-import ProductList from "@/pages/Admin/ProductList";
-import CategoryList from "@/pages/Admin/CategoryList";
-import BillList from "@/pages/Admin/BillList";
-import { useAppDispatch } from "@/store/store";
-import { userAsyncAction } from "@/store/user/action";
-import { authAsyncAction } from "@/store/auth/action";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;

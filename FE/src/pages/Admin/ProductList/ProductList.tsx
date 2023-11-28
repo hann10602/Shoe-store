@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DeletePage from "../DeletePage";
 import ChangeProductPage from "./ChangeProductPage";
+import { useHistory, useLocation } from "react-router-dom";
+import { categoryAsyncAction } from "@/store/category/action";
 
 type Props = {};
 
@@ -24,6 +26,10 @@ const ProductList = (props: Props) => {
   const isGettingShoes = useSelector(isGettingShoesSelector);
 
   const dispatch = useAppDispatch();
+  const history = useHistory();
+  const location = useLocation();
+
+  const message = new URLSearchParams(location.search).get("message");
 
   const tablePagination = Array.from(
     { length: Math.ceil(shoes.length / 10) },
@@ -33,7 +39,14 @@ const ProductList = (props: Props) => {
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
   const handleDelete = (id: number) => {
-    dispatch(shoeAsyncAction.deletes({ id }));
+    dispatch(shoeAsyncAction.deletes({ id }))
+      .then(() => {
+        history.push("/admin?tab=shoe&message=Success");
+        window.location.reload();
+      })
+      .catch(() => {
+        history.push("/admin?tab=shoe&message=Failure");
+      });
     setIsDeletePage(false);
     setSelectedId(undefined);
   };
@@ -50,7 +63,8 @@ const ProductList = (props: Props) => {
 
   useEffect(() => {
     dispatch(shoeAsyncAction.getAll());
-  }, [dispatch, shoes]);
+    dispatch(categoryAsyncAction.getAll());
+  }, []);
 
   return (
     <>
@@ -67,6 +81,16 @@ const ProductList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
+      {message &&
+        (message === "Success" ? (
+          <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">
+            Success
+          </div>
+        ) : (
+          <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">
+            Failure
+          </div>
+        ))}
       <div>
         <button
           className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold"
@@ -94,7 +118,7 @@ const ProductList = (props: Props) => {
               shoes.slice(10 * (page - 1), 10 * (page - 1) + 10).map((shoe) => (
                 <tr key={shoe.id}>
                   <td className="text-center h-14">{shoe.id}</td>
-                  <td className="text-center h-14">{shoe.name}</td>
+                  <td className="text-center w-[300px] h-14">{shoe.name}</td>
                   <td className="text-center h-14">{shoe.price}</td>
                   <td className="text-center h-14">{shoe.salePrice}</td>
                   <td className="text-center h-14">{shoe.quantity}</td>

@@ -1,8 +1,9 @@
 import { billAsyncAction } from "@/store/bill/action";
 import { BillType } from "@/store/bill/type";
 import { useAppDispatch } from "@/store/store";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   bill: BillType;
@@ -10,11 +11,24 @@ type Props = {
 };
 
 const ChangeBillPage = ({ bill, handleCancel }: Props) => {
+  const [received, setReceived] = useState<string>(
+    bill.received ? "true" : "false"
+  );
+  const handleSelectChange = (e: any) => {
+    setReceived(e);
+  };
+
+  console.log(received)
+
   const form = useForm();
 
-  const { register, formState, handleSubmit } = form;
+  const { register, formState, handleSubmit, watch } = form;
+
+  const statusValue = watch("status");
 
   const { errors } = formState;
+
+  const history = useHistory();
 
   const dispatch = useAppDispatch();
 
@@ -27,14 +41,21 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
           isEvaluate: bill.isEvaluate,
           received: e.received,
         })
-      );
+      )
+        .then(() => {
+          history.push("/admin?tab=bill&message=Success");
+          window.location.reload();
+        })
+        .catch(() => {
+          history.push("/admin?tab=bill&message=Failure");
+        });
     }
 
     handleCancel();
   };
 
   return (
-    <div className="w-full h-full fixed top-0 left-0 z-10 flex items-center justify-center">
+    <div className="w-full h-full fixed top-0 left-0 z-20 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
         <div className="w-[600px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
@@ -71,14 +92,16 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
                 Bill received
               </label>
               <select
-                defaultValue={bill.received ? "TRUE" : "FALSE"}
+                disabled={statusValue !== "COMPLETED"}
+                value={received}
                 className="mb-6 w-50 h-10 border border-solid border-gray-300 text-lg rounded-md"
                 {...register("received", {
+                  onChange: (e) => handleSelectChange(e.target.value),
                   required: "Please choose order received",
                 })}
               >
-                <option value="FALSE">Have not received</option>
-                <option value="TRUE">Received</option>
+                <option value="false">Have not received</option>
+                <option value="true">Received</option>
               </select>
               <p className="font-semibold bottom-2 absolute text-red-500">
                 {errors.received?.message?.toString()}
@@ -92,6 +115,9 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
                 defaultValue={bill.status}
                 className="mb-6 w-50 h-10 border border-solid border-gray-300 text-lg rounded-md"
                 {...register("status", {
+                  onChange: (e) => {
+                    e.target.value !== "COMPLETED" && setReceived("false");
+                  },
                   required: "Please choose order status",
                 })}
               >

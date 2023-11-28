@@ -3,6 +3,7 @@ import { CategoryType } from "@/store/category/type";
 import { useAppDispatch } from "@/store/store";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   category?: CategoryType;
@@ -13,6 +14,8 @@ const ChangeCategoryPage = ({ category, handleCancel }: Props) => {
   const form = useForm();
 
   const { register, formState, handleSubmit } = form;
+
+  const history = useHistory();
 
   const { errors } = formState;
 
@@ -26,21 +29,35 @@ const ChangeCategoryPage = ({ category, handleCancel }: Props) => {
           name: e.name,
           code: e.code,
         })
-      );
+      )
+      .then(() => {
+        history.push("/admin?tab=category&message=Success");
+        window.location.reload();
+      })
+      .catch(() => {
+        history.push("/admin?tab=category&message=Failure");
+      });
     } else {
       dispatch(
         categoryAsyncAction.create({
           name: e.name,
           code: e.code,
         })
-      );
+      )
+      .then(() => {
+        history.push("/admin?tab=category&message=Success");
+        window.location.reload();
+      })
+      .catch(() => {
+        history.push("/admin?tab=category&message=Failure");
+      });
     }
 
     handleCancel();
   };
 
   return (
-    <div className="w-full h-full fixed top-0 left-0 z-10 flex items-center justify-center">
+    <div className="w-full h-full fixed top-0 left-0 z-20 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
         <div className="w-[600px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">

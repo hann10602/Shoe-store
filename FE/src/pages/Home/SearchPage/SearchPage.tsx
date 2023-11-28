@@ -26,6 +26,7 @@ const SearchPage = (props: Props) => {
   const [shoes, setShoes] = useState<ShoeType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [sizeChoose, setSizeChoose] = useState<string>("");
+  const [sizeList, setSizeList] = useState<string[]>([]);
   const [categoryChoose, setCategoryChoose] = useState<string>("");
   const [priceFrom, setPriceFrom] = useState<string>("");
   const [priceTo, setPriceTo] = useState<string>("");
@@ -37,7 +38,6 @@ const SearchPage = (props: Props) => {
 
   const categories = useSelector(categoriesSelector);
   const shoesSearch = useSelector(shoesSelector);
-  const sizeList = useSelector(sizesByShoeIdSelector);
 
   const loginUser = getCurrentLoginUser();
 
@@ -172,20 +172,20 @@ const SearchPage = (props: Props) => {
               {sizeList.map((size) => (
                 <div
                   className="size-item"
-                  key={size.id}
+                  key={size}
                   onClick={() => {
                     dispatch(
                       cartAsyncAction.create({
                         userId: loginUser.id,
                         shoeId: shoeId,
-                        sizeCode: size.code,
+                        sizeCode: size,
                         quantity: 1,
                       })
                     );
                     setChooseSizesPage(false);
                   }}
                 >
-                  {size.name}
+                  {size}
                 </div>
               ))}
             </div>
@@ -412,9 +412,7 @@ const SearchPage = (props: Props) => {
                       <button
                         className="add-to-cart-btn"
                         onClick={() => {
-                          dispatch(
-                            sizeAsyncAction.getByShoeId({ shoeId: item.id })
-                          );
+                          setSizeList(item.shoeSizes)
                           setShoeId(item.id);
                           setChooseSizesPage(true);
                         }}

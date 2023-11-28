@@ -1,9 +1,12 @@
 import { sizes } from "@/constants/size";
+import { categoriesSelector } from "@/store/category/selector";
 import { shoeAsyncAction } from "@/store/shoe/action";
 import { ShoeType } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   shoe?: ShoeType;
@@ -16,6 +19,12 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
   const { register, formState, handleSubmit, control } = form;
 
   const { errors } = formState;
+
+  const urls = Array.from({ length: Math.ceil(5) }, (_, index) => index + 1);
+
+  const categories = useSelector(categoriesSelector);
+
+  const history = useHistory();
 
   const dispatch = useAppDispatch();
 
@@ -32,7 +41,14 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
           imageUrls: e.imageUrls,
           sizes: e.shoeSizes,
         })
-      );
+      )
+        .then(() => {
+          history.push("/admin?tab=shoe&message=Success");
+          window.location.reload();
+        })
+        .catch(() => {
+          history.push("/admin?tab=shoe&message=Failure");
+        });
     } else {
       dispatch(
         shoeAsyncAction.create({
@@ -44,14 +60,21 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
           imageUrls: e.imageUrls,
           sizes: e.shoeSizes,
         })
-      );
+      )
+        .then(() => {
+          history.push("/admin?tab=shoe&message=Success");
+          window.location.reload();
+        })
+        .catch(() => {
+          history.push("/admin?tab=shoe&message=Failure");
+        });
     }
 
     handleCancel();
   };
 
   return (
-    <div className="w-full h-full fixed top-0 left-0 z-10 flex items-center justify-center">
+    <div className="w-full h-full fixed top-0 left-0 z-20 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
         <div className="w-[800px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
@@ -141,9 +164,7 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
                     className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
                     type="number"
                     defaultValue={shoe?.salePrice}
-                    {...register("salePrice", {
-                      required: "Please enter sale price",
-                    })}
+                    {...register("salePrice", {})}
                   />
                   <p className="font-semibold bottom-2 absolute text-red-500">
                     {errors.salePrice?.message?.toString()}
@@ -165,10 +186,9 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
                       required: "Please choose category",
                     })}
                   >
-                    <option value="SNEAKER">Sneaker</option>
-                    <option value="SPORT">Sport</option>
-                    <option value="LEATHER">Leather</option>
-                    <option value="BOOT">Boot</option>
+                    {categories.map((category) => (
+                      <option value={category.code}>{category.name}</option>
+                    ))}
                   </select>
                   <p className="font-semibold bottom-2 absolute text-red-500">
                     {errors.category?.message?.toString()}
@@ -181,32 +201,17 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
                   >
                     Image urls
                   </label>
-                  <Controller
-                    name="imageUrls"
-                    control={control}
-                    defaultValue={shoe ? shoe.imageUrls : []}
-                    render={({ field }) => (
-                      <div>
-                        {shoe?.imageUrls.map((url, i) => (
-                          <input
-                            className="block w-full border border-solid border-gray-300 px-3 py-1 mb-2"
-                            key={url}
-                            type="text"
-                            {...field}
-                            value={url}
-                            onChange={(e) => {
-                              const updatedArray = [...field.value];
-                              updatedArray[i] = e.target.value;
-                              field.onChange(updatedArray);
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.imageUrls?.message?.toString()}
-                  </p>
+                  <div>
+                    {urls.map((index, i) => (
+                      <input
+                        className="block w-full border border-solid border-gray-300 px-3 py-1 mb-2"
+                        key={index}
+                        type="text"
+                        defaultValue={shoe?.imageUrls[i] || ""}
+                        {...register(`imageUrls.${i}`, {})}
+                      />
+                    ))}
+                  </div>
                 </div>
                 <div className="form-control relative">
                   <label

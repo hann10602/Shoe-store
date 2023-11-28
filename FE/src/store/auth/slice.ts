@@ -25,20 +25,20 @@ const authSlice = createSlice({
 
         state.isLogin = false;
       })
-      .addCase(authAsyncAction.login.rejected, (state, action) => {
+      .addCase(authAsyncAction.login.rejected, (state) => {
         state.isLogin = false;
-        throw new Error(action.payload as string);
+        throw new Error();
       });
     builder
       .addCase(authAsyncAction.register.pending, (state) => {
         state.isRegister = true;
       })
-      .addCase(authAsyncAction.register.fulfilled, (state, action) => {
+      .addCase(authAsyncAction.register.fulfilled, (state) => {
         state.isRegister = false;
       })
-      .addCase(authAsyncAction.register.rejected, (state, action) => {
+      .addCase(authAsyncAction.register.rejected, (state) => {
         state.isRegister = false;
-        throw new Error(action.payload as string);
+        throw new Error();
       });
   },
 });

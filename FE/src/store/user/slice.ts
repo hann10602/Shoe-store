@@ -41,6 +41,7 @@ const userSlice = createSlice({
       })
       .addCase(userAsyncAction.getOne.rejected, (state) => {
         state.isGettingUser = false;
+        throw new Error();
       });
     builder
       .addCase(userAsyncAction.getAll.pending, (state) => {
@@ -52,6 +53,7 @@ const userSlice = createSlice({
       })
       .addCase(userAsyncAction.getAll.rejected, (state) => {
         state.isGettingUsers = false;
+        throw new Error();
       });
     builder
       .addCase(userAsyncAction.create.pending, (state) => {
@@ -62,6 +64,7 @@ const userSlice = createSlice({
       })
       .addCase(userAsyncAction.create.rejected, (state) => {
         state.isCreatingUser = false;
+        throw new Error();
       });
     builder
       .addCase(userAsyncAction.update.pending, (state) => {
@@ -72,6 +75,7 @@ const userSlice = createSlice({
       })
       .addCase(userAsyncAction.update.rejected, (state) => {
         state.isUpdatingUser = false;
+        throw new Error();
       });
     builder
       .addCase(userAsyncAction.changePassword.pending, (state) => {
@@ -82,7 +86,7 @@ const userSlice = createSlice({
       })
       .addCase(userAsyncAction.changePassword.rejected, (state) => {
         state.isChangingPasswordUsers = false;
-        throw new Error("Wrong old password");
+        throw new Error();
       });
     builder
       .addCase(userAsyncAction.deletes.pending, (state) => {
@@ -93,6 +97,7 @@ const userSlice = createSlice({
       })
       .addCase(userAsyncAction.deletes.rejected, (state) => {
         state.isDeletingUser = false;
+        throw new Error();
       });
   },
 });

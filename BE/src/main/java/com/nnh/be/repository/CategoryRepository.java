@@ -9,10 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long>, CategoryRepositoryCustom {
-    Category findByCode(String code);
+    Optional<Category> findByCode(String code);
     @Query(value = "SELECT COUNT(s.id) AS product_quantity FROM `vmo-project`.`category` c LEFT JOIN `vmo-project`.`shoe` s ON c.id = s.category_id GROUP BY c.id", nativeQuery = true)
     List<Integer> findAllWithStatistical();
 }

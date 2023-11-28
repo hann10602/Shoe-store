@@ -38,8 +38,8 @@ public class CategoryController {
         return categoryService.update(req);
     }
 
-    @DeleteMapping("/delete")
-    public MessageSdo delete(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public MessageSdo delete(@PathVariable Long id) {
         return categoryService.delete(id);
     }
 }

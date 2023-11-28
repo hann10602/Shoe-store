@@ -5,9 +5,11 @@ import com.nnh.be.dto.sdi.category.SelfCategorySdi;
 import com.nnh.be.dto.sdi.category.UpdateCategorySdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.category.CategorySelfSdo;
+import com.nnh.be.exception.MessageException;
 import com.nnh.be.model.Cart;
 import com.nnh.be.model.Category;
 import com.nnh.be.repository.CategoryRepository;
+import com.nnh.be.repository.ShoeRepository;
 import com.nnh.be.service.CategoryService;
 import jakarta.persistence.Tuple;
 import lombok.AllArgsConstructor;
@@ -17,12 +19,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepo;
+    private final ShoeRepository shoeRepo;
+
 
     @Override
     public CategorySelfSdo self(SelfCategorySdi req) {
@@ -43,15 +48,16 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategorySelfSdo> findAll() {
         try {
             List<Integer> statisticalList = categoryRepo.findAllWithStatistical();
+            List<Category> categoryList = categoryRepo.findAll();
             List<CategorySelfSdo> dtoList = new ArrayList<>();
 
-            categoryRepo.findAll().forEach((entity) -> {
+            for(int i = 0; i < statisticalList.size(); i++) {
                 CategorySelfSdo dto = new CategorySelfSdo();
-                BeanUtils.copyProperties(entity, dto);
-                dto.setProductQuantity(statisticalList.get(entity.getId().intValue() - 1));
+                BeanUtils.copyProperties(categoryList.get(i), dto);
+                dto.setProductQuantity(statisticalList.get(i));
 
                 dtoList.add(dto);
-            });
+            }
 
             return dtoList;
         } catch(Exception e) {
@@ -63,60 +69,52 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public MessageSdo create(CreateCategorySdi req) {
         try {
-            Cart currentCart = cartRepo.findById(req.getId()).get();
+            if(!categoryRepo.findByCode(req.getCode()).isPresent()) {
+                Category entity = new Category();
+                BeanUtils.copyProperties(req, entity);
 
-            currentCart.setQuantity(req.getQuantity());
+                categoryRepo.save(entity);
 
-            if(currentCart.getQuantity() <= 0) {
-                cartRepo.deleteById(currentCart.getId());
-            } else {
-                cartRepo.save(currentCart);
+                return MessageSdo.of("Success");
             }
-
-            return MessageSdo.of("Success");
         } catch(Exception e) {
             e.printStackTrace();
-            return MessageSdo.of("Failed");
         }
+
+        throw new MessageException("Update category fail");
     }
 
     @Override
     public MessageSdo update(UpdateCategorySdi req) {
+        Optional<Category> currentCategory = categoryRepo.findByCode(req.getCode());
         try {
-            Cart currentCart = cartRepo.findById(req.getId()).get();
+            if(currentCategory.isEmpty() || currentCategory.get().getId() == req.getId()) {
+                Category entity = new Category();
+                BeanUtils.copyProperties(req, entity);
 
-            currentCart.setQuantity(req.getQuantity());
+                categoryRepo.save(entity);
 
-            if(currentCart.getQuantity() <= 0) {
-                cartRepo.deleteById(currentCart.getId());
-            } else {
-                cartRepo.save(currentCart);
+                return MessageSdo.of("Success");
             }
-
-            return MessageSdo.of("Success");
         } catch(Exception e) {
             e.printStackTrace();
-            return MessageSdo.of("Failed");
         }
+
+        throw new MessageException("Update category fail");
     }
 
     @Override
     public MessageSdo delete(Long id) {
         try {
-            Cart currentCart = cartRepo.findById(req.getId()).get();
+            if(shoeRepo.findByCategoryId(id) == 0) {
+                categoryRepo.deleteById(id);
 
-            currentCart.setQuantity(req.getQuantity());
-
-            if(currentCart.getQuantity() <= 0) {
-                cartRepo.deleteById(currentCart.getId());
-            } else {
-                cartRepo.save(currentCart);
+                return MessageSdo.of("Success");
             }
-
-            return MessageSdo.of("Success");
         } catch(Exception e) {
             e.printStackTrace();
-            return MessageSdo.of("Failed");
         }
+
+        throw new MessageException("Delete category fail");
     }
 }

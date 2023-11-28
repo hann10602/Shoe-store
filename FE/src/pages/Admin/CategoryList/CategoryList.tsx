@@ -10,6 +10,7 @@ import {
 } from "@/store/category/selector";
 import { categoryAsyncAction } from "@/store/category/action";
 import { CategoryType } from "@/store/category/type";
+import { useHistory, useLocation } from "react-router-dom";
 
 type Props = {};
 
@@ -18,15 +19,20 @@ const CategoryList = (props: Props) => {
   const [isChangePage, setIsChangePage] = useState<boolean>(false);
   const [isDeletePage, setIsDeletePage] = useState<boolean>(false);
   const [isMenuBar, setIsMenuBar] = useState<number | undefined>(undefined);
-  const [selectedEntity, setSelectedEntity] = useState<CategoryType | undefined>(
-    undefined
-  );
+  const [selectedEntity, setSelectedEntity] = useState<
+    CategoryType | undefined
+  >(undefined);
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
   const categories = useSelector(categoriesSelector);
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
 
   const dispatch = useAppDispatch();
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const message = new URLSearchParams(location.search).get("message");
 
   const tablePagination = Array.from(
     { length: Math.ceil(categories.length / 10) },
@@ -36,7 +42,14 @@ const CategoryList = (props: Props) => {
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
   const handleDelete = (id: number) => {
-    dispatch(categoryAsyncAction.deletes({ id }));
+    dispatch(categoryAsyncAction.deletes({ id }))
+      .then(() => {
+        history.push("/admin?tab=category&message=Success");
+        window.location.reload();
+      })
+      .catch(() => {
+        history.push("/admin?tab=category&message=Failure");
+      });
     setIsDeletePage(false);
     setSelectedId(undefined);
   };
@@ -53,7 +66,7 @@ const CategoryList = (props: Props) => {
 
   useEffect(() => {
     dispatch(categoryAsyncAction.getAll());
-  }, [dispatch, categories]);
+  }, []);
 
   return (
     <>
@@ -70,6 +83,16 @@ const CategoryList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
+      {message &&
+        (message === "Success" ? (
+          <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">
+            Success
+          </div>
+        ) : (
+          <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">
+            Failure
+          </div>
+        ))}
       <div>
         <button
           className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold"
@@ -98,7 +121,9 @@ const CategoryList = (props: Props) => {
                     <td className="text-center h-14">{category.id}</td>
                     <td className="text-center h-14">{category.name}</td>
                     <td className="text-center h-14">{category.code}</td>
-                    <td className="text-center h-14">{category.productQuantity}</td>
+                    <td className="text-center h-14">
+                      {category.productQuantity}
+                    </td>
                     <td className="text-center h-14">
                       <div
                         className="flex justify-center cursor-pointer relative"

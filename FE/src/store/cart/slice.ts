@@ -45,6 +45,7 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.getOne.rejected, (state) => {
         state.isGettingCart = false;
+        throw new Error();
       });
     builder
       .addCase(cartAsyncAction.getAll.pending, (state) => {
@@ -56,6 +57,7 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.getAll.rejected, (state) => {
         state.isGettingCarts = false;
+        throw new Error();
       });
     builder
       .addCase(cartAsyncAction.getByUserId.pending, (state) => {
@@ -68,6 +70,7 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.getByUserId.rejected, (state) => {
         state.isGettingCartsByUserId = false;
+        throw new Error();
       });
     builder
       .addCase(cartAsyncAction.create.pending, (state) => {
@@ -78,6 +81,7 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.create.rejected, (state) => {
         state.isCreatingCart = false;
+        throw new Error();
       });
     builder
       .addCase(cartAsyncAction.update.pending, (state) => {
@@ -88,6 +92,7 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.update.rejected, (state) => {
         state.isUpdatingCart = false;
+        throw new Error();
       });
     builder
       .addCase(cartAsyncAction.deletes.pending, (state) => {
@@ -98,6 +103,7 @@ const cartSlice = createSlice({
       })
       .addCase(cartAsyncAction.deletes.rejected, (state) => {
         state.isDeletingCart = false;
+        throw new Error();
       });
   },
 });

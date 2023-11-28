@@ -7,6 +7,7 @@ import ChangeBillPage from "./ChangeBillPage";
 import { BillType } from "@/store/bill/type";
 import { billsSelector, isGettingBillsSelector } from "@/store/bill/selector";
 import { billAsyncAction } from "@/store/bill/action";
+import { useHistory, useLocation } from "react-router-dom";
 
 type Props = {};
 
@@ -25,6 +26,11 @@ const BillList = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
+  const history = useHistory();
+  const location = useLocation();
+
+  const message = new URLSearchParams(location.search).get("message");
+
   const tablePagination = Array.from(
     { length: Math.ceil(bills.length / 10) },
     (_, index) => index + 1
@@ -33,7 +39,14 @@ const BillList = (props: Props) => {
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
   const handleDelete = (id: number) => {
-    dispatch(billAsyncAction.deletes({ id }));
+    dispatch(billAsyncAction.deletes({ id }))
+      .then(() => {
+        history.push("/admin?tab=bill&message=Success");
+        window.location.reload();
+      })
+      .catch(() => {
+        history.push("/admin?tab=bill&message=Failure");
+      });
     setIsDeletePage(false);
     setSelectedId(undefined);
   };
@@ -50,7 +63,7 @@ const BillList = (props: Props) => {
 
   useEffect(() => {
     dispatch(billAsyncAction.getAll());
-  }, [dispatch, bills]);
+  }, []);
 
   return (
     <>
@@ -67,6 +80,17 @@ const BillList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
+
+      {message &&
+        (message === "Success" ? (
+          <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">
+            Success
+          </div>
+        ) : (
+          <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">
+            Failure
+          </div>
+        ))}
       <div className="overflow-auto rounded-md border border-solid border-gray-300">
         <table className="h-full w-full min-w-max">
           <thead>
@@ -98,9 +122,7 @@ const BillList = (props: Props) => {
                       <div
                         className={`${
                           bill.status === "WAIT" && "bg-blue-400"
-                        } ${
-                          bill.status === "DELIVERY" && "bg-yellow-400"
-                        } ${
+                        } ${bill.status === "DELIVERY" && "bg-yellow-400"} ${
                           bill.status === "COMPLETED" && "bg-green-400"
                         } rounded-full text-white font-semibold px-5 h-max w-max py-2`}
                       >

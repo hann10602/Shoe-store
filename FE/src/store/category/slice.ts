@@ -1,8 +1,7 @@
 import { CategoryType } from "@/store/category/type";
 import { createSlice } from "@reduxjs/toolkit";
-import { categoryAsyncAction } from "./action";
 import { ResponseType } from "../type";
-import { categories } from "@/constants/category";
+import { categoryAsyncAction } from "./action";
 
 type CategoryStateType = {
   isGettingCategory: boolean;
@@ -41,6 +40,7 @@ const categorySlice = createSlice({
       })
       .addCase(categoryAsyncAction.getOne.rejected, (state) => {
         state.isGettingCategory = false;
+        throw new Error();
       });
     builder
       .addCase(categoryAsyncAction.getAll.pending, (state) => {
@@ -53,6 +53,7 @@ const categorySlice = createSlice({
       })
       .addCase(categoryAsyncAction.getAll.rejected, (state) => {
         state.isGettingCategories = false;
+        throw new Error();
       });
     builder
       .addCase(categoryAsyncAction.create.pending, (state) => {
@@ -64,6 +65,7 @@ const categorySlice = createSlice({
       })
       .addCase(categoryAsyncAction.create.rejected, (state) => {
         state.isCreatingCategory = false;
+        throw new Error();
       });
     builder
       .addCase(categoryAsyncAction.update.pending, (state) => {
@@ -75,6 +77,7 @@ const categorySlice = createSlice({
       })
       .addCase(categoryAsyncAction.update.rejected, (state) => {
         state.isUpdatingCategory = false;
+        throw new Error();
       });
     builder
       .addCase(categoryAsyncAction.deletes.pending, (state) => {
@@ -86,6 +89,7 @@ const categorySlice = createSlice({
       })
       .addCase(categoryAsyncAction.deletes.rejected, (state) => {
         state.isDeletingCategory = false;
+        throw new Error();
       });
   },
 });

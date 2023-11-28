@@ -24,6 +24,7 @@ const register = createAsyncThunk(
   "auth/register",
   async (param: RegisterType, { rejectWithValue }) => {
     try {
+      console.log('vao roi')
       const resp = await axios.post(
         `${baseUrl}/auth/register`,
         param
@@ -33,6 +34,8 @@ const register = createAsyncThunk(
         return resp.data;
       }
     } catch (err) {
+      console.log('reject roi')
+
       return rejectWithValue(err);
     }
   }

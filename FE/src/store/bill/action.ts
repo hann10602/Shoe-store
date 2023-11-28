@@ -114,7 +114,7 @@ const deletes = createAsyncThunk(
   "bill/delete",
   async (param: DeleteBillType, { rejectWithValue }) => {
     try {
-      const resp = await axios.delete(`${baseUrl}/bill/delete${param.id}`, {
+      const resp = await axios.delete(`${baseUrl}/bill/delete/${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {

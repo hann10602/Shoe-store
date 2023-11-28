@@ -29,6 +29,7 @@ public class WebSecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/size/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/evaluate/get-by-shoe-id/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/shoe/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.

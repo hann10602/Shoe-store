@@ -37,7 +37,8 @@ const ProductDetail = (props: Props) => {
     undefined
   );
   const [buySize, setBuySize] = useState<string>("");
-  const [hasBuySize, setHasBuySize] = useState<boolean>(true);
+  const [firstClick, setFirstClick] = useState<boolean>(false);
+  const [hasBuySize, setHasBuySize] = useState<boolean>(false);
   const [evaluatePage, setEvaluatePage] = useState<number>(1);
   const [breakpoint, setBreakPoint] = useState<number>();
   const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
@@ -177,7 +178,7 @@ const ProductDetail = (props: Props) => {
             >
               x
             </button>
-            <p className="confirm-title">Are you sure to buy this product ?</p>
+            <p className="confirm-title">Are you sure to add this product to cart ?</p>
             <div className="confirm-group-btn">
               <button
                 className="confirm-btn"
@@ -289,7 +290,7 @@ const ProductDetail = (props: Props) => {
                     {size}
                   </div>
                 ))}
-                {hasBuySize || <p className="size-error">Please choose size</p>}
+                {!hasBuySize && firstClick && <p className="size-error">Please choose size</p>}
               </div>
               <p className="product-quantity">
                 Quantity:
@@ -330,8 +331,9 @@ const ProductDetail = (props: Props) => {
                 <button
                   className="cart-btn"
                   onClick={() => {
-                    if (hasBuySize && buySize === "") {
+                    if (!hasBuySize && buySize === "") {
                       setHasBuySize(false);
+                      setFirstClick(true);
                     } else {
                       setCartPage(true);
                     }
@@ -342,8 +344,9 @@ const ProductDetail = (props: Props) => {
                 <button
                   className="buy-btn"
                   onClick={() => {
-                    if (hasBuySize && buySize === "") {
+                    if (!hasBuySize && buySize === "") {
                       setHasBuySize(false);
+                      setFirstClick(true);
                     } else {
                       setBuyPage(true);
                     }

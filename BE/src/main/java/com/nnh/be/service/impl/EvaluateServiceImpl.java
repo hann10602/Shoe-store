@@ -6,6 +6,7 @@ import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.evaluate.EvaluateSelfSdo;
 import com.nnh.be.exception.MessageException;
 import com.nnh.be.model.Evaluate;
+import com.nnh.be.repository.BillRepository;
 import com.nnh.be.repository.EvaluateRepository;
 import com.nnh.be.service.EvaluateService;
 import com.nnh.be.service.ShoeService;
@@ -25,6 +26,7 @@ public class EvaluateServiceImpl implements EvaluateService {
     private final UserService userService;
     private final ShoeService shoeService;
     private final EvaluateRepository evaluateRepo;
+    private final BillRepository billRepo;
 
     @Override
     public List<EvaluateSelfSdo> findByShoeId(Long shoeId) {
@@ -56,6 +58,7 @@ public class EvaluateServiceImpl implements EvaluateService {
             evaluate.setUserEvaluate(userService.findOne(req.getUserId()));
             evaluate.setShoeEvaluate(shoeService.findOne(req.getShoeId()));
 
+            billRepo.setIsEvaluateByShoeIdAndUserId(req.getUserId(), req.getShoeId());
             evaluateRepo.save(evaluate);
 
             return MessageSdo.of("Success");

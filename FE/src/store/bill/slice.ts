@@ -45,6 +45,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.getOne.rejected, (state) => {
         state.isGettingBill = false;
+        throw new Error();
       });
     builder
       .addCase(billAsyncAction.getAll.pending, (state) => {
@@ -57,6 +58,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.getAll.rejected, (state) => {
         state.isGettingBills = false;
+        throw new Error();
       });
     builder
       .addCase(billAsyncAction.getByUserId.pending, (state) => {
@@ -69,6 +71,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.getByUserId.rejected, (state) => {
         state.isGettingBillsByUserId = false;
+        throw new Error();
       });
     builder
       .addCase(billAsyncAction.create.pending, (state) => {
@@ -80,6 +83,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.create.rejected, (state) => {
         state.isCreatingBill = false;
+        throw new Error();
       });
     builder
       .addCase(billAsyncAction.createFromCart.pending, (state) => {
@@ -91,6 +95,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.createFromCart.rejected, (state) => {
         state.isCreatingBill = false;
+        throw new Error();
       });
     builder
       .addCase(billAsyncAction.update.pending, (state) => {
@@ -102,6 +107,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.update.rejected, (state) => {
         state.isUpdatingBill = false;
+        throw new Error();
       });
     builder
       .addCase(billAsyncAction.deletes.pending, (state) => {
@@ -113,6 +119,7 @@ const billSlice = createSlice({
       })
       .addCase(billAsyncAction.deletes.rejected, (state) => {
         state.isDeletingBill = false;
+        throw new Error();
       });
   },
 });

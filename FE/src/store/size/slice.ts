@@ -49,6 +49,7 @@ const sizeSlice = createSlice({
       })
       .addCase(sizeAsyncAction.getOne.rejected, (state) => {
         state.isGettingSize = false;
+        throw new Error();
       });
     builder
       .addCase(sizeAsyncAction.getAll.pending, (state) => {
@@ -61,6 +62,7 @@ const sizeSlice = createSlice({
       })
       .addCase(sizeAsyncAction.getAll.rejected, (state) => {
         state.isGettingSizes = false;
+        throw new Error();
       });
     builder
       .addCase(sizeAsyncAction.getSizeQuantity.pending, (state) => {
@@ -72,18 +74,19 @@ const sizeSlice = createSlice({
       })
       .addCase(sizeAsyncAction.getSizeQuantity.rejected, (state) => {
         state.isGettingQuantity = false;
+        throw new Error();
       });
     builder
       .addCase(sizeAsyncAction.getByShoeId.pending, (state) => {
         state.isGettingSizesByShoeId = true;
       })
       .addCase(sizeAsyncAction.getByShoeId.fulfilled, (state, action) => {
-        // state.sizesByShoeId = action.payload;
-        state.sizesByShoeId = sizes;
+        state.sizesByShoeId = action.payload;
         state.isGettingSizesByShoeId = false;
       })
       .addCase(sizeAsyncAction.getByShoeId.rejected, (state) => {
         state.isGettingSizesByShoeId = false;
+        throw new Error();
       });
     builder
       .addCase(sizeAsyncAction.create.pending, (state) => {
@@ -95,6 +98,7 @@ const sizeSlice = createSlice({
       })
       .addCase(sizeAsyncAction.create.rejected, (state) => {
         state.isCreatingSize = false;
+        throw new Error();
       });
     builder
       .addCase(sizeAsyncAction.update.pending, (state) => {
@@ -106,6 +110,7 @@ const sizeSlice = createSlice({
       })
       .addCase(sizeAsyncAction.update.rejected, (state) => {
         state.isUpdatingSize = false;
+        throw new Error();
       });
     builder
       .addCase(sizeAsyncAction.deletes.pending, (state) => {
@@ -117,6 +122,7 @@ const sizeSlice = createSlice({
       })
       .addCase(sizeAsyncAction.deletes.rejected, (state) => {
         state.isDeletingSize = false;
+        throw new Error();
       });
   },
 });

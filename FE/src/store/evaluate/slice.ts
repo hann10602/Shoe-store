@@ -41,6 +41,7 @@ const evaluateSlice = createSlice({
       })
       .addCase(evaluateAsyncAction.getOne.rejected, (state) => {
         state.isGettingEvaluate = false;
+        throw new Error();
       });
     builder
       .addCase(evaluateAsyncAction.getByShoeId.pending, (state) => {
@@ -52,6 +53,7 @@ const evaluateSlice = createSlice({
       })
       .addCase(evaluateAsyncAction.getByShoeId.rejected, (state) => {
         state.isGettingEvaluates = false;
+        throw new Error();
       });
     builder
       .addCase(evaluateAsyncAction.create.pending, (state) => {
@@ -63,7 +65,7 @@ const evaluateSlice = createSlice({
       })
       .addCase(evaluateAsyncAction.create.rejected, (state) => {
         state.isCreatingEvaluate = false;
-        throw new Error("You had evaluate");
+        throw new Error();
       });
     builder
       .addCase(evaluateAsyncAction.deletes.pending, (state) => {
@@ -75,6 +77,7 @@ const evaluateSlice = createSlice({
       })
       .addCase(evaluateAsyncAction.deletes.rejected, (state) => {
         state.isDeletingEvaluate = false;
+        throw new Error();
       });
   },
 });

@@ -4,6 +4,7 @@ import { UserType } from "@/store/user/type";
 import { validateEmail } from "@/utils";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   user?: UserType;
@@ -13,6 +14,8 @@ type Props = {
 const ChangeUserPage = ({ user, handleCancel }: Props) => {
   const form = useForm();
 
+  const history = useHistory();
+
   const { register, formState, handleSubmit } = form;
 
   const { errors } = formState;
@@ -20,6 +23,8 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
   const dispatch = useAppDispatch();
 
   const onSubmit = (e: any) => {
+    handleCancel();
+
     if (user) {
       dispatch(
         userAsyncAction.update({
@@ -33,7 +38,14 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
           address: e.address,
           role: e.role,
         })
-      );
+      )
+        .then(() => {
+          history.push("/admin?tab=user&message=Success");
+          window.location.reload();
+        })
+        .catch(() => {
+          history.push("/admin?tab=user&message=Failure");
+        });
     } else {
       dispatch(
         userAsyncAction.create({
@@ -46,17 +58,22 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
           address: e.address,
           role: e.role,
         })
-      );
+      )
+      .then(() => {
+        history.push("/admin?tab=user&message=Success");
+        window.location.reload();
+      })
+      .catch(() => {
+        history.push("/admin?tab=user&message=Failure");
+      });
     }
-
-    handleCancel();
   };
 
   return (
-    <div className="w-full h-full fixed top-0 left-0 z-10 flex items-center justify-center">
+    <div className="w-full h-full fixed top-0 left-0 z-20 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
-        <div className="w-[600px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
+        <div className="w-[1000px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
           <div className="flex justify-end">
             <span
               className="text-2xl font-bold rounded-full hover:bg-gray-200 p-4 cursor-pointer mb-5"
@@ -73,141 +90,164 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
             </span>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Full name
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="text"
-                defaultValue={user?.fullName}
-                {...register("fullName", {
-                  required: "Please enter full name",
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.fullName?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Username
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="text"
-                defaultValue={user?.username}
-                {...register("username", {
-                  required: "Please enter username",
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.username?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Password
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="text"
-                defaultValue={user?.password}
-                {...register("password", {
-                  required: "Please enter password",
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.password?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Avatar
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="text"
-                defaultValue={user?.avatar}
-                {...register("avatar", {
-                  required: "Please enter avatar",
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.avatar?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Email
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="text"
-                defaultValue={user?.email}
-                {...register("email", {
-                  required: "Please enter email",
-                  validate: {
-                    isEmail: (fieldValue) =>
-                      validateEmail(fieldValue) || "Wrong email format",
-                  },
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.email?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Phone Number
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="number"
-                defaultValue={user?.phoneNum}
-                {...register("phoneNum", {
-                  required: "Please enter phone number",
-                  minLength: 10,
-                  maxLength: 15,
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.phoneNum?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Address
-              </label>
-              <input
-                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                type="text"
-                defaultValue={user?.address}
-                {...register("address", {
-                  required: "Please enter address",
-                })}
-              />
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.address?.message?.toString()}
-              </p>
-            </div>
-            <div className="form-control relative">
-              <label className="block mb-2 text-lg font-semibold" htmlFor="">
-                Role
-              </label>
-              <select
-                defaultValue={user ? user.role : "ROLE_USER"}
-                className="mb-6 w-40 h-10 border border-solid border-gray-300 text-lg rounded-md"
-                {...register("role", {
-                  required: "Please enter role",
-                })}
-              >
-                <option value="ROLE_USER">User</option>
-                <option value="ROLE_ADMIN">Admin</option>
-              </select>
-              <p className="font-semibold bottom-2 absolute text-red-500">
-                {errors.role?.message?.toString()}
-              </p>
+            <div className="flex justify-between space-x-5">
+              <div className="w-4/5">
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Full name
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="text"
+                    defaultValue={user?.fullName}
+                    {...register("fullName", {
+                      required: "Please enter full name",
+                    })}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.fullName?.message?.toString()}
+                  </p>
+                </div>
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Username
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="text"
+                    defaultValue={user?.username}
+                    {...register("username", {
+                      required: "Please enter username",
+                    })}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.username?.message?.toString()}
+                  </p>
+                </div>
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Password
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="text"
+                    {...register("password", {})}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.password?.message?.toString()}
+                  </p>
+                </div>
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Avatar
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="text"
+                    defaultValue={user?.avatar}
+                    {...register("avatar", {})}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.avatar?.message?.toString()}
+                  </p>
+                </div>
+              </div>
+              <div className="w-4/5">
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Email
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="text"
+                    defaultValue={user?.email}
+                    {...register("email", {
+                      required: "Please enter email",
+                      validate: {
+                        isEmail: (fieldValue) =>
+                          validateEmail(fieldValue) || "Wrong email format",
+                      },
+                    })}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.email?.message?.toString()}
+                  </p>
+                </div>
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="number"
+                    defaultValue={user?.phoneNum}
+                    {...register("phoneNum", {
+                      required: "Please enter phone number",
+                      minLength: 10,
+                      maxLength: 15,
+                    })}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.phoneNum?.message?.toString()}
+                  </p>
+                </div>
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Address
+                  </label>
+                  <input
+                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                    type="text"
+                    defaultValue={user?.address}
+                    {...register("address", {})}
+                  />
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.address?.message?.toString()}
+                  </p>
+                </div>
+                <div className="form-control relative">
+                  <label
+                    className="block mb-2 text-lg font-semibold"
+                    htmlFor=""
+                  >
+                    Role
+                  </label>
+                  <select
+                    defaultValue={user ? user.role : "ROLE_USER"}
+                    className="mb-6 w-40 h-10 border border-solid border-gray-300 text-lg rounded-md"
+                    {...register("role", {
+                      required: "Please enter role",
+                    })}
+                  >
+                    <option value="ROLE_USER">User</option>
+                    <option value="ROLE_ADMIN">Admin</option>
+                  </select>
+                  <p className="font-semibold bottom-2 absolute text-red-500">
+                    {errors.role?.message?.toString()}
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className="flex justify-between items-center">

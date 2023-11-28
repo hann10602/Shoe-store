@@ -58,6 +58,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.getOne.rejected, (state) => {
         state.isGettingShoe = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.getAll.pending, (state) => {
@@ -69,6 +70,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.getAll.rejected, (state) => {
         state.isGettingShoes = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.getByCategory1.pending, (state) => {
@@ -80,6 +82,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.getByCategory1.rejected, (state) => {
         state.isGettingShoesByCategory1 = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.getByCategory2.pending, (state) => {
@@ -91,6 +94,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.getByCategory2.rejected, (state) => {
         state.isGettingShoesByCategory2 = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.getByCategory3.pending, (state) => {
@@ -102,6 +106,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.getByCategory3.rejected, (state) => {
         state.isGettingShoesByCategory3 = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.searchShoes.pending, (state) => {
@@ -113,6 +118,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.searchShoes.rejected, (state) => {
         state.isSearchShoes = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.create.pending, (state) => {
@@ -124,6 +130,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.create.rejected, (state) => {
         state.isCreatingShoe = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.update.pending, (state) => {
@@ -135,6 +142,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.update.rejected, (state) => {
         state.isUpdatingShoe = false;
+        throw new Error();
       });
     builder
       .addCase(shoeAsyncAction.deletes.pending, (state) => {
@@ -146,6 +154,7 @@ const shoeSlice = createSlice({
       })
       .addCase(shoeAsyncAction.deletes.rejected, (state) => {
         state.isDeletingShoe = false;
+        throw new Error();
       });
   },
 });

@@ -1,13 +1,13 @@
 package com.nnh.be.controller.api;
 
 import com.nnh.be.dto.sdi.size.SizeSelfSdi;
-import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.dto.sdo.size.SizeSelfSdo;
 import com.nnh.be.service.SizeService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor

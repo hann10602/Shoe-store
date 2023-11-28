@@ -117,7 +117,7 @@ public class BillServiceImpl implements BillService {
                 entity.setShoeOrder(cart.getShoeCart());
                 entity.setStatus("WAIT");
                 entity.setReceived(false);
-                entity.setIsEvaluate(false);
+                entity.setIsEvaluate(evaluateRepo.findByUserIdAndShoeId(cart.getUserCart().getId(), cart.getShoeCart().getId()).isPresent());
 
                 billRepo.save(entity);
             });
@@ -137,7 +137,7 @@ public class BillServiceImpl implements BillService {
         try {
             Bill entity = findOne(req.getId());
             entity.setStatus(req.getStatus());
-            entity.setReceived(req.getReceived() == "true" ? true : false);
+            entity.setReceived(req.getReceived().equals("true") ? true : false);
             entity.setIsEvaluate(req.getIsEvaluate());
 
             billRepo.save(entity);
