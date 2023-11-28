@@ -2,20 +2,11 @@ package com.nnh.be.service.impl;
 
 import com.nnh.be.dto.sdi.bill.CreateBillFromCartSdi;
 import com.nnh.be.dto.sdi.bill.CreateBillSdi;
-import com.nnh.be.dto.sdi.bill.DeleteBillSdi;
 import com.nnh.be.dto.sdi.bill.UpdateBillSdi;
-import com.nnh.be.dto.sdi.cart.CreateCartSdi;
-import com.nnh.be.dto.sdi.cart.DeleteCartSdi;
-import com.nnh.be.dto.sdi.cart.UpdateCartSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.bill.BillSelfSdo;
-import com.nnh.be.dto.sdo.cart.CartSelfSdo;
 import com.nnh.be.model.Bill;
-import com.nnh.be.model.Cart;
-import com.nnh.be.model.Shoe;
-import com.nnh.be.model.User;
 import com.nnh.be.repository.BillRepository;
-import com.nnh.be.repository.CartRepository;
 import com.nnh.be.repository.EvaluateRepository;
 import com.nnh.be.repository.SizeRepository;
 import com.nnh.be.service.BillService;
@@ -28,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -162,9 +151,9 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public MessageSdo delete(DeleteBillSdi req) {
+    public MessageSdo delete(Long id) {
         try {
-            billRepo.deleteById(req.getId());
+            billRepo.deleteById(id);
 
             return MessageSdo.of("Success");
         } catch (Exception e) {

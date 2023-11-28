@@ -10,6 +10,7 @@ public class UpdateUserSdi {
     private String fullName;
     private String avatar;
     private String username;
+    private String password;
     private String address;
     private String role;
     private String email;

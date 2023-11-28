@@ -14,6 +14,10 @@ export type CreateCategoryType = {
   code: string;
 };
 
-export type UpdateCategoryType = CategoryType;
+export type UpdateCategoryType = {
+  id: number;
+  name: string;
+  code: string;
+};
 
 export type DeleteCategoryType = GetCategoryType;

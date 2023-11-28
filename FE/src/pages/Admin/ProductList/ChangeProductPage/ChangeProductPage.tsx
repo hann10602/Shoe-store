@@ -1,11 +1,7 @@
 import { sizes } from "@/constants/size";
 import { shoeAsyncAction } from "@/store/shoe/action";
 import { ShoeType } from "@/store/shoe/type";
-import { SizeType } from "@/store/size/type";
 import { useAppDispatch } from "@/store/store";
-import { userAsyncAction } from "@/store/user/action";
-import { UserType } from "@/store/user/type";
-import { validateEmail } from "@/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -32,10 +28,9 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
           price: e.price,
           description: e.description,
           salePrice: e.salePrice,
-          quantity: e.quantity,
           category: e.category,
           imageUrls: e.imageUrls,
-          shoeSizes: e.shoeSizes,
+          sizes: e.shoeSizes,
         })
       );
     } else {
@@ -45,10 +40,9 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
           price: e.price,
           description: e.description,
           salePrice: e.salePrice,
-          quantity: e.quantity,
           category: e.category,
           imageUrls: e.imageUrls,
-          shoeSizes: e.shoeSizes,
+          sizes: e.shoeSizes,
         })
       );
     }
@@ -153,25 +147,6 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
                   />
                   <p className="font-semibold bottom-2 absolute text-red-500">
                     {errors.salePrice?.message?.toString()}
-                  </p>
-                </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Quantity
-                  </label>
-                  <input
-                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                    type="number"
-                    defaultValue={shoe?.quantity}
-                    {...register("quantity", {
-                      required: "Please enter quantity",
-                    })}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.quantity?.message?.toString()}
                   </p>
                 </div>
               </div>

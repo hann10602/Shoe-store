@@ -32,8 +32,7 @@ export type CreateShoeType = {
   price: number;
   salePrice?: number;
   description: string;
-  quantity: number;
-  shoeSizes: string[];
+  sizes: string[];
   imageUrls: string[];
   category: string;
 };
@@ -44,8 +43,7 @@ export type UpdateShoeType = {
   price: number;
   salePrice?: number;
   description: string;
-  quantity: number;
-  shoeSizes: string[];
+  sizes: string[];
   imageUrls: string[];
   category: string;
 };

@@ -61,7 +61,7 @@ const update = createAsyncThunk(
   "category/update",
   async (param: UpdateCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/category/update`, param, {
+      const resp = await axios.put(`${baseUrl}/category/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {
@@ -77,7 +77,7 @@ const deletes = createAsyncThunk(
   "category/delete",
   async (param: DeleteCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/category/delete`, param, {
+      const resp = await axios.delete(`${baseUrl}/category/delete/${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {

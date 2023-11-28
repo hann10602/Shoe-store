@@ -29,6 +29,7 @@ export type UpdateUserType = {
   id: number;
   fullName: string;
   username: string;
+  password?: string;
   email: string;
   avatar: string;
   phoneNum: string;

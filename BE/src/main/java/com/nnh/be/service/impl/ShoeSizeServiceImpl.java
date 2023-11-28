@@ -83,5 +83,10 @@ public class ShoeSizeServiceImpl implements ShoeSizeService {
     public List<String> getSizesByShoeId(Long shoeId) {
         return shoeSizeRepo.getSizesByShoeId(shoeId);
     }
+
+    @Override
+    public Integer getTotalQuantityByShoeId(Long shoeId) {
+        return shoeSizeRepo.getTotalQuantityByShoeId(shoeId);
+    }
 }
 

@@ -18,5 +18,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     @Query(value = "SELECT * FROM cart WHERE id in :ids", nativeQuery = true)
     List<Cart> findByIdIn(List<Long> ids);
     void deleteByUserCart(User user);
+    void deleteByShoeCart(Shoe shoe);
     Cart findByUserCartAndShoeCartAndSizeCart(User user, Shoe shoe, Size size);
 }

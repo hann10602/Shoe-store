@@ -26,6 +26,7 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
           id: user.id,
           fullName: e.fullName,
           username: e.username,
+          password: e.password,
           avatar: e.avatar,
           email: e.email,
           phoneNum: e.phoneNum,
@@ -102,6 +103,22 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
               />
               <p className="font-semibold bottom-2 absolute text-red-500">
                 {errors.username?.message?.toString()}
+              </p>
+            </div>
+            <div className="form-control relative">
+              <label className="block mb-2 text-lg font-semibold" htmlFor="">
+                Password
+              </label>
+              <input
+                className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                type="text"
+                defaultValue={user?.password}
+                {...register("password", {
+                  required: "Please enter password",
+                })}
+              />
+              <p className="font-semibold bottom-2 absolute text-red-500">
+                {errors.password?.message?.toString()}
               </p>
             </div>
             <div className="form-control relative">

@@ -1,7 +1,11 @@
 package com.nnh.be.service.impl;
 
+import com.nnh.be.dto.sdi.category.CreateCategorySdi;
 import com.nnh.be.dto.sdi.category.SelfCategorySdi;
+import com.nnh.be.dto.sdi.category.UpdateCategorySdi;
+import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.category.CategorySelfSdo;
+import com.nnh.be.model.Cart;
 import com.nnh.be.model.Category;
 import com.nnh.be.repository.CategoryRepository;
 import com.nnh.be.service.CategoryService;
@@ -53,6 +57,66 @@ public class CategoryServiceImpl implements CategoryService {
         } catch(Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public MessageSdo create(CreateCategorySdi req) {
+        try {
+            Cart currentCart = cartRepo.findById(req.getId()).get();
+
+            currentCart.setQuantity(req.getQuantity());
+
+            if(currentCart.getQuantity() <= 0) {
+                cartRepo.deleteById(currentCart.getId());
+            } else {
+                cartRepo.save(currentCart);
+            }
+
+            return MessageSdo.of("Success");
+        } catch(Exception e) {
+            e.printStackTrace();
+            return MessageSdo.of("Failed");
+        }
+    }
+
+    @Override
+    public MessageSdo update(UpdateCategorySdi req) {
+        try {
+            Cart currentCart = cartRepo.findById(req.getId()).get();
+
+            currentCart.setQuantity(req.getQuantity());
+
+            if(currentCart.getQuantity() <= 0) {
+                cartRepo.deleteById(currentCart.getId());
+            } else {
+                cartRepo.save(currentCart);
+            }
+
+            return MessageSdo.of("Success");
+        } catch(Exception e) {
+            e.printStackTrace();
+            return MessageSdo.of("Failed");
+        }
+    }
+
+    @Override
+    public MessageSdo delete(Long id) {
+        try {
+            Cart currentCart = cartRepo.findById(req.getId()).get();
+
+            currentCart.setQuantity(req.getQuantity());
+
+            if(currentCart.getQuantity() <= 0) {
+                cartRepo.deleteById(currentCart.getId());
+            } else {
+                cartRepo.save(currentCart);
+            }
+
+            return MessageSdo.of("Success");
+        } catch(Exception e) {
+            e.printStackTrace();
+            return MessageSdo.of("Failed");
         }
     }
 }

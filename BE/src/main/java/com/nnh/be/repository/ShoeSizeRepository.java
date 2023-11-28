@@ -18,6 +18,9 @@ public interface ShoeSizeRepository extends JpaRepository<ShoeSize, Long> {
     @Query(value = "SELECT s.code FROM shoe_size ss JOIN size s ON ss.size_id = s.id WHERE ss.shoe_id = :shoeId", nativeQuery = true)
     List<String> getSizesByShoeId(Long shoeId);
 
+    @Query(value = "SELECT SUM(quantity) FROM shoe_size WHERE shoe_id = :shoeId", nativeQuery = true)
+    Integer getTotalQuantityByShoeId(Long shoeId);
+
     @Query(value = "SELECT ss.quantity FROM shoe_size ss LEFT JOIN size s ON ss.size_id = s.id WHERE ss.shoe_id = :shoeId AND s.code = :sizeCode", nativeQuery = true)
     Integer getQuantity(Long shoeId, String sizeCode);
 }

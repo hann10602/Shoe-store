@@ -2,19 +2,15 @@ package com.nnh.be.service.impl;
 
 import com.nnh.be.dto.sdi.image.CreateImageSdi;
 import com.nnh.be.dto.sdi.shoe.CreateShoeSdi;
-import com.nnh.be.dto.sdi.shoe.DeleteShoeSdi;
 import com.nnh.be.dto.sdi.shoe.SelfShoeSdi;
 import com.nnh.be.dto.sdi.shoe.UpdateShoeSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
-import com.nnh.be.model.Cart;
 import com.nnh.be.model.Category;
-import com.nnh.be.model.Evaluate;
+import com.nnh.be.model.Image;
 import com.nnh.be.model.Shoe;
-import com.nnh.be.repository.CategoryRepository;
-import com.nnh.be.repository.EvaluateRepository;
-import com.nnh.be.repository.ShoeRepository;
-import com.nnh.be.repository.ShoeSizeRepository;
+import com.nnh.be.model.ShoeSize;
+import com.nnh.be.repository.*;
 import com.nnh.be.service.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -22,18 +18,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ShoeServiceImpl implements ShoeService {
     private final ShoeRepository shoeRepo;
-    private final CategoryRepository categoryRepo;
     private final ImageService imageService;
-    private final EvaluateRepository evaluateRepo;
     private final SizeService sizeService;
     private final ShoeSizeService shoeSizeService;
+    private final CartRepository cartRepo;
+    private final BillRepository billRepo;
+    private final EvaluateRepository evaluateRepo;
+    private final CategoryRepository categoryRepo;
 
     @Override
     public List<ShoeSelfSdo> findAll() {
@@ -42,6 +39,7 @@ public class ShoeServiceImpl implements ShoeService {
             ShoeSelfSdo dto = new ShoeSelfSdo();
             BeanUtils.copyProperties(entity, dto);
             dto.setCategory(entity.getShoeCategory().getCode());
+            dto.setQuantity(shoeSizeService.getTotalQuantityByShoeId(entity.getId()));
             dto.setShoeSizes(shoeSizeService.getSizesByShoeId(entity.getId()));
             dto.setAverageStar(evaluateRepo.getAverageStarByShoeId(entity.getId()));
             dto.setImageUrls(imageService.getImageUrlsByShoeId(entity.getId()));
@@ -59,6 +57,7 @@ public class ShoeServiceImpl implements ShoeService {
         shoeRepo.findByShoeCategory(category).forEach((entity) -> {
             ShoeSelfSdo dto = new ShoeSelfSdo();
             BeanUtils.copyProperties(entity, dto);
+            dto.setQuantity(shoeSizeService.getTotalQuantityByShoeId(entity.getId()));
             dto.setShoeSizes(shoeSizeService.getSizesByShoeId(entity.getId()));
             dto.setAverageStar(evaluateRepo.getAverageStarByShoeId(entity.getId()));
             dto.setImageUrls(imageService.getImageUrlsByShoeId(entity.getId()));
@@ -97,9 +96,7 @@ public class ShoeServiceImpl implements ShoeService {
 
             shoe.setShoeCategory(categoryRepo.findByCode(req.getCategory()));
 
-            shoeRepo.save(shoe);
-
-            Shoe newShoe = shoeRepo.findByCode(req.getCode()).get();
+            Shoe newShoe = shoeRepo.save(shoe);
 
             imageService.create(CreateImageSdi.of(req.getImageUrls(), newShoe));
 
@@ -116,7 +113,6 @@ public class ShoeServiceImpl implements ShoeService {
             Shoe shoe = shoeRepo.findById(req.getId()).get();
             BeanUtils.copyProperties(req, shoe);
 
-            shoe.setPrice(req.getPrice());
             shoe.setShoeCategory(categoryRepo.findByCode(req.getCategory()));
 
             shoeRepo.save(shoe);
@@ -132,15 +128,17 @@ public class ShoeServiceImpl implements ShoeService {
 
     @Override
     @Transactional
-    public MessageSdo delete(DeleteShoeSdi req) {
+    public MessageSdo delete(Long id) {
         try {
-            Shoe entity = findOne(req.getId());
+            Shoe entity = findOne(id);
 
             shoeSizeService.deleteAllByShoe(entity);
-
             imageService.deleteAllByShoe(entity);
+            billRepo.deleteByShoeOrder(entity);
+            cartRepo.deleteByShoeCart(entity);
+            evaluateRepo.deleteByShoeEvaluate(entity);
 
-            shoeRepo.deleteById(req.getId());
+            shoeRepo.deleteById(id);
 
             return MessageSdo.of("Success");
         } catch (Exception e) {

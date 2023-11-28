@@ -4,6 +4,7 @@ import com.nnh.be.dto.auth.AuthenticationSdi;
 import com.nnh.be.dto.auth.AuthenticationSdo;
 import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
 import com.nnh.be.dto.sdi.user.CreateUserSdi;
+import com.nnh.be.dto.sdi.user.UpdateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.exception.AuthenticationExceptionCustom;
 import com.nnh.be.exception.MessageException;
@@ -11,6 +12,7 @@ import com.nnh.be.model.User;
 import com.nnh.be.repository.RoleRepository;
 import com.nnh.be.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -37,13 +39,8 @@ public class AuthenticationService {
         try {
             if (usersExist.isEmpty()) {
                 User user = new User();
-                user.setUsername(req.getUsername());
+                BeanUtils.copyProperties(req, user);
                 user.setPassword(passwordEncoder.encode(req.getPassword()));
-                user.setFullName(req.getFullName());
-                user.setAvatar(req.getAvatar());
-                user.setEmail(req.getEmail());
-                user.setPhoneNum(req.getPhoneNum());
-                user.setAddress(req.getAddress());
                 user.setUserRole(roleRepo.findByCode("ROLE_USER").get());
                 userRepo.save(user);
 
@@ -100,8 +97,6 @@ public class AuthenticationService {
             throw e;
         }
     }
-
-
     public MessageSdo changePassword(ChangePasswordUserSdi req) {
         try {
             User user = userRepo.findById(req.getId()).get();
@@ -115,6 +110,47 @@ public class AuthenticationService {
             return MessageSdo.of("Success");
         } catch(AuthenticationException e) {
             throw e;
+        }
+    }
+
+    public MessageSdo update(UpdateUserSdi req) {
+        List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
+
+        try {
+            if (usersExist.isEmpty()) {
+                User user = new User();
+                BeanUtils.copyProperties(req, user);
+                user.setPassword(passwordEncoder.encode(req.getPassword()));
+                user.setUserRole(roleRepo.findByCode(req.getRole()).get());
+                userRepo.save(user);
+
+                return MessageSdo.of("Success");
+
+            } else {
+                for(User user : usersExist) {
+                    if(Objects.equals(user.getUsername(), req.getUsername())) {
+//                        return MessageSdo.of("Username is exist");
+                        throw new MessageException("update fail");
+                    }
+
+                    if(Objects.equals(user.getEmail(), req.getEmail())) {
+//                        return MessageSdo.of("Email is exist");
+                        throw new MessageException("update fail");
+                    }
+
+                    if(Objects.equals(user.getPhoneNum(), req.getPhoneNum())) {
+//                        return MessageSdo.of("Phone number is exist");
+                        throw new MessageException("update fail");
+                    }
+                };
+
+//                return MessageSdo.of("Undefined");
+                throw new MessageException("update fail");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MessageException("update fail");
+//            return MessageSdo.of("Failed");
         }
     }
 }

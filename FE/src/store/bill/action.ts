@@ -98,7 +98,7 @@ const update = createAsyncThunk(
   "bill/update",
   async (param: UpdateBillType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/bill/update`, param, {
+      const resp = await axios.put(`${baseUrl}/bill/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {
@@ -114,7 +114,7 @@ const deletes = createAsyncThunk(
   "bill/delete",
   async (param: DeleteBillType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/bill/delete`, param, {
+      const resp = await axios.delete(`${baseUrl}/bill/delete${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {

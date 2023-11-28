@@ -10,8 +10,7 @@ import java.util.List;
 public interface UserService {
     List<UserSelfSdo> findAll();
     UserSelfSdo self(SelfUserSdi req);
-    MessageSdo update(UpdateUserSdi req);
-    MessageSdo delete(DeleteUserSdi req);
+    MessageSdo delete(Long id);
     User findOne(Long id);
     User findOneByUsername(String username);
 }

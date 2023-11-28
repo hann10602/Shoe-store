@@ -1,22 +1,18 @@
 package com.nnh.be.service.impl;
 
 
-import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
-import com.nnh.be.dto.sdi.user.DeleteUserSdi;
 import com.nnh.be.dto.sdi.user.SelfUserSdi;
-import com.nnh.be.dto.sdi.user.UpdateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
-import com.nnh.be.exception.MessageException;
 import com.nnh.be.model.User;
+import com.nnh.be.repository.BillRepository;
 import com.nnh.be.repository.CartRepository;
-import com.nnh.be.repository.RoleRepository;
+import com.nnh.be.repository.EvaluateRepository;
 import com.nnh.be.repository.UserRepository;
 import com.nnh.be.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +22,9 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
-    private final CartRepository cartRepository;
+    private final CartRepository cartRepo;
+    private final BillRepository billRepo;
+    private final EvaluateRepository evaluateRepo;
 
     @Override
     public List<UserSelfSdo> findAll() {
@@ -35,7 +33,7 @@ public class UserServiceImpl implements UserService {
             UserSelfSdo dto = new UserSelfSdo();
             BeanUtils.copyProperties(entity, dto);
 
-            dto.setRole(entity.getUserRole().getName());
+            dto.setRole(entity.getUserRole().getCode());
 
             dtoList.add(dto);
         });
@@ -49,32 +47,20 @@ public class UserServiceImpl implements UserService {
         User entity = findOne(req.getId());
         BeanUtils.copyProperties(entity, dto);
 
-        dto.setRole(entity.getUserRole().getName());
+        dto.setRole(entity.getUserRole().getCode());
 
         return dto;
     }
 
     @Override
-    public MessageSdo update(UpdateUserSdi req) {
-        try {
-            User user = findOne(req.getId());
-            BeanUtils.copyProperties(req, user);
-
-            userRepo.save(user);
-
-            return MessageSdo.of("Success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return MessageSdo.of("Failed");
-        }
-    }
-
-    @Override
     @Transactional
-    public MessageSdo delete(DeleteUserSdi req) {
+    public MessageSdo delete(Long id) {
         try {
-            cartRepository.deleteByUserCart(userRepo.findById(req.getId()).get());
-            userRepo.deleteById(req.getId());
+            User user = userRepo.findById(id).get();
+            cartRepo.deleteByUserCart(user);
+            billRepo.deleteByUserOrder(user);
+            evaluateRepo.deleteByUserEvaluate(user);
+            userRepo.deleteById(id);
 
             return MessageSdo.of("Success");
         } catch (Exception e) {

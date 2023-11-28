@@ -1,5 +1,6 @@
 package com.nnh.be.repository;
 
+import com.nnh.be.model.Shoe;
 import com.nnh.be.model.Size;
 import com.nnh.be.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

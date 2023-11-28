@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserSelfSdo extends CommonSdo {
+    private Long id;
     private String fullName;
     private String username;
+    private String password;
+    private String email;
     private String avatar;
     private String address;
-    private String email;
     private String phoneNum;
     private String role;
 }

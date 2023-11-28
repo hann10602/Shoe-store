@@ -47,8 +47,8 @@ public class ShoeController {
         return shoeService.update(req);
     }
 
-    @DeleteMapping("/delete")
-    public MessageSdo delete(@RequestBody DeleteShoeSdi req) {
-        return shoeService.delete(req);
+    @DeleteMapping("/delete/{id}")
+    public MessageSdo delete(@PathVariable Long id) {
+        return shoeService.delete(id);
     }
 }

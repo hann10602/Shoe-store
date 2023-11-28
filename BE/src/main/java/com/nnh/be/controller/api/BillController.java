@@ -3,16 +3,10 @@ package com.nnh.be.controller.api;
 
 import com.nnh.be.dto.sdi.bill.CreateBillFromCartSdi;
 import com.nnh.be.dto.sdi.bill.CreateBillSdi;
-import com.nnh.be.dto.sdi.bill.DeleteBillSdi;
 import com.nnh.be.dto.sdi.bill.UpdateBillSdi;
-import com.nnh.be.dto.sdi.cart.CreateCartSdi;
-import com.nnh.be.dto.sdi.cart.DeleteCartSdi;
-import com.nnh.be.dto.sdi.cart.UpdateCartSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.bill.BillSelfSdo;
-import com.nnh.be.dto.sdo.cart.CartSelfSdo;
 import com.nnh.be.service.BillService;
-import com.nnh.be.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,8 +44,8 @@ public class BillController {
         return billService.update(req);
     }
 
-    @DeleteMapping("/delete")
-    public MessageSdo update(@RequestBody DeleteBillSdi req) {
-        return billService.delete(req);
+    @DeleteMapping("/delete/{id}")
+    public MessageSdo update(@PathVariable Long id) {
+        return billService.delete(id);
     }
 }

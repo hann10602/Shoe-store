@@ -11,4 +11,5 @@ public interface ShoeSizeService {
     MessageSdo update(Shoe shoe, List<Size> sizes);
     void deleteAllByShoe(Shoe shoe);
     List<String> getSizesByShoeId(Long id);
+    Integer getTotalQuantityByShoeId(Long shoeId);
 }

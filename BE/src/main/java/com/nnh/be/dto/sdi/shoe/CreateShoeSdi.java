@@ -10,7 +10,8 @@ import java.util.List;
 public class CreateShoeSdi {
     private String name;
     private String code;
-    private Long price;
+    private Integer price;
+    private Integer salePrice;
     private String description;
     private List<String> sizes;
     private List<String> imageUrls;

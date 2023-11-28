@@ -1,20 +1,11 @@
 package com.nnh.be.controller.api;
 
-import com.nnh.be.dto.sdi.shoe.CreateShoeSdi;
-import com.nnh.be.dto.sdi.shoe.DeleteShoeSdi;
-import com.nnh.be.dto.sdi.shoe.SelfShoeSdi;
-import com.nnh.be.dto.sdi.shoe.UpdateShoeSdi;
 import com.nnh.be.dto.sdi.user.*;
 import com.nnh.be.dto.sdo.MessageSdo;
-import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
-import com.nnh.be.service.ShoeService;
 import com.nnh.be.service.UserService;
 import com.nnh.be.service.auth.AuthenticationService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +30,7 @@ public class UserController {
 
     @PutMapping("/update")
     public MessageSdo update(@RequestBody UpdateUserSdi req) {
-        return userService.update(req);
+        return authService.update(req);
     }
 
     @PutMapping("/change-password")
@@ -47,8 +38,8 @@ public class UserController {
         return authService.changePassword(req);
     }
 
-    @DeleteMapping("/delete")
-    public MessageSdo delete(@RequestBody DeleteUserSdi req) {
-        return userService.delete(req);
+    @DeleteMapping("/delete/{id}")
+    public MessageSdo delete(@PathVariable("id") Long id) {
+        return userService.delete(id);
     }
 }

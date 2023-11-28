@@ -2,7 +2,6 @@ package com.nnh.be.service;
 
 import com.nnh.be.dto.sdi.bill.CreateBillFromCartSdi;
 import com.nnh.be.dto.sdi.bill.CreateBillSdi;
-import com.nnh.be.dto.sdi.bill.DeleteBillSdi;
 import com.nnh.be.dto.sdi.bill.UpdateBillSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.bill.BillSelfSdo;
@@ -16,7 +15,7 @@ public interface BillService {
     MessageSdo create(CreateBillSdi req);
     MessageSdo createFromCart(CreateBillFromCartSdi req);
     MessageSdo update(UpdateBillSdi req);
-    MessageSdo delete(DeleteBillSdi req);
+    MessageSdo delete(Long id);
 
     Bill findOne(Long id);
 }

@@ -119,7 +119,7 @@ const update = createAsyncThunk(
   "shoe/update",
   async (param: UpdateShoeType, {rejectWithValue}) => {
     try {
-      const resp = await axios.post(`${baseUrl}/shoe/update`, param, {
+      const resp = await axios.put(`${baseUrl}/shoe/update`, param, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {
@@ -135,7 +135,7 @@ const deletes = createAsyncThunk(
   "shoe/delete",
   async (param: DeleteShoeType, {rejectWithValue}) => {
     try {
-      const resp = await axios.post(`${baseUrl}/shoe/delete`, param, {
+      const resp = await axios.delete(`${baseUrl}/shoe/delete/${param.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resp.status === 200) {
