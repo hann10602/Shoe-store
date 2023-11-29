@@ -1,12 +1,12 @@
 import { LoginUserType } from "@/store/auth/type";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { getCurrentLoginUser } from "@/utils";
+import React, { useLayoutEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import CartList from "./CartList";
 import ChangePassword from "./ChangePassword";
+import OrderList from "./OrderLIst";
 import UserInformation from "./UserInformation";
 import "./style.scss";
-import { getCurrentLoginUser } from "@/utils";
-import CartList from "./CartList";
-import OrderList from "./OrderList";
 
 type Props = {};
 

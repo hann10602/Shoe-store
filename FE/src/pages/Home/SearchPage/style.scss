@@ -223,6 +223,26 @@
             }
           }
         }
+
+        #remove-filter {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-top: 1px solid rgb(214, 214, 214);
+          padding: 20px 0 28px;
+          #remove-filter-btn {
+            padding: 12px 20px;
+            font-weight: 500;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: rgb(219, 219, 219);
+            transition: background-color 0.15s;
+          }
+
+          #remove-filter-btn:hover {
+            background-color: rgb(192, 192, 192);
+          }
+        }
       }
 
       #mobile-search-text {
@@ -361,7 +381,7 @@
           width: 100%;
           display: flex;
           justify-content: center;
-  
+
           .pagination-option {
             cursor: pointer;
             width: 36px;
@@ -372,15 +392,15 @@
             align-items: center;
             transition: background-color 0.3s;
           }
-  
+
           :not(.pagination-option:last-child) {
             margin-right: 12px;
           }
-  
+
           .pagination-option:hover {
             background-color: rgb(184, 184, 184);
           }
-  
+
           :not(.pagination-option:last-child) {
             border-right: 1px solid rgb(180, 180, 180);
           }
@@ -623,6 +643,26 @@
             .category-checkbox {
               margin-right: 12px;
             }
+          }
+        }
+
+        #remove-filter {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-top: 1px solid rgb(214, 214, 214);
+          padding: 20px 0 28px;
+          #remove-filter-btn {
+            padding: 12px 20px;
+            font-weight: 500;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: rgb(219, 219, 219);
+            transition: background-color 0.15s;
+          }
+
+          #remove-filter-btn:hover {
+            background-color: rgb(192, 192, 192);
           }
         }
       }
@@ -998,6 +1038,26 @@
             .category-checkbox {
               margin-right: 12px;
             }
+          }
+        }
+
+        #remove-filter {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-top: 1px solid rgb(214, 214, 214);
+          padding: 20px 0 28px;
+          #remove-filter-btn {
+            padding: 12px 20px;
+            font-weight: 500;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: rgb(219, 219, 219);
+            transition: background-color 0.15s;
+          }
+
+          #remove-filter-btn:hover {
+            background-color: rgb(192, 192, 192);
           }
         }
       }

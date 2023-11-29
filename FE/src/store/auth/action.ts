@@ -10,7 +10,6 @@ const login = createAsyncThunk(
   async (param: LoginType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/auth/login`, param);
-
       if (resp.status === 200) {
         return resp.data;
       }
@@ -24,18 +23,14 @@ const register = createAsyncThunk(
   "auth/register",
   async (param: RegisterType, { rejectWithValue }) => {
     try {
-      console.log('vao roi')
       const resp = await axios.post(
         `${baseUrl}/auth/register`,
         param
       );
-
       if (resp.status === 200) {
         return resp.data;
       }
     } catch (err) {
-      console.log('reject roi')
-
       return rejectWithValue(err);
     }
   }

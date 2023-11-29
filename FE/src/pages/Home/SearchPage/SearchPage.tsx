@@ -6,17 +6,15 @@ import {
   categoriesSelector,
   isGettingCategoriesSelector,
 } from "@/store/category/selector";
+import { shoeAsyncAction } from "@/store/shoe/action";
 import { isGettingShoesSelector, shoesSelector } from "@/store/shoe/selector";
 import { ShoeType } from "@/store/shoe/type";
-import { sizeAsyncAction } from "@/store/size/action";
-import { sizesByShoeIdSelector } from "@/store/size/selector";
 import { useAppDispatch } from "@/store/store";
 import { getCurrentLoginUser } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
-import { shoeAsyncAction } from "@/store/shoe/action";
 
 type Props = {};
 
@@ -26,6 +24,7 @@ const SearchPage = (props: Props) => {
   const [shoes, setShoes] = useState<ShoeType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [sizeChoose, setSizeChoose] = useState<string>("");
+  const [starChoose, setStarChoose] = useState<number | undefined>(undefined);
   const [sizeList, setSizeList] = useState<string[]>([]);
   const [categoryChoose, setCategoryChoose] = useState<string>("");
   const [priceFrom, setPriceFrom] = useState<string>("");
@@ -45,6 +44,7 @@ const SearchPage = (props: Props) => {
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
 
   const searchParam = new URLSearchParams(location.search).get("search");
+  const starParam = new URLSearchParams(location.search).get("star");
   const sizeParam = new URLSearchParams(location.search).get("size");
   const categoryParam = new URLSearchParams(location.search).get("category");
   const priceFromParam = new URLSearchParams(location.search).get("price-from");
@@ -52,6 +52,11 @@ const SearchPage = (props: Props) => {
 
   const shoesPagination = Array.from(
     { length: Math.ceil(shoes.length / 8) },
+    (_, index) => index + 1
+  );
+
+  const starFilter = Array.from(
+    { length: Math.ceil(5) },
     (_, index) => index + 1
   );
 
@@ -70,6 +75,10 @@ const SearchPage = (props: Props) => {
       searchResultString += `&size=${sizeChoose}`;
     }
 
+    if (starChoose !== undefined) {
+      searchResultString += `&star=${starChoose}`;
+    }
+
     if (categoryChoose !== "") {
       searchResultString += `&category=${categoryChoose}`;
     }
@@ -83,7 +92,15 @@ const SearchPage = (props: Props) => {
     }
 
     history.push(`/search?s=?${searchResultString}`);
-  }, [search, sizeChoose, categoryChoose, priceFrom, priceTo, history]);
+  }, [
+    search,
+    sizeChoose,
+    categoryChoose,
+    priceFrom,
+    priceTo,
+    starChoose,
+    history,
+  ]);
 
   useEffect(() => {
     dispatch(categoryAsyncAction.getAll());
@@ -100,6 +117,10 @@ const SearchPage = (props: Props) => {
     if (sizeParam) {
       // searchResultParams.size = sizeParam;
       setSizeChoose(sizeParam);
+    }
+    if (starParam) {
+      // searchResultParams.size = sizeParam;
+      setStarChoose(Number(starParam));
     }
     if (categoryParam) {
       // searchResultParams.category = categoryParam;
@@ -118,7 +139,11 @@ const SearchPage = (props: Props) => {
       shoesSearch.filter((shoe) => {
         if (searchParam) {
           if (!shoe.name.includes(searchParam)) {
-            console.log("alo");
+            return false;
+          }
+        }
+        if (starParam) {
+          if (shoe.averageStar !== Number(starParam)) {
             return false;
           }
         }
@@ -246,6 +271,28 @@ const SearchPage = (props: Props) => {
               </div>
             </div>
             <div id="size-filter">
+              <p id="size-title">Star:</p>
+              <div id="size-wrapper">
+                {starFilter.map((star) => (
+                  <div
+                    className={`size-item ${
+                      star === starChoose ? "size-choose" : ""
+                    }`}
+                    key={star}
+                    onClick={() => {
+                      if (star === starChoose) {
+                        setStarChoose(undefined);
+                      } else {
+                        setStarChoose(star);
+                      }
+                    }}
+                  >
+                    {star}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div id="size-filter">
               <p id="size-title">Size:</p>
               <div id="size-wrapper">
                 {sizes.map((size) => (
@@ -368,6 +415,21 @@ const SearchPage = (props: Props) => {
                 )}
               </div>
             </div>
+            <div id="remove-filter">
+              <button
+                id="remove-filter-btn"
+                onClick={() => {
+                  setSearch("");
+                  setSizeChoose("");
+                  setStarChoose(undefined);
+                  setCategoryChoose("");
+                  setPriceFrom("");
+                  setPriceTo("");
+                }}
+              >
+                Remove filter
+              </button>
+            </div>
           </div>
 
           {searchParam && (
@@ -412,7 +474,7 @@ const SearchPage = (props: Props) => {
                       <button
                         className="add-to-cart-btn"
                         onClick={() => {
-                          setSizeList(item.shoeSizes)
+                          setSizeList(item.shoeSizes);
                           setShoeId(item.id);
                           setChooseSizesPage(true);
                         }}

@@ -1,4 +1,5 @@
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL, getToken } from "@/utils";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
   CreateShoeType,
@@ -8,7 +9,6 @@ import {
   SearchShoes,
   UpdateShoeType,
 } from "./type";
-import { BASE_URL, getToken } from "@/utils";
 
 const baseUrl = BASE_URL;
 const token = getToken();

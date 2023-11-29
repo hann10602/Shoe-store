@@ -47,13 +47,14 @@ const CartList = ({ userId }: Props) => {
             <div>
               <button
                 id="buy-all-btn"
-                onClick={() =>
+                onClick={() => {
                   dispatch(
                     billAsyncAction.createFromCart({
                       cartIdList: orders.map((order) => order.id),
                     })
-                  )
-                }
+                  );
+                  window.location.reload();
+                }}
               >
                 Buy all
               </button>

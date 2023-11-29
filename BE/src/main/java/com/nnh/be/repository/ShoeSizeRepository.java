@@ -4,6 +4,7 @@ import com.nnh.be.model.Shoe;
 import com.nnh.be.model.ShoeSize;
 import com.nnh.be.model.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,8 @@ public interface ShoeSizeRepository extends JpaRepository<ShoeSize, Long> {
 
     @Query(value = "SELECT ss.quantity FROM shoe_size ss LEFT JOIN size s ON ss.size_id = s.id WHERE ss.shoe_id = :shoeId AND s.code = :sizeCode", nativeQuery = true)
     Integer getQuantity(Long shoeId, String sizeCode);
+
+    @Query(value = "UPDATE shoe_size SET quantity = quantity - :quantity WHERE size_id = :sizeId AND shoe_id = :shoeId", nativeQuery = true)
+    @Modifying
+    void deleteQuantityWhileBuy(Integer quantity, Long sizeId, Long shoeId);
 }

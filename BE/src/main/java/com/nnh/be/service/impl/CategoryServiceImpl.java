@@ -105,14 +105,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public MessageSdo delete(Long id) {
-        try {
-            if(shoeRepo.findByCategoryId(id) == 0) {
-                categoryRepo.deleteById(id);
+        if(shoeRepo.findByCategoryId(id) == 0) {
+            categoryRepo.deleteById(id);
 
-                return MessageSdo.of("Success");
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
+            return MessageSdo.of("Success");
         }
 
         throw new MessageException("Delete category fail");

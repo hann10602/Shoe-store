@@ -2,6 +2,8 @@ package com.nnh.be.repository;
 
 import com.nnh.be.dto.sdo.shoe.ShoeSelfSdo;
 import com.nnh.be.model.Shoe;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

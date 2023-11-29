@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { cartAsyncAction } from "./action";
 import { CartType } from "./type";
-import { carts } from "@/constants/cart";
 
 type CartStateType = {
   isGettingCart: boolean;

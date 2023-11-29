@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ResponseType } from "../type";
 import { userAsyncAction } from "./action";
 import { UserType } from "./type";
-import { users } from "@/constants/user";
 
 type UserStateType = {
   isGettingUser: boolean;

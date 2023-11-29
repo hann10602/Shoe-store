@@ -43,12 +43,6 @@ const OrderList = ({ userId }: Props) => {
 
   const handleSubmitEvaluate = (e: FieldValues) => {
     if (loginUser && evaluateShoeId) {
-      console.log({
-        userId: loginUser.id,
-        shoeId: evaluateShoeId,
-        star: evaluateOrderStar,
-        evaluate: e.evaluate,
-      });
       dispatch(
         evaluateAsyncAction.create({
           userId: loginUser.id,
@@ -128,7 +122,7 @@ const OrderList = ({ userId }: Props) => {
         {!isGettingBillsByUserId &&
           bills &&
           bills.map((bill) => (
-            <tr>
+            <tr key={bill.id}>
               <td>{bill.id}</td>
               <td>{bill.shoeName}</td>
               <td>{bill.quantity}</td>

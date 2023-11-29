@@ -6,13 +6,16 @@ import com.nnh.be.dto.sdi.bill.UpdateBillSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.bill.BillSelfSdo;
 import com.nnh.be.model.Bill;
+import com.nnh.be.model.Size;
 import com.nnh.be.repository.BillRepository;
 import com.nnh.be.repository.EvaluateRepository;
+import com.nnh.be.repository.ShoeSizeRepository;
 import com.nnh.be.repository.SizeRepository;
 import com.nnh.be.service.BillService;
 import com.nnh.be.service.CartService;
 import com.nnh.be.service.ShoeService;
 import com.nnh.be.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ public class BillServiceImpl implements BillService {
     private final UserService userService;
     private final CartService cartService;
     private final ShoeService shoeService;
+    private final ShoeSizeRepository shoeSizeRepo;
 
     @Override
     public List<BillSelfSdo> findAll() {
@@ -74,11 +78,14 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional
     public MessageSdo create(CreateBillSdi req) {
         try {
             Bill entity = new Bill();
+            Size size = sizeRepo.findByCode(req.getSizeCode()).get();
+
             entity.setQuantity(req.getQuantity());
-            entity.setSizeOrder(sizeRepo.findByCode(req.getSizeCode()).get());
+            entity.setSizeOrder(size);
             entity.setTotalPrice(req.getTotalPrice());
             entity.setUserOrder(userService.findOne(req.getUserId()));
             entity.setShoeOrder(shoeService.findOne(req.getShoeId()));
@@ -92,6 +99,8 @@ public class BillServiceImpl implements BillService {
 
             billRepo.save(entity);
 
+            shoeSizeRepo.deleteQuantityWhileBuy(req.getQuantity(), size.getId(), req.getShoeId());
+
             return MessageSdo.of("Success");
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,6 +110,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    @Transactional
     public MessageSdo createFromCart(CreateBillFromCartSdi req) {
         try {
             cartService.findAllByIdIn(req.getCartIdList()).forEach(cart -> {
@@ -120,6 +130,8 @@ public class BillServiceImpl implements BillService {
                 entity.setIsEvaluate(evaluateRepo.findByUserIdAndShoeId(cart.getUserCart().getId(), cart.getShoeCart().getId()).isPresent());
 
                 billRepo.save(entity);
+
+                shoeSizeRepo.deleteQuantityWhileBuy(cart.getQuantity(), cart.getSizeCart().getId(), cart.getShoeCart().getId());
             });
 
             cartService.deleteAll(req.getCartIdList());

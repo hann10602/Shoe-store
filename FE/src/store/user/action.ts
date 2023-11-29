@@ -32,11 +32,15 @@ const getAll = createAsyncThunk(
   "user/get-all",
   async (param, { rejectWithValue }) => {
     try {
-      const resp = await axios.get(`${baseUrl}/user/get-all`);
+      const resp = await axios.get(`${baseUrl}/user/get-all`, {
+        headers: { Authorization: `Bearer ${token}` },
+        
+      });
       if (resp.status === 200) {
         return resp.data;
       }
     } catch (err) {
+      console.log(err)
       return rejectWithValue(err);
     }
   }

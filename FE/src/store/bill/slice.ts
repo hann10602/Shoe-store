@@ -1,4 +1,3 @@
-import { bills } from "@/constants/bill";
 import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { billAsyncAction } from "./action";

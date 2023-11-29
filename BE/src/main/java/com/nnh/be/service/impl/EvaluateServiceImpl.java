@@ -11,6 +11,7 @@ import com.nnh.be.repository.EvaluateRepository;
 import com.nnh.be.service.EvaluateService;
 import com.nnh.be.service.ShoeService;
 import com.nnh.be.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +48,7 @@ public class EvaluateServiceImpl implements EvaluateService {
     }
 
     @Override
+    @Transactional
     public MessageSdo create(CreateEvaluateSdi req) {
         try {
             if(evaluateRepo.findByUserIdAndShoeId(req.getUserId(), req.getShoeId()).isPresent()) {

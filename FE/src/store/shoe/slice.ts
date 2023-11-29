@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
-import { ShoeType } from "./type";
 import { shoeAsyncAction } from "./action";
-import { products } from "@/constants/shoe";
-// import { products } from "@/constants/shoe";
+import { ShoeType } from "./type";
 
 type ShoeStateType = {
   isGettingShoe: boolean;

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "../type";
 import { evaluateAsyncAction } from "./action";
 import { EvaluateType } from "./type";
-import { evaluates } from "@/constants/evaluate/evaluate";
 
 type EvaluateStateType = {
   isGettingEvaluate: boolean;

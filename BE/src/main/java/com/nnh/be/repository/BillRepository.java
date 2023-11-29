@@ -16,8 +16,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     @Query(value = "SELECT * FROM bill WHERE user_id = :userId", nativeQuery = true)
     List<Bill> findByUserId(Long userId);
     @Modifying
-    @Transactional
-    @Query(value = "UPDATE evaluate SET is_evaluate = true WHERE user_id = :userId AND shoe_id = :shoeId", nativeQuery = true)
+    @Query(value = "UPDATE bill SET is_evaluate = true WHERE user_id = :userId AND shoe_id = :shoeId", nativeQuery = true)
     Integer setIsEvaluateByShoeIdAndUserId(Long userId, Long shoeId);
 
     void deleteByUserOrder(User user);
