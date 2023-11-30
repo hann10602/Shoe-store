@@ -2,7 +2,8 @@ import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
 import { UserType } from "@/store/user/type";
 import { validateEmail } from "@/utils";
-import React from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
@@ -12,6 +13,12 @@ type Props = {
 };
 
 const ChangeUserPage = ({ user, handleCancel }: Props) => {
+  const cloud_name = "dcb5n0grf";
+  const preset_key = "baswycwi";
+
+  const openFileRef = useRef<HTMLInputElement>(null);
+
+  const [avatar, setAvatar] = useState<string>("");
   const form = useForm();
 
   const history = useHistory();
@@ -22,50 +29,95 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
 
   const dispatch = useAppDispatch();
 
+  const uploadImage = (file: File) => {
+    if (!file) {
+      return;
+    }
+
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(event.target?.result);
+      };
+      reader.readAsDataURL(file);
+    })
+      .then((imgUri) => {
+        setAvatar(imgUri as string);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const onSubmit = (e: any) => {
+    const file = openFileRef.current?.files?.[0];
+    const formData = new FormData();
+
+    if (file) {
+      formData.append("file", file);
+      formData.append("upload_preset", preset_key);
+    }
     handleCancel();
 
     if (user) {
-      dispatch(
-        userAsyncAction.update({
-          id: user.id,
-          fullName: e.fullName,
-          username: e.username,
-          password: e.password,
-          avatar: e.avatar,
-          email: e.email,
-          phoneNum: e.phoneNum,
-          address: e.address,
-          role: e.role,
+      axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+          formData
+        )
+        .then((res) => {
+          dispatch(
+            userAsyncAction.update({
+              id: user.id,
+              fullName: e.fullName,
+              username: e.username,
+              password: e.password,
+              avatar: file ? res.data.secure_url : null,
+              email: e.email,
+              phoneNum: e.phoneNum,
+              address: e.address,
+              role: e.role,
+            })
+          )
+            .then(() => {
+              history.push("/admin?tab=user&message=Success");
+              window.location.reload();
+              setAvatar("");
+            })
+            .catch(() => {
+              history.push("/admin?tab=user&message=Failure");
+              setAvatar("");
+            });
         })
-      )
-        .then(() => {
-          history.push("/admin?tab=user&message=Success");
-          window.location.reload();
-        })
-        .catch(() => {
-          history.push("/admin?tab=user&message=Failure");
-        });
+        .catch((err) => console.log(err));
     } else {
-      dispatch(
-        userAsyncAction.create({
-          fullName: e.fullName,
-          username: e.username,
-          password: e.password,
-          avatar: e.avatar,
-          email: e.email,
-          phoneNum: e.phoneNum,
-          address: e.address,
-          role: e.role,
+      axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+          formData
+        )
+        .then((res) => {
+          dispatch(
+            userAsyncAction.create({
+              fullName: e.fullName,
+              username: e.username,
+              password: e.password,
+              avatar: file ? res.data.secure_url : null,
+              email: e.email,
+              phoneNum: e.phoneNum,
+              address: e.address,
+              role: e.role,
+            })
+          )
+            .then(() => {
+              history.push("/admin?tab=user&message=Success");
+              window.location.reload();
+              setAvatar("");
+            })
+            .catch(() => {
+              history.push("/admin?tab=user&message=Failure");
+              setAvatar("");
+            });
         })
-      )
-      .then(() => {
-        history.push("/admin?tab=user&message=Success");
-        window.location.reload();
-      })
-      .catch(() => {
-        history.push("/admin?tab=user&message=Failure");
-      });
+        .catch((err) => console.log(err));
     }
   };
 
@@ -153,15 +205,45 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
                   >
                     Avatar
                   </label>
-                  <input
-                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                    type="text"
-                    defaultValue={user?.avatar}
-                    {...register("avatar", {})}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.avatar?.message?.toString()}
-                  </p>
+                  <div className="flex justify-center items-center">
+                    {user?.avatar || avatar ? (
+                      <img
+                        className="w-32 h-32 object-cover cursor-pointer"
+                        src={avatar || user?.avatar}
+                        alt="avatar"
+                        onClick={() => openFileRef.current?.click()}
+                      />
+                    ) : (
+                      <div
+                        className="w-32 h-32 flex justify-center items-center border-dashed border-2 border-blue-300 cursor-pointer"
+                        onClick={() => openFileRef.current?.click()}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          id="Layer_2"
+                          data-name="Layer 2"
+                          fill="rgb(147, 197, 253)"
+                          width={80}
+                          height={80}
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M22,13a1,1,0,0,0-1,1v4.213A2.79,2.79,0,0,1,18.213,21H5.787A2.79,2.79,0,0,1,3,18.213V14a1,1,0,0,0-2,0v4.213A4.792,4.792,0,0,0,5.787,23H18.213A4.792,4.792,0,0,0,23,18.213V14A1,1,0,0,0,22,13Z" />
+                          <path d="M6.707,8.707,11,4.414V17a1,1,0,0,0,2,0V4.414l4.293,4.293a1,1,0,0,0,1.414-1.414l-6-6a1,1,0,0,0-1.414,0l-6,6A1,1,0,0,0,6.707,8.707Z" />
+                        </svg>
+                      </div>
+                    )}
+
+                    <input
+                      type="file"
+                      className="hidden"
+                      {...register("avatar", {
+                        onChange: (e) => {
+                          uploadImage(e.target.files?.[0]);
+                        },
+                      })}
+                      ref={openFileRef}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="w-4/5">
@@ -250,7 +332,7 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
               </div>
             </div>
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-5">
               <button
                 className="w-[45%] h-12 border border-solid border-gray-300 rounded-xl font-semibold hover:bg-gray-400"
                 onClick={() => handleCancel()}

@@ -1,5 +1,6 @@
 import { errorCode } from "@/constants";
 import { LoginUserType } from "@/store/auth/type";
+import { useState } from "react";
 
 export const validateEmail = (email: string) => {
   return String(email)

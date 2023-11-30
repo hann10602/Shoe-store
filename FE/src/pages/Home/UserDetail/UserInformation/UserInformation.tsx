@@ -1,42 +1,82 @@
+import GeneralAvatar from "@/assets/img/web/avatar.jpg";
 import { LoginUserType } from "@/store/auth/type";
-import Avatar from "@/assets/img/web/avatar.jpg";
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
-import React, { useState } from "react";
-import "./style.scss";
-import { FieldValues, useForm } from "react-hook-form";
 import { validateEmail } from "@/utils";
+import React, { useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import "./style.scss";
+import axios from "axios";
 
 type Props = {
   user: LoginUserType;
 };
 
 const UserInformation = ({ user }: Props) => {
+  const cloud_name = "dcb5n0grf";
+  const preset_key = "baswycwi";
+
   const [isUpdateUser, setIsUpdateUser] = useState<boolean>(false);
+  const [avatar, setAvatar] = useState<string>("");
+
+  const openFileRef = useRef<HTMLInputElement>(null);
 
   const form = useForm();
   const dispatch = useAppDispatch();
 
-  const { register, formState, handleSubmit } = form;
+  const { register, formState, handleSubmit, reset } = form;
 
   const { errors } = formState;
 
+  const uploadImage = (file: File) => {
+    if (!file) {
+      return;
+    }
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(event.target?.result);
+      };
+      reader.readAsDataURL(file);
+    })
+      .then((imgUri) => setAvatar(imgUri as string))
+      .catch((err) => console.log(err));
+  };
+
   const handleUserUpdate = (e: FieldValues) => {
     if (user !== undefined) {
-      dispatch(
-        userAsyncAction.update({
-          id: user.id,
-          fullName: e.fullName,
-          username: e.username,
-          avatar: e.avatar,
-          email: e.email,
-          phoneNum: e.phoneNum,
-          address: e.address,
-        })
-      );
+      const file = openFileRef.current?.files?.[0];
+      if (!file) {
+        return;
+      }
 
-      setIsUpdateUser(false);
-      window.location.reload();
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", preset_key);
+      axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+          formData
+        )
+        .then((res) => {
+          dispatch(
+            userAsyncAction.update({
+              id: user.id,
+              fullName: e.fullName,
+              username: e.username,
+              avatar: res.data.secure_url,
+              email: e.email,
+              phoneNum: e.phoneNum,
+              role: user.role,
+              address: e.address,
+            })
+          );
+
+          setIsUpdateUser(false);
+          setAvatar("");
+          window.location.reload();
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -49,11 +89,28 @@ const UserInformation = ({ user }: Props) => {
             {isUpdateUser ? (
               <>
                 {user.avatar ? (
-                  <img src={user.avatar} alt="avatar" />
+                  <img className="avatar" src={avatar || user.avatar} alt="avatar" />
                 ) : (
-                  <img id="avatar" src={Avatar} alt="avatar" />
+                  <img
+                    className="avatar"
+                    src={avatar || GeneralAvatar}
+                    alt="avatar"
+                  />
                 )}
-                <span id="avatar-change" onClick={() => console}>
+                <input
+                  type="file"
+                  style={{ display: "none" }}
+                  {...register("avatar", {
+                    onChange: (e) => {
+                      uploadImage(e.target.files?.[0]);
+                    },
+                  })}
+                  ref={openFileRef}
+                />
+                <span
+                  onClick={() => openFileRef.current?.click()}
+                  id="avatar-change"
+                >
                   <svg
                     version="1.1"
                     id="Capa_1"
@@ -64,22 +121,22 @@ const UserInformation = ({ user }: Props) => {
                     height={16}
                     viewBox="0 0 36.174 36.174"
                   >
-                      <path
-                        d="M23.921,20.528c0,3.217-2.617,5.834-5.834,5.834s-5.833-2.617-5.833-5.834s2.616-5.834,5.833-5.834
+                    <path
+                      d="M23.921,20.528c0,3.217-2.617,5.834-5.834,5.834s-5.833-2.617-5.833-5.834s2.616-5.834,5.833-5.834
 		S23.921,17.312,23.921,20.528z M36.174,12.244v16.57c0,2.209-1.791,4-4,4H4c-2.209,0-4-1.791-4-4v-16.57c0-2.209,1.791-4,4-4h4.92
 		V6.86c0-1.933,1.566-3.5,3.5-3.5h11.334c1.934,0,3.5,1.567,3.5,3.5v1.383h4.92C34.383,8.244,36.174,10.035,36.174,12.244z
 		 M26.921,20.528c0-4.871-3.963-8.834-8.834-8.834c-4.87,0-8.833,3.963-8.833,8.834s3.963,8.834,8.833,8.834
 		C22.958,29.362,26.921,25.399,26.921,20.528z"
-                      />
+                    />
                   </svg>
                 </span>
               </>
             ) : (
               <>
                 {user.avatar ? (
-                  <img src={user.avatar} alt="avatar" />
+                  <img className="avatar" src={user.avatar} alt="avatar" />
                 ) : (
-                  <img id="avatar" src={Avatar} alt="avatar" />
+                  <img className="avatar" src={GeneralAvatar} alt="avatar" />
                 )}
               </>
             )}
@@ -171,9 +228,7 @@ const UserInformation = ({ user }: Props) => {
             <>
               <input
                 type="text"
-                {...register("address", {
-                  required: "Please enter address",
-                })}
+                {...register("address", {})}
                 defaultValue={user?.address}
               />
               <p className="error-field">
@@ -192,7 +247,11 @@ const UserInformation = ({ user }: Props) => {
               </button>
               <div
                 id="cancel-information-btn"
-                onClick={() => setIsUpdateUser(false)}
+                onClick={() => {
+                  reset();
+                  setAvatar("");
+                  setIsUpdateUser(false);
+                }}
               >
                 Cancel
               </div>

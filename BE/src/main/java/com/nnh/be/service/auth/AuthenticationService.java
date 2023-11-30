@@ -116,11 +116,11 @@ public class AuthenticationService {
         List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
 
         try {
-            if (usersExist.size() <= 1 && req.getId() == usersExist.get(0).getId()) {
+            if (usersExist.isEmpty() || (usersExist.size() == 1 && req.getId() == usersExist.get(0).getId())) {
                 User user = new User();
                 BeanUtils.copyProperties(req, user);
-                if(req.getPassword() == "") {
-                    user.setPassword(usersExist.get(0).getPassword());
+                if(req.getPassword() == null || req.getPassword() == "") {
+                    user.setPassword(userRepo.findById(req.getId()).get().getPassword());
                 } else {
                     user.setPassword(passwordEncoder.encode(req.getPassword()));
                 }
