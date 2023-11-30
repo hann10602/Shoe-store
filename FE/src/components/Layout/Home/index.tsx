@@ -8,7 +8,6 @@ import {
   isGettingCategoriesSelector,
 } from "@/store/category/selector";
 import { useAppDispatch } from "@/store/store";
-import { getCurrentLoginUser } from "@/utils";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -21,6 +20,7 @@ import {
   shoesSearchSelector,
 } from "@/store/shoe/selector";
 import SearchResultItem from "./SearchResultItem";
+import { userSelector } from "@/store/user/selector";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
@@ -49,7 +49,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
   const isSearchShoes = useSelector(isSearchShoesSelector);
 
-  const loginUser = getCurrentLoginUser();
+  const loginUser = useSelector(userSelector);
 
   const userImageRef = useRef<HTMLImageElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -379,7 +379,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
             <div id="header-user">
               <img
                 id="header-user-image"
-                src={loginUser.avatar}
+                src={loginUser?.avatar}
                 alt=""
                 ref={userImageRef}
                 onClick={() => setIsMenuDisplay(!isMenuDisplay)}

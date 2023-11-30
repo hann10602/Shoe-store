@@ -13,10 +13,10 @@ const token = getToken();
 
 const getOne = createAsyncThunk(
   "evaluate/self",
-  async (param: GetEvaluateType, {rejectWithValue}) => {
+  async (param: GetEvaluateType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/evaluate/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -29,7 +29,7 @@ const getOne = createAsyncThunk(
 
 const getByShoeId = createAsyncThunk(
   "evaluate/getByShoeId",
-  async (param: GetEvaluatesByShoeIdType, {rejectWithValue}) => {
+  async (param: GetEvaluatesByShoeIdType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
         `${baseUrl}/evaluate/get-by-shoe-id/${param.shoeId}`
@@ -48,7 +48,7 @@ const create = createAsyncThunk(
   async (param: CreateEvaluateType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/evaluate/create`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -61,10 +61,10 @@ const create = createAsyncThunk(
 
 const deletes = createAsyncThunk(
   "evaluate/delete",
-  async (param: DeleteEvaluateType, {rejectWithValue}) => {
+  async (param: DeleteEvaluateType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/evaluate/delete`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;

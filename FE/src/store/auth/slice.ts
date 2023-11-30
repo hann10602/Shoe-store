@@ -21,7 +21,7 @@ const authSlice = createSlice({
         state.isLogin = true;
       })
       .addCase(authAsyncAction.login.fulfilled, (state, action) => {
-        localStorage.setItem("login-user", JSON.stringify(action.payload));
+        localStorage.setItem("jwt", JSON.stringify(action.payload));
 
         state.isLogin = false;
       })

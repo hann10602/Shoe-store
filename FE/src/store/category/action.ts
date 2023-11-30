@@ -16,7 +16,7 @@ const getOne = createAsyncThunk(
   async (param: GetCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/category/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -46,7 +46,7 @@ const create = createAsyncThunk(
   async (param: CreateCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/category/create`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -62,7 +62,7 @@ const update = createAsyncThunk(
   async (param: UpdateCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.put(`${baseUrl}/category/update`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -77,9 +77,12 @@ const deletes = createAsyncThunk(
   "category/delete",
   async (param: DeleteCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios.delete(`${baseUrl}/category/delete/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const resp = await axios.delete(
+        `${baseUrl}/category/delete/${param.id}`,
+        {
+          headers: { Authorization: `Bearer ${token.token}` },
+        }
+      );
       if (resp.status === 200) {
         return resp.data;
       }

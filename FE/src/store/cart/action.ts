@@ -6,7 +6,7 @@ import {
   DeleteCartType,
   GetCartByUserIdType,
   GetCartType,
-  UpdateCartType
+  UpdateCartType,
 } from "./type";
 
 const baseUrl = BASE_URL;
@@ -17,7 +17,7 @@ const getOne = createAsyncThunk(
   async (param: GetCartType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -33,7 +33,7 @@ const getAll = createAsyncThunk(
   async (param, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/cart/get-all`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -50,7 +50,7 @@ const getByUserId = createAsyncThunk(
     try {
       const resp = await axios.get(
         `${baseUrl}/cart/get-by-user-id/${params.userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token.token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -66,7 +66,7 @@ const create = createAsyncThunk(
   async (param: CreateCartType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/cart/create`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -82,7 +82,7 @@ const update = createAsyncThunk(
   async (param: UpdateCartType, { rejectWithValue }) => {
     try {
       const resp = await axios.put(`${baseUrl}/cart/update`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -98,7 +98,7 @@ const deletes = createAsyncThunk(
   async (param: DeleteCartType, { rejectWithValue }) => {
     try {
       const resp = await axios.delete(`${baseUrl}/cart/delete/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;

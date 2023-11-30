@@ -1,5 +1,3 @@
-import { LoginUserType } from "@/store/auth/type";
-import { getCurrentLoginUser } from "@/utils";
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import CartList from "./CartList";
@@ -7,21 +5,17 @@ import ChangePassword from "./ChangePassword";
 import OrderList from "./OrderLIst";
 import UserInformation from "./UserInformation";
 import "./style.scss";
+import { useSelector } from "react-redux";
+import { userSelector } from "@/store/user/selector";
 
 type Props = {};
 
 const UserDetail = (props: Props) => {
   const history = useHistory();
 
-  const [user, setUser] = useState<LoginUserType | undefined>(undefined);
   const location = useLocation();
+  const loginUser = useSelector(userSelector);
   const page = new URLSearchParams(location.search).get("page");
-
-  useLayoutEffect(() => {
-    const loginUser = getCurrentLoginUser();
-
-    setUser(loginUser);
-  }, []);
 
   return (
     <>
@@ -33,7 +27,7 @@ const UserDetail = (props: Props) => {
             <p id="user-title">
               Hello,{" "}
               <span style={{ color: "rgb(255, 65, 51)" }}>
-                {user?.fullName}
+                {loginUser?.fullName}
               </span>
             </p>
           </div>
@@ -69,8 +63,7 @@ const UserDetail = (props: Props) => {
             <div
               id="logout"
               onClick={() => {
-                localStorage.removeItem("login-user");
-                window.location.reload();
+                localStorage.removeItem("jwt");
               }}
             >
               Logout
@@ -78,17 +71,15 @@ const UserDetail = (props: Props) => {
           </div>
         </div>
         <div id="user-main">
-          {page === null && user !== undefined && (
-            <UserInformation user={user} />
+          {page === null && loginUser !== undefined && <UserInformation />}
+          {page === "carts" && loginUser !== undefined && (
+            <CartList />
           )}
-          {page === "carts" && user !== undefined && (
-            <CartList userId={user.id} />
+          {page === "change-password" && loginUser !== undefined && (
+            <ChangePassword />
           )}
-          {page === "change-password" && user !== undefined && (
-            <ChangePassword userId={user.id} />
-          )}
-          {page === "orders" && user !== undefined && (
-            <OrderList userId={user.id} />
+          {page === "orders" && loginUser !== undefined && (
+            <OrderList />
           )}
         </div>
       </div>

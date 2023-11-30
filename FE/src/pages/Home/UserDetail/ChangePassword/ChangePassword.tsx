@@ -6,10 +6,13 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
+import { getToken } from "@/utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-type Props = { userId: number };
+type Props = {};
 
-const ChangePassword = ({ userId }: Props) => {
+const ChangePassword = (props: Props) => {
   const history = useHistory();
   const location = useLocation();
   const form = useForm();
@@ -17,36 +20,49 @@ const ChangePassword = ({ userId }: Props) => {
   const { register, formState, handleSubmit, watch } = form;
   const { errors } = formState;
 
+  const token = getToken();
+
   const newPassword = watch("newPassword");
-  const message = new URLSearchParams(location.search).get("message");
 
   const isChangingPassword = useSelector(isChangingPasswordUserSelector);
 
   const dispatch = useAppDispatch();
 
+  const successNotify = () => {
+    toast.success("Success");
+    dispatch(userAsyncAction.getOne({ id: token.id }));
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleChangePassword = (e: FieldValues) => {
     dispatch(
       userAsyncAction.changePassword({
-        id: userId,
+        id: token.id,
         oldPassword: e.oldPassword,
         newPassword: e.newPassword,
       })
     )
-      .then(() => history.push(`/user?page=change-password&message=Changed success`))
-      .catch((err) =>
-        history.push(`/user?page=change-password&message=Wrong password`)
-      );
+      .then(() => successNotify())
+      .catch((err) => failedNotify());
   };
 
   return (
     <>
-      {message && (
-        <div
-          id={`${message === "success" ? "changing-success" : "changing-fail"}`}
-        >
-          {message === "success" ? "Success" : "Error"}
-        </div>
-      )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div id="change-password">
         <p className="title">Change password</p>
         <form action="" onSubmit={handleSubmit(handleChangePassword)}>

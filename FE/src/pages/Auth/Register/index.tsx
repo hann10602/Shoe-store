@@ -8,6 +8,8 @@ import { useAppDispatch } from "@/store/store";
 import { validateEmail } from "@/utils";
 import { FieldValues, useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {};
 
@@ -24,6 +26,10 @@ const Register = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const onSubmit = (e: FieldValues) => {
     dispatch(
       authAsyncAction.register({
@@ -37,7 +43,7 @@ const Register = (props: Props) => {
       })
     )
       .then(() => history.push(`/sign-in`))
-      .catch((err) => history.push(`/register?error=Register fail`));
+      .catch(() => failedNotify());
   };
 
   useEffect(() => {
@@ -46,6 +52,18 @@ const Register = (props: Props) => {
 
   return (
     <div id="register-page">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <span className="back-icon" onClick={() => history.push("/home")}>
         <svg
           version="1.1"
@@ -81,7 +99,6 @@ const Register = (props: Props) => {
               type="text"
               {...register("fullName", {
                 required: "Please enter full name",
-                minLength: 6,
               })}
             />
             <p className="field-message">{errors.fullName?.message}</p>
@@ -95,7 +112,10 @@ const Register = (props: Props) => {
               type="text"
               {...register("username", {
                 required: "Please enter username",
-                minLength: 6,
+                validate: {
+                  isPhoneNum: (fieldValue) =>
+                    fieldValue.length >= 6 || "Username at least 6 character",
+                },
               })}
             />
             <p className="field-message">{errors.username?.message}</p>
@@ -109,7 +129,10 @@ const Register = (props: Props) => {
               type="password"
               {...register("password", {
                 required: "Please enter password",
-                minLength: 6,
+                validate: {
+                  isPhoneNum: (fieldValue) =>
+                    fieldValue.length >= 6 || "Password at least 6 characters",
+                },
               })}
             />
             <p className="field-message">{errors.password?.message}</p>
@@ -123,7 +146,6 @@ const Register = (props: Props) => {
               type="text"
               {...register("email", {
                 required: "Please enter email",
-                minLength: 6,
                 validate: {
                   isSimilar: (fieldValue) =>
                     validateEmail(fieldValue) || "Wrong email format",
@@ -141,8 +163,11 @@ const Register = (props: Props) => {
               type="text"
               {...register("phoneNum", {
                 required: "Please enter phone number",
-                minLength: 10,
-                maxLength: 15,
+                validate: {
+                  isPhoneNum: (fieldValue) =>
+                    (8 <= fieldValue.length && fieldValue.length <= 12) ||
+                    "Phone number 8 to 12 characters",
+                },
               })}
             />
             <p className="field-message">{errors.phoneNum?.message}</p>

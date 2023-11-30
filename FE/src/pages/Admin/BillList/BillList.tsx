@@ -1,13 +1,14 @@
+import { billAsyncAction } from "@/store/bill/action";
+import { billsSelector, isGettingBillsSelector } from "@/store/bill/selector";
+import { BillType } from "@/store/bill/type";
 import { useAppDispatch } from "@/store/store";
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DeletePage from "../DeletePage";
 import ChangeBillPage from "./ChangeBillPage";
-import { BillType } from "@/store/bill/type";
-import { billsSelector, isGettingBillsSelector } from "@/store/bill/selector";
-import { billAsyncAction } from "@/store/bill/action";
-import { useHistory, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {};
 
@@ -26,11 +27,6 @@ const BillList = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const history = useHistory();
-  const location = useLocation();
-
-  const message = new URLSearchParams(location.search).get("message");
-
   const tablePagination = Array.from(
     { length: Math.ceil(bills.length / 10) },
     (_, index) => index + 1
@@ -38,14 +34,22 @@ const BillList = (props: Props) => {
 
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
+  const successNotify = () => {
+    toast.success("Success");
+    dispatch(billAsyncAction.getAll());
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleDelete = (id: number) => {
     dispatch(billAsyncAction.deletes({ id }))
       .then(() => {
-        history.push("/admin?tab=bill&message=Success");
-        window.location.reload();
+        successNotify();
       })
       .catch(() => {
-        history.push("/admin?tab=bill&message=Failure");
+        failedNotify();
       });
     setIsDeletePage(false);
     setSelectedId(undefined);
@@ -69,6 +73,8 @@ const BillList = (props: Props) => {
     <>
       {isChangePage && selectedEntity && (
         <ChangeBillPage
+          successNotify={successNotify}
+          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           bill={selectedEntity}
         />
@@ -80,17 +86,18 @@ const BillList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
-
-      {message &&
-        (message === "Success" ? (
-          <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">
-            Success
-          </div>
-        ) : (
-          <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">
-            Failure
-          </div>
-        ))}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="overflow-auto rounded-md border border-solid border-gray-300">
         <table className="h-full w-full min-w-max">
           <thead>

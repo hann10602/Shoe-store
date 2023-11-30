@@ -20,7 +20,7 @@ export type CreateUserType = {
   password: string;
   email: string;
   phoneNum: string;
-  avatar: string;
+  avatar?: string;
   role: string;
   address: string;
 };
@@ -31,7 +31,7 @@ export type UpdateUserType = {
   username: string;
   password?: string;
   email: string;
-  avatar: string;
+  avatar?: string;
   phoneNum: string;
   role?: string;
   address: string;

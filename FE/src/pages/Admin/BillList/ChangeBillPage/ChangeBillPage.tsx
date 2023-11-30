@@ -3,14 +3,20 @@ import { BillType } from "@/store/bill/type";
 import { useAppDispatch } from "@/store/store";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
 type Props = {
   bill: BillType;
+  successNotify: () => void;
+  failedNotify: () => void;
   handleCancel: () => void;
 };
 
-const ChangeBillPage = ({ bill, handleCancel }: Props) => {
+const ChangeBillPage = ({
+  bill,
+  successNotify,
+  failedNotify,
+  handleCancel,
+}: Props) => {
   const [received, setReceived] = useState<string>(
     bill.received ? "true" : "false"
   );
@@ -18,7 +24,7 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
     setReceived(e);
   };
 
-  console.log(received)
+  console.log(received);
 
   const form = useForm();
 
@@ -27,8 +33,6 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
   const statusValue = watch("status");
 
   const { errors } = formState;
-
-  const history = useHistory();
 
   const dispatch = useAppDispatch();
 
@@ -42,13 +46,8 @@ const ChangeBillPage = ({ bill, handleCancel }: Props) => {
           received: e.received,
         })
       )
-        .then(() => {
-          history.push("/admin?tab=bill&message=Success");
-          window.location.reload();
-        })
-        .catch(() => {
-          history.push("/admin?tab=bill&message=Failure");
-        });
+        .then(() => successNotify())
+        .catch(() => failedNotify());
     }
 
     handleCancel();

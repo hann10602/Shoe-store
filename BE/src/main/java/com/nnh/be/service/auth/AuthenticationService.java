@@ -41,7 +41,11 @@ public class AuthenticationService {
                 User user = new User();
                 BeanUtils.copyProperties(req, user);
                 user.setPassword(passwordEncoder.encode(req.getPassword()));
-                user.setUserRole(roleRepo.findByCode("ROLE_USER").get());
+                if (req.getRole().isBlank()) {
+                    user.setUserRole(roleRepo.findByCode("ROLE_USER").get());
+                } else {
+                    user.setUserRole(roleRepo.findByCode(req.getRole()).get());
+                }
                 userRepo.save(user);
 
                 return MessageSdo.of("Success");
@@ -84,13 +88,6 @@ public class AuthenticationService {
             return new AuthenticationSdo(
                     user.getId(),
                     user.getUserRole().getCode(),
-                    user.getAvatar(),
-                    user.getFullName(),
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getAddress(),
-                    user.getEmail(),
-                    user.getPhoneNum(),
                     jwtToken);
         } catch(AuthenticationException e) {
             throw e;

@@ -1,3 +1,4 @@
+import { categoryAsyncAction } from "@/store/category/action";
 import { shoeAsyncAction } from "@/store/shoe/action";
 import { isGettingShoesSelector, shoesSelector } from "@/store/shoe/selector";
 import { ShoeType } from "@/store/shoe/type";
@@ -5,10 +6,10 @@ import { useAppDispatch } from "@/store/store";
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DeletePage from "../DeletePage";
 import ChangeProductPage from "./ChangeProductPage";
-import { useHistory, useLocation } from "react-router-dom";
-import { categoryAsyncAction } from "@/store/category/action";
 
 type Props = {};
 
@@ -26,10 +27,6 @@ const ProductList = (props: Props) => {
   const isGettingShoes = useSelector(isGettingShoesSelector);
 
   const dispatch = useAppDispatch();
-  const history = useHistory();
-  const location = useLocation();
-
-  const message = new URLSearchParams(location.search).get("message");
 
   const tablePagination = Array.from(
     { length: Math.ceil(shoes.length / 10) },
@@ -38,14 +35,23 @@ const ProductList = (props: Props) => {
 
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
+  const successNotify = () => {
+    toast.success("Success");
+    dispatch(shoeAsyncAction.getAll());
+    dispatch(categoryAsyncAction.getAll());
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleDelete = (id: number) => {
     dispatch(shoeAsyncAction.deletes({ id }))
       .then(() => {
-        history.push("/admin?tab=shoe&message=Success");
-        window.location.reload();
+        successNotify();
       })
       .catch(() => {
-        history.push("/admin?tab=shoe&message=Failure");
+        failedNotify();
       });
     setIsDeletePage(false);
     setSelectedId(undefined);
@@ -70,6 +76,8 @@ const ProductList = (props: Props) => {
     <>
       {isChangePage && (
         <ChangeProductPage
+          successNotify={successNotify}
+          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           shoe={selectedEntity}
         />
@@ -81,16 +89,18 @@ const ProductList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
-      {message &&
-        (message === "Success" ? (
-          <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">
-            Success
-          </div>
-        ) : (
-          <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">
-            Failure
-          </div>
-        ))}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div>
         <button
           className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold"

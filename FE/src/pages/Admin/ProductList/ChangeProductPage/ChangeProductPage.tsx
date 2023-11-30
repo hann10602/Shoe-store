@@ -6,14 +6,20 @@ import { useAppDispatch } from "@/store/store";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 type Props = {
   shoe?: ShoeType;
+  successNotify: () => void;
+  failedNotify: () => void;
   handleCancel: () => void;
 };
 
-const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
+const ChangeProductPage = ({
+  shoe,
+  successNotify,
+  failedNotify,
+  handleCancel,
+}: Props) => {
   const form = useForm();
 
   const { register, formState, handleSubmit, control } = form;
@@ -23,8 +29,6 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
   const urls = Array.from({ length: Math.ceil(5) }, (_, index) => index + 1);
 
   const categories = useSelector(categoriesSelector);
-
-  const history = useHistory();
 
   const dispatch = useAppDispatch();
 
@@ -42,13 +46,8 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
           sizes: e.shoeSizes,
         })
       )
-        .then(() => {
-          history.push("/admin?tab=shoe&message=Success");
-          window.location.reload();
-        })
-        .catch(() => {
-          history.push("/admin?tab=shoe&message=Failure");
-        });
+        .then(() => successNotify())
+        .catch(() => failedNotify());
     } else {
       dispatch(
         shoeAsyncAction.create({
@@ -61,13 +60,8 @@ const ChangeProductPage = ({ shoe, handleCancel }: Props) => {
           sizes: e.shoeSizes,
         })
       )
-        .then(() => {
-          history.push("/admin?tab=shoe&message=Success");
-          window.location.reload();
-        })
-        .catch(() => {
-          history.push("/admin?tab=shoe&message=Failure");
-        });
+      .then(() => successNotify())
+      .catch(() => failedNotify());
     }
 
     handleCancel();

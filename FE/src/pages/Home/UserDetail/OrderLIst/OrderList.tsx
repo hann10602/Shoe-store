@@ -6,17 +6,15 @@ import {
 } from "@/store/bill/selector";
 import { evaluateAsyncAction } from "@/store/evaluate/action";
 import { useAppDispatch } from "@/store/store";
-import { getCurrentLoginUser } from "@/utils";
+import { getToken } from "@/utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import "./style.scss";
 
-type Props = {
-  userId: number;
-};
+type Props = {};
 
-const OrderList = ({ userId }: Props) => {
+const OrderList = (props: Props) => {
   const [evaluateSection, setEvaluateSection] = useState<boolean>(false);
   const [evaluateOrderStar, setEvaluateOrderStar] = useState<number>(5);
   const [evaluateShoeId, setEvaluateShoeId] = useState<number | undefined>(
@@ -31,7 +29,7 @@ const OrderList = ({ userId }: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const loginUser = getCurrentLoginUser();
+  const token = getToken();
 
   const bills = useSelector(billsByUserIdSelector);
 
@@ -42,10 +40,10 @@ const OrderList = ({ userId }: Props) => {
   }, []);
 
   const handleSubmitEvaluate = (e: FieldValues) => {
-    if (loginUser && evaluateShoeId) {
+    if (token && evaluateShoeId) {
       dispatch(
         evaluateAsyncAction.create({
-          userId: loginUser.id,
+          userId: token.id,
           shoeId: evaluateShoeId,
           star: evaluateOrderStar,
           evaluate: e.evaluate,
@@ -59,7 +57,7 @@ const OrderList = ({ userId }: Props) => {
   };
 
   useEffect(() => {
-    dispatch(billAsyncAction.getByUserId({ userId }));
+    dispatch(billAsyncAction.getByUserId({ userId: token.id }));
   }, []);
   return (
     <div id="table-wrapper">

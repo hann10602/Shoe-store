@@ -17,13 +17,13 @@ import {
 import { sizeAsyncAction } from "@/store/size/action";
 import { quantitySelector } from "@/store/size/selector";
 import { useAppDispatch } from "@/store/store";
-import { getCurrentLoginUser } from "@/utils";
 import { Carousel } from "antd";
 import { CarouselRef } from "antd/lib/carousel";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
+import { userSelector } from "@/store/user/selector";
 
 type Props = {};
 
@@ -65,7 +65,7 @@ const ProductDetail = (props: Props) => {
   const isSearchShoes = useSelector(isGettingShoesSelector);
   const isGettingEvaluates = useSelector(isGettingEvaluatesSelector);
 
-  const loginUser = getCurrentLoginUser();
+  const loginUser = useSelector(userSelector);
 
   const reviewPagination = Array.from(
     { length: Math.ceil(evaluates.length / 5) },

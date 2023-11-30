@@ -17,7 +17,7 @@ const getOne = createAsyncThunk(
   async (param: GetUserType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/user/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -33,14 +33,13 @@ const getAll = createAsyncThunk(
   async (param, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/user/get-all`, {
-        headers: { Authorization: `Bearer ${token}` },
-        
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return rejectWithValue(err);
     }
   }
@@ -51,7 +50,7 @@ const create = createAsyncThunk(
   async (param: CreateUserType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/auth/register`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -67,7 +66,7 @@ const update = createAsyncThunk(
   async (param: UpdateUserType, { rejectWithValue }) => {
     try {
       const resp = await axios.put(`${baseUrl}/user/update`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -83,7 +82,7 @@ const changePassword = createAsyncThunk(
   async (param: ChangePasswordUserType, { rejectWithValue }) => {
     try {
       const resp = await axios.put(`${baseUrl}/user/change-password`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -99,7 +98,7 @@ const deletes = createAsyncThunk(
   async (param: DeleteUserType, { rejectWithValue }) => {
     try {
       const resp = await axios.delete(`${baseUrl}/user/delete/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;

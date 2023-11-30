@@ -1,6 +1,5 @@
 import { errorCode } from "@/constants";
-import { LoginUserType } from "@/store/auth/type";
-import { useState } from "react";
+import { JWTType } from "@/store/auth/type";
 
 export const validateEmail = (email: string) => {
   return String(email)
@@ -18,21 +17,9 @@ export const handleErrorCode = (response: any) => {
   return errorCode[response.errorCode as keyof typeof errorCode];
 };
 
-export const getCurrentLoginUser: () => LoginUserType = () => {
-  const userInformation: string | null = localStorage.getItem("login-user");
-  return userInformation != null ? JSON.parse(userInformation) : null;
-};
-
-export const getToken: () => string | undefined = () => {
-  const userInformation: string | null = localStorage.getItem("login-user");
-  const currentUser: LoginUserType =
-    userInformation != null ? JSON.parse(userInformation) : null;
-
-  if (currentUser) {
-    return currentUser.token;
-  } else {
-    return undefined;
-  }
+export const getToken: () => JWTType = () => {
+  const token: string | null = localStorage.getItem("jwt");
+  return token != null ? JSON.parse(token) : null;
 };
 
 export const localStorageHelper = {

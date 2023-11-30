@@ -1,7 +1,6 @@
 package com.nnh.be.service.impl;
 
 
-import com.nnh.be.dto.sdi.user.SelfUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.dto.sdo.user.UserSelfSdo;
 import com.nnh.be.model.User;
@@ -42,9 +41,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserSelfSdo self(SelfUserSdi req) {
+    public UserSelfSdo self(Long id) {
         UserSelfSdo dto = new UserSelfSdo();
-        User entity = findOne(req.getId());
+        User entity = findOne(id);
         BeanUtils.copyProperties(entity, dto);
 
         dto.setRole(entity.getUserRole().getCode());

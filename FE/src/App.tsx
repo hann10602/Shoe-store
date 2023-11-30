@@ -1,33 +1,39 @@
 import React, { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
 import { Switch } from "react-router-dom";
 
 import { RouteWithLayout } from "@/components/RouteWithLayout";
 
 import "antd/dist/antd.less";
 import "./App.scss";
+import { AppProvider } from "./context";
 import "./i18n";
 import { routes } from "./routes";
-import { AppProvider } from "./context";
+import { JWTType } from "./store/auth/type";
+import { useAppDispatch } from "./store/store";
+import { userAsyncAction } from "./store/user/action";
 
 export default function App() {
-  const dispatch = useDispatch();
-  // const jwt = localStorage.getItem("jwt");
+  const dispatch = useAppDispatch();
+  const tokenForm: string | null = localStorage.getItem("jwt");
+  const jwt: JWTType = tokenForm != null ? JSON.parse(tokenForm) : null;
 
-  // useEffect(() => {
-  //   if (jwt) {
-  //     dispatch(RequestUserProfile());
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [jwt]);
+  useEffect(() => {
+    console.log(tokenForm)
+    if (tokenForm) {
+      dispatch(userAsyncAction.getOne({id: Number(jwt.id)}));
+    }
+  }, [tokenForm]);
 
   return (
     <>
       <AppProvider>
         <Switch>
           {routes.map(
-            ({ Component, Layout, Protected, isAdmin, routePath, exact, path }, key) => {
+            (
+              { Component, Layout, Protected, isAdmin, routePath, exact, path },
+              key
+            ) => {
               return (
                 <RouteWithLayout
                   // eslint-disable-next-line react/no-array-index-key

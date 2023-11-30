@@ -18,9 +18,9 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationService authService;
 
-    @GetMapping("/self")
-    public UserSelfSdo self(@RequestBody SelfUserSdi req) {
-        return userService.self(req);
+    @GetMapping("/self/{id}")
+    public UserSelfSdo self(@PathVariable Long id) {
+        return userService.self(id);
     }
 
     @GetMapping("/get-all")

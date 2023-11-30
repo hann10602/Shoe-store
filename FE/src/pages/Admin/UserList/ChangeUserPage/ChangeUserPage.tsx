@@ -9,10 +9,17 @@ import { useHistory } from "react-router-dom";
 
 type Props = {
   user?: UserType;
+  successNotify: () => void;
+  failedNotify: () => void;
   handleCancel: () => void;
 };
 
-const ChangeUserPage = ({ user, handleCancel }: Props) => {
+const ChangeUserPage = ({
+  user,
+  successNotify,
+  failedNotify,
+  handleCancel,
+}: Props) => {
   const cloud_name = "dcb5n0grf";
   const preset_key = "baswycwi";
 
@@ -49,75 +56,118 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
 
   const onSubmit = (e: any) => {
     const file = openFileRef.current?.files?.[0];
-    const formData = new FormData();
 
-    if (file) {
-      formData.append("file", file);
-      formData.append("upload_preset", preset_key);
-    }
     handleCancel();
 
-    if (user) {
-      axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-          formData
-        )
-        .then((res) => {
-          dispatch(
-            userAsyncAction.update({
-              id: user.id,
-              fullName: e.fullName,
-              username: e.username,
-              password: e.password,
-              avatar: file ? res.data.secure_url : null,
-              email: e.email,
-              phoneNum: e.phoneNum,
-              address: e.address,
-              role: e.role,
-            })
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", preset_key);
+
+      if (user) {
+        axios
+          .post(
+            `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+            formData
           )
-            .then(() => {
-              history.push("/admin?tab=user&message=Success");
-              window.location.reload();
-              setAvatar("");
-            })
-            .catch(() => {
-              history.push("/admin?tab=user&message=Failure");
-              setAvatar("");
-            });
-        })
-        .catch((err) => console.log(err));
+          .then((res) => {
+            dispatch(
+              userAsyncAction.update({
+                id: user.id,
+                fullName: e.fullName,
+                username: e.username,
+                password: e.password,
+                avatar: res.data.secure_url,
+                email: e.email,
+                phoneNum: e.phoneNum,
+                address: e.address,
+                role: e.role,
+              })
+            )
+              .then(() => {
+                successNotify();
+                setAvatar("");
+              })
+              .catch(() => {
+                failedNotify();
+                setAvatar("");
+              });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        axios
+          .post(
+            `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+            formData
+          )
+          .then((res) => {
+            dispatch(
+              userAsyncAction.create({
+                fullName: e.fullName,
+                username: e.username,
+                password: e.password,
+                avatar: res.data.secure_url,
+                email: e.email,
+                phoneNum: e.phoneNum,
+                address: e.address,
+                role: e.role,
+              })
+            )
+              .then(() => {
+                setAvatar("");
+                successNotify();
+              })
+              .catch(() => {
+                setAvatar("");
+                failedNotify();
+              });
+          })
+          .catch((err) => console.log(err));
+      }
     } else {
-      axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-          formData
+      if (user) {
+        dispatch(
+          userAsyncAction.update({
+            id: user.id,
+            fullName: e.fullName,
+            username: e.username,
+            password: e.password,
+            avatar: user.avatar,
+            email: e.email,
+            phoneNum: e.phoneNum,
+            address: e.address,
+            role: e.role,
+          })
         )
-        .then((res) => {
-          dispatch(
-            userAsyncAction.create({
-              fullName: e.fullName,
-              username: e.username,
-              password: e.password,
-              avatar: file ? res.data.secure_url : null,
-              email: e.email,
-              phoneNum: e.phoneNum,
-              address: e.address,
-              role: e.role,
-            })
-          )
-            .then(() => {
-              history.push("/admin?tab=user&message=Success");
-              window.location.reload();
-              setAvatar("");
-            })
-            .catch(() => {
-              history.push("/admin?tab=user&message=Failure");
-              setAvatar("");
-            });
-        })
-        .catch((err) => console.log(err));
+          .then(() => {
+            setAvatar("");
+            successNotify();
+          })
+          .catch(() => {
+            setAvatar("");
+            failedNotify();
+          });
+      } else {
+        dispatch(
+          userAsyncAction.create({
+            fullName: e.fullName,
+            username: e.username,
+            password: e.password,
+            email: e.email,
+            phoneNum: e.phoneNum,
+            address: e.address,
+            role: e.role,
+          })
+        )
+          .then(() => {
+            setAvatar("");
+            successNotify();
+          })
+          .catch(() => {
+            setAvatar("");
+            failedNotify();
+          });
+      }
     }
   };
 
@@ -283,8 +333,11 @@ const ChangeUserPage = ({ user, handleCancel }: Props) => {
                     defaultValue={user?.phoneNum}
                     {...register("phoneNum", {
                       required: "Please enter phone number",
-                      minLength: 10,
-                      maxLength: 15,
+                      validate: {
+                        isPhoneNum: (fieldValue) =>
+                          (8 <= fieldValue.length && fieldValue.length <= 12) ||
+                          "Phone number 8 to 12 characters",
+                      },
                     })}
                   />
                   <p className="font-semibold bottom-2 absolute text-red-500">

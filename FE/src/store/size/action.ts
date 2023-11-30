@@ -18,7 +18,7 @@ const getOne = createAsyncThunk(
   async (param: GetSizeType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/size/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -65,7 +65,7 @@ const getByShoeId = createAsyncThunk(
     try {
       const resp = await axios.get(
         `${baseUrl}/size/get-by-shoe-id/${params.shoeId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token.token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -81,7 +81,7 @@ const create = createAsyncThunk(
   async (param: CreateSizeType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/size/create`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -97,7 +97,7 @@ const update = createAsyncThunk(
   async (param: UpdateSizeType, { rejectWithValue }) => {
     try {
       const resp = await axios.put(`${baseUrl}/size/update`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -113,7 +113,7 @@ const deletes = createAsyncThunk(
   async (param: DeleteSizeType, { rejectWithValue }) => {
     try {
       const resp = await axios.delete(`${baseUrl}/size/delete/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;

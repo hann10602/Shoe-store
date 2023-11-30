@@ -3,19 +3,23 @@ import { CategoryType } from "@/store/category/type";
 import { useAppDispatch } from "@/store/store";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
 type Props = {
   category?: CategoryType;
+  successNotify: () => void;
+  failedNotify: () => void;
   handleCancel: () => void;
 };
 
-const ChangeCategoryPage = ({ category, handleCancel }: Props) => {
+const ChangeCategoryPage = ({
+  category,
+  successNotify,
+  failedNotify,
+  handleCancel,
+}: Props) => {
   const form = useForm();
 
   const { register, formState, handleSubmit } = form;
-
-  const history = useHistory();
 
   const { errors } = formState;
 
@@ -30,13 +34,8 @@ const ChangeCategoryPage = ({ category, handleCancel }: Props) => {
           code: e.code,
         })
       )
-      .then(() => {
-        history.push("/admin?tab=category&message=Success");
-        window.location.reload();
-      })
-      .catch(() => {
-        history.push("/admin?tab=category&message=Failure");
-      });
+        .then(() => successNotify())
+        .catch(() => failedNotify());
     } else {
       dispatch(
         categoryAsyncAction.create({
@@ -44,13 +43,8 @@ const ChangeCategoryPage = ({ category, handleCancel }: Props) => {
           code: e.code,
         })
       )
-      .then(() => {
-        history.push("/admin?tab=category&message=Success");
-        window.location.reload();
-      })
-      .catch(() => {
-        history.push("/admin?tab=category&message=Failure");
-      });
+        .then(() => successNotify())
+        .catch(() => failedNotify());
     }
 
     handleCancel();

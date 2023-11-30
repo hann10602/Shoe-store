@@ -9,14 +9,17 @@ import { useSelector } from "react-redux";
 import Order from "./Cart/Cart";
 import "./style.scss";
 import { billAsyncAction } from "@/store/bill/action";
+import { getToken } from "@/utils";
 
-type Props = { userId: number };
+type Props = {  };
 
-const CartList = ({ userId }: Props) => {
+const CartList = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const isGettingCartsByUserId = useSelector(isGettingCartsByUserIdSelector);
   const orders = useSelector(cartsByUserIdSelector);
+
+  const token = getToken();
 
   const totalPrice = useMemo(
     () =>
@@ -31,8 +34,8 @@ const CartList = ({ userId }: Props) => {
   );
 
   useEffect(() => {
-    dispatch(cartAsyncAction.getByUserId({ userId }));
-  }, [dispatch, userId]);
+    dispatch(cartAsyncAction.getByUserId({ userId: token.id }));
+  }, [dispatch, token]);
 
   return (
     <div id="orders">

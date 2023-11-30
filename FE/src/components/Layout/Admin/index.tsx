@@ -3,10 +3,11 @@ import BillList from "@/pages/Admin/BillList";
 import CategoryList from "@/pages/Admin/CategoryList";
 import ProductList from "@/pages/Admin/ProductList";
 import UserList from "@/pages/Admin/UserList";
-import { getCurrentLoginUser } from "@/utils";
 import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import AdminNav from "./AdminNav";
+import { userSelector } from "@/store/user/selector";
+import { useSelector } from "react-redux";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
@@ -21,7 +22,7 @@ export const LayoutAdmin: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   const history = useHistory();
 
-  const loginUser = getCurrentLoginUser();
+  const loginUser = useSelector(userSelector);
 
   return (
     <div className="w-full relative">
@@ -135,7 +136,7 @@ export const LayoutAdmin: React.FC<IPropsLayoutMain> = ({ children }) => {
             <p
               className="underline font-semibold mr-6 text-lg cursor-pointer text-gray-600"
               onClick={() => {
-                localStorage.removeItem("login-user");
+                localStorage.removeItem("jwt");
                 history.push("/sign-in");
               }}
             >

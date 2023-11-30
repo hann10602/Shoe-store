@@ -1,18 +1,17 @@
 import GeneralAvatar from "@/assets/img/web/avatar.jpg";
-import { LoginUserType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
 import { validateEmail } from "@/utils";
+import axios from "axios";
 import React, { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import "./style.scss";
-import axios from "axios";
+import { userSelector } from "@/store/user/selector";
+import { useSelector } from "react-redux";
 
-type Props = {
-  user: LoginUserType;
-};
+type Props = {};
 
-const UserInformation = ({ user }: Props) => {
+const UserInformation = (props: Props) => {
   const cloud_name = "dcb5n0grf";
   const preset_key = "baswycwi";
 
@@ -23,6 +22,8 @@ const UserInformation = ({ user }: Props) => {
 
   const form = useForm();
   const dispatch = useAppDispatch();
+
+  const loginUser = useSelector(userSelector);
 
   const { register, formState, handleSubmit, reset } = form;
 
@@ -44,7 +45,7 @@ const UserInformation = ({ user }: Props) => {
   };
 
   const handleUserUpdate = (e: FieldValues) => {
-    if (user !== undefined) {
+    if (loginUser !== undefined) {
       const file = openFileRef.current?.files?.[0];
       if (!file) {
         return;
@@ -61,13 +62,13 @@ const UserInformation = ({ user }: Props) => {
         .then((res) => {
           dispatch(
             userAsyncAction.update({
-              id: user.id,
+              id: loginUser.id,
               fullName: e.fullName,
               username: e.username,
               avatar: res.data.secure_url,
               email: e.email,
               phoneNum: e.phoneNum,
-              role: user.role,
+              role: loginUser.role,
               address: e.address,
             })
           );
@@ -88,8 +89,12 @@ const UserInformation = ({ user }: Props) => {
           <div id="avatar-wrapper">
             {isUpdateUser ? (
               <>
-                {user.avatar ? (
-                  <img className="avatar" src={avatar || user.avatar} alt="avatar" />
+                {loginUser?.avatar ? (
+                  <img
+                    className="avatar"
+                    src={avatar || loginUser?.avatar}
+                    alt="avatar"
+                  />
                 ) : (
                   <img
                     className="avatar"
@@ -133,8 +138,8 @@ const UserInformation = ({ user }: Props) => {
               </>
             ) : (
               <>
-                {user.avatar ? (
-                  <img className="avatar" src={user.avatar} alt="avatar" />
+                {loginUser?.avatar ? (
+                  <img className="avatar" src={loginUser?.avatar} alt="avatar" />
                 ) : (
                   <img className="avatar" src={GeneralAvatar} alt="avatar" />
                 )}
@@ -151,14 +156,14 @@ const UserInformation = ({ user }: Props) => {
                 {...register("fullName", {
                   required: "Please enter full name",
                 })}
-                defaultValue={user?.fullName}
+                defaultValue={loginUser?.fullName}
               />
               <p className="error-field">
                 {errors.fullName?.message?.toString()}
               </p>
             </>
           ) : (
-            <p>{user?.fullName}</p>
+            <p>{loginUser?.fullName}</p>
           )}
         </div>
         <div className="field-wrapper">
@@ -170,14 +175,14 @@ const UserInformation = ({ user }: Props) => {
                 {...register("username", {
                   required: "Please enter username",
                 })}
-                defaultValue={user?.username}
+                defaultValue={loginUser?.username}
               />
               <p className="error-field">
                 {errors.username?.message?.toString()}
               </p>
             </>
           ) : (
-            <p>{user?.username}</p>
+            <p>{loginUser?.username}</p>
           )}
         </div>
         <div className="field-wrapper">
@@ -193,12 +198,12 @@ const UserInformation = ({ user }: Props) => {
                       validateEmail(fieldValue) || "Wrong email format",
                   },
                 })}
-                defaultValue={user?.email}
+                defaultValue={loginUser?.email}
               />
               <p className="error-field">{errors.email?.message?.toString()}</p>
             </>
           ) : (
-            <p>{user?.email}</p>
+            <p>{loginUser?.email}</p>
           )}
         </div>
         <div className="field-wrapper">
@@ -209,17 +214,20 @@ const UserInformation = ({ user }: Props) => {
                 type="text"
                 {...register("phoneNum", {
                   required: "Please enter phone number",
-                  minLength: 10,
-                  maxLength: 15,
+                  validate: {
+                    isPhoneNum: (fieldValue) =>
+                      (8 < fieldValue.length && fieldValue.length < 12) ||
+                      "Phone number 8 to 12 characters",
+                  },
                 })}
-                defaultValue={user?.phoneNum}
+                defaultValue={loginUser?.phoneNum}
               />
               <p className="error-field">
                 {errors.phoneNum?.message?.toString()}
               </p>
             </>
           ) : (
-            <p>{user?.phoneNum}</p>
+            <p>{loginUser?.phoneNum}</p>
           )}
         </div>
         <div className="field-wrapper">
@@ -229,14 +237,14 @@ const UserInformation = ({ user }: Props) => {
               <input
                 type="text"
                 {...register("address", {})}
-                defaultValue={user?.address}
+                defaultValue={loginUser?.address}
               />
               <p className="error-field">
                 {errors.address?.message?.toString()}
               </p>
             </>
           ) : (
-            <p>{user?.address}</p>
+            <p>{loginUser?.address}</p>
           )}
         </div>
         <div id="update-information">

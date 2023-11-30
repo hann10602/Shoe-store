@@ -10,11 +10,11 @@ import { shoeAsyncAction } from "@/store/shoe/action";
 import { isGettingShoesSelector, shoesSelector } from "@/store/shoe/selector";
 import { ShoeType } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
-import { getCurrentLoginUser } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
+import { userSelector } from "@/store/user/selector";
 
 type Props = {};
 
@@ -38,7 +38,7 @@ const SearchPage = (props: Props) => {
   const categories = useSelector(categoriesSelector);
   const shoesSearch = useSelector(shoesSelector);
 
-  const loginUser = getCurrentLoginUser();
+  const loginUser = useSelector(userSelector);
 
   const isSearchShoes = useSelector(isGettingShoesSelector);
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
@@ -199,14 +199,16 @@ const SearchPage = (props: Props) => {
                   className="size-item"
                   key={size}
                   onClick={() => {
-                    dispatch(
-                      cartAsyncAction.create({
-                        userId: loginUser.id,
-                        shoeId: shoeId,
-                        sizeCode: size,
-                        quantity: 1,
-                      })
-                    );
+                    if (loginUser) {
+                      dispatch(
+                        cartAsyncAction.create({
+                          userId: loginUser.id,
+                          shoeId: shoeId,
+                          sizeCode: size,
+                          quantity: 1,
+                        })
+                      );
+                    }
                     setChooseSizesPage(false);
                   }}
                 >

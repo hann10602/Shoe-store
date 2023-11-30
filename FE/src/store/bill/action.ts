@@ -20,7 +20,7 @@ baseAxios.interceptors.response.use(
     return resp;
   },
   function (err) {
-    console.log(err.response);
+    console.log(err);
     return Promise.reject(err);
   }
 );
@@ -30,7 +30,7 @@ const getOne = createAsyncThunk(
   async (param: GetBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios.get(`${baseUrl}/bill/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -46,7 +46,7 @@ const getAll = createAsyncThunk(
   async (param, { rejectWithValue }) => {
     try {
       const resp = await baseAxios.get(`${baseUrl}/bill/get-all`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -63,7 +63,7 @@ const getByUserId = createAsyncThunk(
     try {
       const resp = await baseAxios.get(
         `${baseUrl}/bill/get-by-user-id/${params.userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token.token}` } }
       );
       if (resp.status === 200) {
         return resp.data;
@@ -80,7 +80,7 @@ const create = createAsyncThunk(
   async (param: CreateBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios.post(`${baseUrl}/bill/create`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -99,7 +99,7 @@ const createFromCart = createAsyncThunk(
         `${baseUrl}/bill/create-from-cart`,
         param,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token.token}` },
         }
       );
       if (resp.status === 200) {
@@ -116,7 +116,7 @@ const update = createAsyncThunk(
   async (param: UpdateBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios.put(`${baseUrl}/bill/update`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -134,10 +134,9 @@ const deletes = createAsyncThunk(
       const resp = await baseAxios.delete(
         `${baseUrl}/bill/delete/${param.id}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token.token}` },
         }
       );
-      console.log("alo");
       if (resp.status === 200) {
         return resp.data;
       }

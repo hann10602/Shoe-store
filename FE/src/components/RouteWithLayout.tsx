@@ -1,4 +1,3 @@
-import { getCurrentLoginUser } from "@/utils";
 import React, { Suspense } from "react";
 
 import { Redirect, Route } from "react-router-dom";
@@ -24,9 +23,9 @@ export const RouteWithLayout: React.FC<RouteWithLayoutProps> = (props) => {
     ...rest
   } = props;
 
-  const loginUser = getCurrentLoginUser();
+  const token = localStorage.getItem('jwt');
 
-  if (protect && !loginUser) {
+  if (protect && !token) {
     return <Redirect to="/sign-in" />;
   }
 

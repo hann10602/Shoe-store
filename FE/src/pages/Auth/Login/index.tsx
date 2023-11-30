@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Login = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -21,6 +23,10 @@ export const Login = () => {
   const history = useHistory();
   const location = useLocation();
 
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const onSubmit = (e: FieldValues) => {
     dispatch(
       authAsyncAction.login({
@@ -33,7 +39,7 @@ export const Login = () => {
         window.location.reload();
       })
       .catch((err) => {
-        history.push(`/sign-in?error=Wrong username or password`);
+        failedNotify();
       });
   };
 
@@ -43,6 +49,18 @@ export const Login = () => {
 
   return (
     <div id="login-page">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <span className="back-icon" onClick={() => history.push("/home")}>
         <svg
           version="1.1"

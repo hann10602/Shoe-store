@@ -1,16 +1,17 @@
+import { categoryAsyncAction } from "@/store/category/action";
+import {
+  categoriesSelector,
+  isGettingCategoriesSelector,
+} from "@/store/category/selector";
+import { CategoryType } from "@/store/category/type";
 import { useAppDispatch } from "@/store/store";
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DeletePage from "../DeletePage";
 import ChangeCategoryPage from "./ChangeCategoryPage";
-import {
-  categoriesSelector,
-  isGettingCategoriesSelector,
-} from "@/store/category/selector";
-import { categoryAsyncAction } from "@/store/category/action";
-import { CategoryType } from "@/store/category/type";
-import { useHistory, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {};
 
@@ -29,11 +30,6 @@ const CategoryList = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const history = useHistory();
-  const location = useLocation();
-
-  const message = new URLSearchParams(location.search).get("message");
-
   const tablePagination = Array.from(
     { length: Math.ceil(categories.length / 10) },
     (_, index) => index + 1
@@ -41,14 +37,22 @@ const CategoryList = (props: Props) => {
 
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
+  const successNotify = () => {
+    toast.success("Success");
+    dispatch(categoryAsyncAction.getAll());
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleDelete = (id: number) => {
     dispatch(categoryAsyncAction.deletes({ id }))
       .then(() => {
-        history.push("/admin?tab=category&message=Success");
-        window.location.reload();
+        successNotify();
       })
       .catch(() => {
-        history.push("/admin?tab=category&message=Failure");
+        failedNotify();
       });
     setIsDeletePage(false);
     setSelectedId(undefined);
@@ -72,6 +76,8 @@ const CategoryList = (props: Props) => {
     <>
       {isChangePage && (
         <ChangeCategoryPage
+          successNotify={successNotify}
+          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           category={selectedEntity}
         />
@@ -83,16 +89,18 @@ const CategoryList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
-      {message &&
-        (message === "Success" ? (
-          <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">
-            Success
-          </div>
-        ) : (
-          <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">
-            Failure
-          </div>
-        ))}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div>
         <button
           className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold"

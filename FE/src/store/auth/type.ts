@@ -1,13 +1,5 @@
-export type LoginUserType = {
+export type JWTType = {
   id: number;
-  fullName: string;
-  username: string;
-  password: string;
-  email: string;
-  phoneNum: string;
-  role: string;
-  address: string;
-  avatar: string;
   token: string;
 };
 

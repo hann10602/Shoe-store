@@ -5,7 +5,8 @@ import { UserType } from "@/store/user/type";
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DeletePage from "../DeletePage";
 import ChangeUserPage from "./ChangeUserPage";
 
@@ -21,10 +22,6 @@ const UserList = (props: Props) => {
   );
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
-  const history = useHistory();
-  const location = useLocation();
-
-  const message = new URLSearchParams(location.search).get("message");
   const users = useSelector(usersSelector);
   const isGettingUsers = useSelector(isGettingUsersSelector);
 
@@ -37,15 +34,24 @@ const UserList = (props: Props) => {
 
   const skeletonArray = Array.from({ length: 10 }, (_, index) => index + 1);
 
+  const successNotify = () => {
+    toast.success("Success");
+    dispatch(userAsyncAction.getAll());
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleDelete = (id: number) => {
     setIsDeletePage(false);
     setSelectedId(undefined);
     dispatch(userAsyncAction.deletes({ id }))
       .then(() => {
-        history.push("/admin?tab=user&message=Success");
+        successNotify();
       })
       .catch(() => {
-        history.push("/admin?tab=user&message=Failure");
+        failedNotify();
       });
   };
 
@@ -67,6 +73,8 @@ const UserList = (props: Props) => {
     <>
       {isChangePage && (
         <ChangeUserPage
+          successNotify={successNotify}
+          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           user={selectedEntity}
         />
@@ -78,9 +86,19 @@ const UserList = (props: Props) => {
           handleCancel={handleDeleteCancel}
         />
       )}
-      {
-        message && (message === "Success" ? <div className="w-full px-8 py-2 bg-green-400 rounded-md text-white font-semibold text-lg mb-4">Success</div> : <div className="w-full px-8 py-2 bg-red-400 rounded-md text-white font-semibold text-lg mb-4">Failure</div>)
-      }
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <ToastContainer />
       <div>
         <button
           className="px-10 py-3 bg-gray-200 rounded-md mb-6 font-semibold"

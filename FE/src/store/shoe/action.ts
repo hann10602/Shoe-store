@@ -13,31 +13,37 @@ import {
 const baseUrl = BASE_URL;
 const token = getToken();
 
-const getOne = createAsyncThunk("size/self", async (param: GetShoeType, {rejectWithValue}) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`);
-    if (resp.status === 200) {
-      return resp.data;
+const getOne = createAsyncThunk(
+  "size/self",
+  async (param: GetShoeType, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`);
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return rejectWithValue(err);
   }
-});
+);
 
-const getAll = createAsyncThunk("shoe/get-all", async (param, {rejectWithValue}) => {
-  try {
-    const resp = await axios.get(`${baseUrl}/shoe/get-all`);
-    if (resp.status === 200) {
-      return resp.data;
+const getAll = createAsyncThunk(
+  "shoe/get-all",
+  async (param, { rejectWithValue }) => {
+    try {
+      const resp = await axios.get(`${baseUrl}/shoe/get-all`);
+      if (resp.status === 200) {
+        return resp.data;
+      }
+    } catch (err) {
+      return rejectWithValue(err);
     }
-  } catch (err) {
-    return rejectWithValue(err);
   }
-});
+);
 
 const getByCategory1 = createAsyncThunk(
   "shoe/getByCategory1",
-  async (params: GetShoesByCategoryType, {rejectWithValue}) => {
+  async (params: GetShoesByCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
         `${baseUrl}/shoe/get-by-category/${params.categoryCode}`
@@ -53,10 +59,10 @@ const getByCategory1 = createAsyncThunk(
 
 const getByCategory2 = createAsyncThunk(
   "shoe/getByCategory2",
-  async (params: GetShoesByCategoryType, {rejectWithValue}) => {
+  async (params: GetShoesByCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/shoe/get-by-category/${params.categoryCode}`,
+        `${baseUrl}/shoe/get-by-category/${params.categoryCode}`
       );
       if (resp.status === 200) {
         return resp.data;
@@ -69,10 +75,10 @@ const getByCategory2 = createAsyncThunk(
 
 const getByCategory3 = createAsyncThunk(
   "shoe/getByCategory3",
-  async (params: GetShoesByCategoryType, {rejectWithValue}) => {
+  async (params: GetShoesByCategoryType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/shoe/get-by-category/${params.categoryCode}`,
+        `${baseUrl}/shoe/get-by-category/${params.categoryCode}`
       );
       if (resp.status === 200) {
         return resp.data;
@@ -85,10 +91,16 @@ const getByCategory3 = createAsyncThunk(
 
 const searchShoes = createAsyncThunk(
   "shoe/searchShoes",
-  async (param: SearchShoes, {rejectWithValue}) => {
+  async (param: SearchShoes, { rejectWithValue }) => {
     try {
       const resp = await axios.get(
-        `${baseUrl}/shoe/search?s=?${param.search ? `&search=${param.search}` : ""}${param.category ? `&category=${param.category}` : ""}${param.size ? `&size=${param.size}` : ""}${param.priceFrom ? `&price-from=${param.priceFrom}` : ""}${param.priceTo ? `&price-to=${param.priceTo}` : ""}`
+        `${baseUrl}/shoe/search?s=?${
+          param.search ? `&search=${param.search}` : ""
+        }${param.category ? `&category=${param.category}` : ""}${
+          param.size ? `&size=${param.size}` : ""
+        }${param.priceFrom ? `&price-from=${param.priceFrom}` : ""}${
+          param.priceTo ? `&price-to=${param.priceTo}` : ""
+        }`
       );
       if (resp.status === 200) {
         return resp.data;
@@ -101,10 +113,10 @@ const searchShoes = createAsyncThunk(
 
 const create = createAsyncThunk(
   "shoe/create",
-  async (param: CreateShoeType, {rejectWithValue}) => {
+  async (param: CreateShoeType, { rejectWithValue }) => {
     try {
       const resp = await axios.post(`${baseUrl}/shoe/create`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -117,10 +129,10 @@ const create = createAsyncThunk(
 
 const update = createAsyncThunk(
   "shoe/update",
-  async (param: UpdateShoeType, {rejectWithValue}) => {
+  async (param: UpdateShoeType, { rejectWithValue }) => {
     try {
       const resp = await axios.put(`${baseUrl}/shoe/update`, param, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;
@@ -133,10 +145,10 @@ const update = createAsyncThunk(
 
 const deletes = createAsyncThunk(
   "shoe/delete",
-  async (param: DeleteShoeType, {rejectWithValue}) => {
+  async (param: DeleteShoeType, { rejectWithValue }) => {
     try {
       const resp = await axios.delete(`${baseUrl}/shoe/delete/${param.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token.token}` },
       });
       if (resp.status === 200) {
         return resp.data;

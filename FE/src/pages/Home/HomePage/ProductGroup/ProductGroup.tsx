@@ -11,7 +11,7 @@ import {
 } from "@/store/shoe/selector";
 import { ShoeType } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
-import { getCurrentLoginUser } from "@/utils";
+import { getToken } from "@/utils";
 import { Carousel } from "antd";
 import { CarouselRef } from "antd/lib/carousel";
 import React, { memo, useEffect, useRef, useState } from "react";
@@ -59,7 +59,7 @@ const ProductGroup = (props: Props) => {
   const shoesByCategory2 = useSelector(shoesByCategory2Selector);
   const shoesByCategory3 = useSelector(shoesByCategory3Selector);
 
-  const loginUser = getCurrentLoginUser();
+  const token = getToken();
 
   const handleResize = () => {
     setWindowSize(window.innerWidth);
@@ -147,10 +147,10 @@ const ProductGroup = (props: Props) => {
                   className="size-item"
                   key={size}
                   onClick={() => {
-                    if(loginUser) {
+                    if (token) {
                       dispatch(
                         cartAsyncAction.create({
-                          userId: loginUser.id,
+                          userId: token.id,
                           shoeId: shoeId,
                           sizeCode: size,
                           quantity: 1,
@@ -159,7 +159,7 @@ const ProductGroup = (props: Props) => {
                       setShoeSizes([]);
                       setChooseSizesPage(false);
                     } else {
-                      history.push("/sign-in")
+                      history.push("/sign-in");
                     }
                   }}
                 >
