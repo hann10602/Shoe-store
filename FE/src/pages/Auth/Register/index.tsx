@@ -27,7 +27,7 @@ const Register = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const failedNotify = () => {
-    toast.error("Failed");
+    toast.error("User exist");
   };
 
   const onSubmit = (e: FieldValues) => {

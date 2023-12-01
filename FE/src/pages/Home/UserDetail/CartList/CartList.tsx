@@ -10,13 +10,17 @@ import Order from "./Cart/Cart";
 import "./style.scss";
 import { billAsyncAction } from "@/store/bill/action";
 import { getToken } from "@/utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { userSelector } from "@/store/user/selector";
 
-type Props = {  };
+type Props = {};
 
 const CartList = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const isGettingCartsByUserId = useSelector(isGettingCartsByUserIdSelector);
+  const loginUser = useSelector(userSelector);
   const orders = useSelector(cartsByUserIdSelector);
 
   const token = getToken();
@@ -33,12 +37,32 @@ const CartList = (props: Props) => {
     [orders]
   );
 
+  const successNotify = () => {
+    toast.success("Success");
+  };
+
+  const failedNotify = (message: string) => {
+    toast.error(message);
+  };
+
   useEffect(() => {
     dispatch(cartAsyncAction.getByUserId({ userId: token.id }));
-  }, [dispatch, token]);
+  }, []);
 
   return (
     <div id="orders">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {!isGettingCartsByUserId ? (
         <>
           <div>
@@ -51,12 +75,28 @@ const CartList = (props: Props) => {
               <button
                 id="buy-all-btn"
                 onClick={() => {
-                  dispatch(
-                    billAsyncAction.createFromCart({
-                      cartIdList: orders.map((order) => order.id),
-                    })
-                  );
-                  window.location.reload();
+                  if (
+                    loginUser?.address !== null &&
+                    loginUser?.address !== "" &&
+                    loginUser?.phoneNum !== null
+                  ) {
+                    dispatch(
+                      billAsyncAction.createFromCart({
+                        cartIdList: orders.map((order) => order.id),
+                      })
+                    )
+                      .then(() => {
+                        successNotify();
+                        dispatch(
+                          cartAsyncAction.getByUserId({ userId: token.id })
+                        );
+                      })
+                      .catch(() => {
+                        failedNotify("Failed");
+                      });
+                  } else {
+                    failedNotify("Please add address and phone number");
+                  }
                 }}
               >
                 Buy all

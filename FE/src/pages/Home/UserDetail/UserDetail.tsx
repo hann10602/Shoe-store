@@ -1,12 +1,12 @@
-import React, { useLayoutEffect, useState } from "react";
+import { userSelector } from "@/store/user/selector";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import CartList from "./CartList";
 import ChangePassword from "./ChangePassword";
 import OrderList from "./OrderLIst";
 import UserInformation from "./UserInformation";
 import "./style.scss";
-import { useSelector } from "react-redux";
-import { userSelector } from "@/store/user/selector";
 
 type Props = {};
 
@@ -64,6 +64,7 @@ const UserDetail = (props: Props) => {
               id="logout"
               onClick={() => {
                 localStorage.removeItem("jwt");
+                history.push("/sign-in")
               }}
             >
               Logout

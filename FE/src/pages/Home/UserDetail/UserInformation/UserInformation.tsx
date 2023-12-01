@@ -1,13 +1,15 @@
 import GeneralAvatar from "@/assets/img/web/avatar.jpg";
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
-import { validateEmail } from "@/utils";
+import { userSelector } from "@/store/user/selector";
+import { getToken, validateEmail } from "@/utils";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import "./style.scss";
-import { userSelector } from "@/store/user/selector";
 import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./style.scss";
 
 type Props = {};
 
@@ -24,6 +26,8 @@ const UserInformation = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const loginUser = useSelector(userSelector);
+
+  const token = getToken();
 
   const { register, formState, handleSubmit, reset } = form;
 
@@ -44,45 +48,92 @@ const UserInformation = (props: Props) => {
       .catch((err) => console.log(err));
   };
 
+  const successNotify = () => {
+    toast.success("Success");
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleUserUpdate = (e: FieldValues) => {
     if (loginUser !== undefined) {
       const file = openFileRef.current?.files?.[0];
-      if (!file) {
-        return;
-      }
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", preset_key);
+        axios
+          .post(
+            `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+            formData
+          )
+          .then((res) => {
+            dispatch(
+              userAsyncAction.update({
+                id: loginUser.id,
+                fullName: e.fullName,
+                username: e.username,
+                avatar: res.data.secure_url,
+                email: e.email,
+                phoneNum: e.phoneNum,
+                role: loginUser.role,
+                address: e.address,
+              })
+            )
+              .then(() => {
+                dispatch(userAsyncAction.getOne({ id: token.id }));
+                successNotify();
+              })
+              .catch(() => {
+                failedNotify();
+              });
 
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", preset_key);
-      axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-          formData
+            setIsUpdateUser(false);
+            setAvatar("");
+          })
+          .catch((err) => console.log(err));
+      } else {
+        dispatch(
+          userAsyncAction.update({
+            id: loginUser.id,
+            fullName: e.fullName,
+            username: e.username,
+            avatar: loginUser.avatar,
+            email: e.email,
+            phoneNum: e.phoneNum,
+            role: loginUser.role,
+            address: e.address,
+          })
         )
-        .then((res) => {
-          dispatch(
-            userAsyncAction.update({
-              id: loginUser.id,
-              fullName: e.fullName,
-              username: e.username,
-              avatar: res.data.secure_url,
-              email: e.email,
-              phoneNum: e.phoneNum,
-              role: loginUser.role,
-              address: e.address,
-            })
-          );
+          .then(() => {
+            dispatch(userAsyncAction.getOne({ id: token.id }));
+            successNotify();
+          })
+          .catch(() => {
+            failedNotify();
+          });
 
-          setIsUpdateUser(false);
-          setAvatar("");
-          window.location.reload();
-        })
-        .catch((err) => console.log(err));
+        setIsUpdateUser(false);
+        setAvatar("");
+      }
     }
   };
 
   return (
     <div id="user-information">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <p id="information-title">User information</p>
       <form id="information-main" onSubmit={handleSubmit(handleUserUpdate)}>
         <div className="field-wrapper">
@@ -139,7 +190,11 @@ const UserInformation = (props: Props) => {
             ) : (
               <>
                 {loginUser?.avatar ? (
-                  <img className="avatar" src={loginUser?.avatar} alt="avatar" />
+                  <img
+                    className="avatar"
+                    src={loginUser?.avatar}
+                    alt="avatar"
+                  />
                 ) : (
                   <img className="avatar" src={GeneralAvatar} alt="avatar" />
                 )}

@@ -13,7 +13,7 @@ const baseUrl = BASE_URL;
 const token = getToken();
 
 const getOne = createAsyncThunk(
-  "size/self",
+  "user/self",
   async (param: GetUserType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/user/self/${param.id}`, {

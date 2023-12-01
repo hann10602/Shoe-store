@@ -6,6 +6,11 @@ import { useAppDispatch } from "@/store/store";
 import React, { memo, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.scss";
+import { getToken } from "@/utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { userSelector } from "@/store/user/selector";
+import { useSelector } from "react-redux";
 
 type Props = {
   order: CartType;
@@ -17,9 +22,19 @@ const Cart = ({ order }: Props) => {
   );
 
   const updateQuantity = useDebounce(currentQuantity, 300);
+  const loginUser = useSelector(userSelector);
+  const token = getToken();
 
   const history = useHistory();
   const dispatch = useAppDispatch();
+
+  const successNotify = () => {
+    toast.success("Success");
+  };
+
+  const failedNotify = (message: string) => {
+    toast.error(message);
+  };
 
   useEffect(() => {
     dispatch(
@@ -32,6 +47,18 @@ const Cart = ({ order }: Props) => {
 
   return (
     <div className="order-wrapper">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="order-header">
         <div className="order-information">
           <div className="shoe-information">
@@ -100,13 +127,26 @@ const Cart = ({ order }: Props) => {
           <button
             className="buy-btn"
             onClick={() => {
-              dispatch(
-                billAsyncAction.createFromCart({
-                  cartIdList: [order.id],
-                })
-              );
-              history.push("/user?page=orders");
-              window.location.reload();
+              if (
+                loginUser?.address !== null &&
+                loginUser?.address !== "" &&
+                loginUser?.phoneNum !== null
+              ) {
+                dispatch(
+                  billAsyncAction.createFromCart({
+                    cartIdList: [order.id],
+                  })
+                )
+                  .then(() => {
+                    dispatch(billAsyncAction.getByUserId({ userId: token.id }));
+                    history.push("/user?page=orders");
+                  })
+                  .catch(() => {
+                    failedNotify("Failed");
+                  });
+              } else {
+                failedNotify("Please add address and phone number");
+              }
             }}
           >
             Buy
@@ -114,8 +154,14 @@ const Cart = ({ order }: Props) => {
           <button
             className="remove-btn"
             onClick={() => {
-              dispatch(cartAsyncAction.deletes({ id: order.id }));
-              window.location.reload()
+              dispatch(cartAsyncAction.deletes({ id: order.id }))
+                .then(() => {
+                  dispatch(cartAsyncAction.getByUserId({ userId: token.id }));
+                  successNotify();
+                })
+                .catch(() => {
+                  failedNotify("Failed");
+                });
             }}
           >
             Remove

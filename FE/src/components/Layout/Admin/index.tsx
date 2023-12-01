@@ -8,21 +8,26 @@ import { useHistory, useLocation } from "react-router-dom";
 import AdminNav from "./AdminNav";
 import { userSelector } from "@/store/user/selector";
 import { useSelector } from "react-redux";
+import { getToken } from "@/utils";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
 }
 
 export const LayoutAdmin: React.FC<IPropsLayoutMain> = ({ children }) => {
+  const token = getToken()
+
+  const history = useHistory();
+
+  if (token?.role !== "ROLE_ADMIN") {
+    console.log(token?.role);
+    history.push("/home");
+  }
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
 
   const location = useLocation();
 
   const tab = new URLSearchParams(location.search).get("tab");
-
-  const history = useHistory();
-
-  const loginUser = useSelector(userSelector);
 
   return (
     <div className="w-full relative">

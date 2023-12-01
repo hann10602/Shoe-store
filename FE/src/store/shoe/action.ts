@@ -14,7 +14,7 @@ const baseUrl = BASE_URL;
 const token = getToken();
 
 const getOne = createAsyncThunk(
-  "size/self",
+  "shoe/self",
   async (param: GetShoeType, { rejectWithValue }) => {
     try {
       const resp = await axios.get(`${baseUrl}/shoe/self?id=${param.id}`);

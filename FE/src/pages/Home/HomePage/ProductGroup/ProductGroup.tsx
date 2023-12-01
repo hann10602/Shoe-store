@@ -18,6 +18,8 @@ import React, { memo, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./style.scss";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type GroupShoe = {
   id: number;
@@ -60,6 +62,14 @@ const ProductGroup = (props: Props) => {
   const shoesByCategory3 = useSelector(shoesByCategory3Selector);
 
   const token = getToken();
+
+  const successNotify = () => {
+    toast.success("Success");
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
 
   const handleResize = () => {
     setWindowSize(window.innerWidth);
@@ -126,6 +136,18 @@ const ProductGroup = (props: Props) => {
 
   return (
     <div id="product">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {chooseSizesPage && shoeId && (
         <div className="choose-size-page">
           <div className="choose-size-background"></div>
@@ -155,7 +177,16 @@ const ProductGroup = (props: Props) => {
                           sizeCode: size,
                           quantity: 1,
                         })
-                      );
+                      )
+                        .then(() => {
+                          successNotify();
+                          cartAsyncAction.getByUserId({
+                            userId: token.id,
+                          });
+                        })
+                        .catch(() => {
+                          failedNotify();
+                        });
                       setShoeSizes([]);
                       setChooseSizesPage(false);
                     } else {
@@ -236,12 +267,14 @@ const ProductGroup = (props: Props) => {
                 {!group.isGetting && group.shoes ? (
                   group.shoes.map((item) => (
                     <div className="product-wrapper" key={item.id}>
-                      <img
-                        className="product-image"
-                        src={item.imageUrls[0]}
-                        alt=""
-                      />
-                      <p className="product-name">{item.name}</p>
+                      <div onClick={() => history.push(`/shoe?id=${item.id}`)}>
+                        <img
+                          className="product-image"
+                          src={item.imageUrls[0]}
+                          alt=""
+                        />
+                        <p className="product-name">{item.name}</p>
+                      </div>
                       <div className="star-wrapper">
                         <AverageStar averageStar={item.averageStar} />
                       </div>

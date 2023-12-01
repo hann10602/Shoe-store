@@ -24,7 +24,7 @@ export const Login = () => {
   const location = useLocation();
 
   const failedNotify = () => {
-    toast.error("Failed");
+    toast.error("Wrong username or password");
   };
 
   const onSubmit = (e: FieldValues) => {
@@ -36,7 +36,6 @@ export const Login = () => {
     )
       .then(() => {
         history.push(`/home`);
-        window.location.reload();
       })
       .catch((err) => {
         failedNotify();

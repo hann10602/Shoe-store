@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 type Props = {
   category?: CategoryType;
   successNotify: () => void;
-  failedNotify: () => void;
+  failedNotify: (message: string) => void;
   handleCancel: () => void;
 };
 
@@ -35,7 +35,7 @@ const ChangeCategoryPage = ({
         })
       )
         .then(() => successNotify())
-        .catch(() => failedNotify());
+        .catch(() => failedNotify("Category is exist"));
     } else {
       dispatch(
         categoryAsyncAction.create({
@@ -44,7 +44,7 @@ const ChangeCategoryPage = ({
         })
       )
         .then(() => successNotify())
-        .catch(() => failedNotify());
+        .catch(() => failedNotify("Category is exist"));
     }
 
     handleCancel();

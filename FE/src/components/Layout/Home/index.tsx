@@ -104,8 +104,8 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
     {
       id: 2,
       onClick: () => {
-        localStorage.removeItem("login-user");
-        window.location.reload();
+        localStorage.removeItem("jwt");
+        history.push('/sign-in')
       },
       title: "Logout",
       icon: (

@@ -11,6 +11,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import "./style.scss";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {};
 
@@ -35,6 +37,14 @@ const OrderList = (props: Props) => {
 
   const isGettingBillsByUserId = useSelector(isGettingBillsByUserIdSelector);
 
+  const successNotify = () => {
+    toast.success("Success");
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
+
   const handleSetEvaluateStar = useCallback((star: number) => {
     setEvaluateOrderStar(star);
   }, []);
@@ -48,11 +58,17 @@ const OrderList = (props: Props) => {
           star: evaluateOrderStar,
           evaluate: e.evaluate,
         })
-      ).catch((err) => console.log("alo"));
+      )
+        .then(() => {
+          dispatch(billAsyncAction.getByUserId({ userId: token.id }));
+          successNotify();
+        })
+        .catch(() => {
+          failedNotify();
+        });
 
       reset();
       setEvaluateSection(false);
-      window.location.reload();
     }
   };
 
@@ -61,6 +77,18 @@ const OrderList = (props: Props) => {
   }, []);
   return (
     <div id="table-wrapper">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {evaluateSection && <div id="evaluate-background"></div>}
       {evaluateSection && (
         <div id="evaluate-section">

@@ -1,6 +1,7 @@
 export type JWTType = {
   id: number;
   token: string;
+  role: string;
 };
 
 export type LoginType = {

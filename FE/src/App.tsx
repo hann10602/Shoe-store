@@ -19,7 +19,6 @@ export default function App() {
   const jwt: JWTType = tokenForm != null ? JSON.parse(tokenForm) : null;
 
   useEffect(() => {
-    console.log(tokenForm)
     if (tokenForm) {
       dispatch(userAsyncAction.getOne({id: Number(jwt.id)}));
     }

@@ -42,8 +42,8 @@ const CategoryList = (props: Props) => {
     dispatch(categoryAsyncAction.getAll());
   };
 
-  const failedNotify = () => {
-    toast.error("Failed");
+  const failedNotify = (message: string) => {
+    toast.error(message);
   };
 
   const handleDelete = (id: number) => {
@@ -52,7 +52,7 @@ const CategoryList = (props: Props) => {
         successNotify();
       })
       .catch(() => {
-        failedNotify();
+        failedNotify("This category is not empty");
       });
     setIsDeletePage(false);
     setSelectedId(undefined);

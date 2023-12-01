@@ -1,20 +1,17 @@
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
 import { isChangingPasswordUserSelector } from "@/store/user/selector";
+import { getToken } from "@/utils";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import "./style.scss";
-import { getToken } from "@/utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./style.scss";
 
 type Props = {};
 
 const ChangePassword = (props: Props) => {
-  const history = useHistory();
-  const location = useLocation();
   const form = useForm();
 
   const { register, formState, handleSubmit, watch } = form;
@@ -34,7 +31,7 @@ const ChangePassword = (props: Props) => {
   };
 
   const failedNotify = () => {
-    toast.error("Failed");
+    toast.error("Wrong old password");
   };
 
   const handleChangePassword = (e: FieldValues) => {
@@ -45,8 +42,14 @@ const ChangePassword = (props: Props) => {
         newPassword: e.newPassword,
       })
     )
-      .then(() => successNotify())
-      .catch((err) => failedNotify());
+      
+    .then(() => {
+      dispatch(userAsyncAction.getOne({ id: token.id }));
+      successNotify();
+    })
+    .catch(() => {
+      failedNotify();
+    });
   };
 
   return (

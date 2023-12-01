@@ -250,7 +250,7 @@ const ChangeProductPage = ({
                 </div>
               </div>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-5">
               <button
                 className="w-[45%] h-12 border border-solid border-gray-300 rounded-xl font-semibold hover:bg-gray-400"
                 onClick={() => handleCancel()}

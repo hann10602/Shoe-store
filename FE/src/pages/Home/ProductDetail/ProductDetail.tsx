@@ -24,10 +24,16 @@ import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 import { userSelector } from "@/store/user/selector";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {};
 
 const ProductDetail = (props: Props) => {
+  const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+
   const [render, setRender] = useState<boolean>(false);
   const [cartPage, setCartPage] = useState<boolean>(false);
   const [buyPage, setBuyPage] = useState<boolean>(false);
@@ -50,9 +56,15 @@ const ProductDetail = (props: Props) => {
 
   const screenWidth: number = window.innerWidth;
 
-  const dispatch = useAppDispatch();
+  const successNotify = () => {
+    toast.success("Success");
+  };
 
-  const location = useLocation();
+  const failedNotify = (message: string) => {
+    toast.error(message);
+  };
+
+  const dispatch = useAppDispatch();
 
   const history = useHistory();
 
@@ -76,7 +88,6 @@ const ProductDetail = (props: Props) => {
     if (!loginUser) {
       history.push("/sign-in");
     } else if (shoe) {
-      console.log(buyQuantity);
       dispatch(
         cartAsyncAction.create({
           userId: loginUser.id,
@@ -84,7 +95,13 @@ const ProductDetail = (props: Props) => {
           sizeCode: buySize,
           quantity: buyQuantity,
         })
-      );
+      )
+        .then(() => {
+          successNotify();
+        })
+        .catch(() => {
+          failedNotify("Failed");
+        });
 
       setCartPage(false);
     }
@@ -94,18 +111,39 @@ const ProductDetail = (props: Props) => {
     if (!loginUser) {
       history.push("/sign-in");
     } else if (shoe) {
-      console.log(buyQuantity);
-      dispatch(
-        billAsyncAction.create({
-          userId: loginUser.id,
-          shoeId: shoe.id,
-          sizeCode: buySize,
-          quantity: buyQuantity,
-          totalPrice: shoe.salePrice
-            ? buyQuantity * shoe.salePrice
-            : buyQuantity * shoe.price,
-        })
-      );
+      if (
+        loginUser.address !== null &&
+        loginUser.address !== "" &&
+        loginUser.phoneNum !== null
+      ) {
+        dispatch(
+          billAsyncAction.create({
+            userId: loginUser.id,
+            shoeId: shoe.id,
+            sizeCode: buySize,
+            quantity: buyQuantity,
+            totalPrice: shoe.salePrice
+              ? buyQuantity * shoe.salePrice
+              : buyQuantity * shoe.price,
+          })
+        )
+          .then(() => {
+            dispatch(
+              shoeAsyncAction.getOne({
+                id: shoe.id,
+              })
+            );
+            successNotify();
+            setProductQuantity(
+              productQuantity && productQuantity - buyQuantity
+            );
+          })
+          .catch(() => {
+            failedNotify("Failed");
+          });
+      } else {
+        failedNotify("Please add address and phone number");
+      }
 
       setBuyPage(false);
     }
@@ -116,8 +154,6 @@ const ProductDetail = (props: Props) => {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-
     dispatch(
       shoeAsyncAction.getOne({
         id: Number(params.get("id")),
@@ -132,7 +168,7 @@ const ProductDetail = (props: Props) => {
       top: 0,
       behavior: "smooth",
     });
-  }, [render]);
+  }, []);
 
   useEffect(() => {
     setMainImage(shoe?.imageUrls[0]);
@@ -166,6 +202,19 @@ const ProductDetail = (props: Props) => {
   return (
     <div>
       <div className="header-space"></div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {cartPage && (
         <div id="confirm-page">
           <div className="confirm-background"></div>
@@ -271,27 +320,32 @@ const ProductDetail = (props: Props) => {
                 )}
               </div>
               <div className="product-size-group">
-                {shoe.shoeSizes.map((size) => (
-                  <div
-                    className={`${
-                      buySize === size ? "size-choose" : "product-size"
-                    }`}
-                    key={size}
-                    onClick={() => {
-                      dispatch(
-                        sizeAsyncAction.getSizeQuantity({
-                          shoeId: shoe.id,
-                          sizeCode: size,
-                        })
-                      );
-                      setHasBuySize(true);
-                      setBuySize(size);
-                      setBuyQuantity(1);
-                    }}
-                  >
-                    {size}
-                  </div>
-                ))}
+                {shoe.shoeSizes.map((size) => {
+                  if (size !== undefined) {
+                    return (
+                      <div
+                        className={`${
+                          buySize === size ? "size-choose" : "product-size"
+                        }`}
+                        key={size}
+                        onClick={() => {
+                          dispatch(
+                            sizeAsyncAction.getSizeQuantity({
+                              shoeId: shoe.id,
+                              sizeCode: size,
+                            })
+                          );
+                          setHasBuySize(true);
+                          setBuySize(size);
+                          setBuyQuantity(1);
+                        }}
+                      >
+                        {size}
+                      </div>
+                    );
+                  }
+                  return false;
+                })}
                 {!hasBuySize && firstClick && (
                   <p className="size-error">Please choose size</p>
                 )}
@@ -852,7 +906,10 @@ const ProductDetail = (props: Props) => {
               </div>
             ) : (
               <div id="none-evaluate">
-                <button className="login-btn" onClick={() => history.push("/sign-in")}>
+                <button
+                  className="login-btn"
+                  onClick={() => history.push("/sign-in")}
+                >
                   Login to see evaluates
                 </button>
               </div>

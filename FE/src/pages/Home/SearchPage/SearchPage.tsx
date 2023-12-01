@@ -15,6 +15,9 @@ import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 import { userSelector } from "@/store/user/selector";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./style.scss";
 
 type Props = {};
 
@@ -59,6 +62,14 @@ const SearchPage = (props: Props) => {
     { length: Math.ceil(5) },
     (_, index) => index + 1
   );
+
+  const successNotify = () => {
+    toast.success("Success");
+  };
+
+  const failedNotify = () => {
+    toast.error("Failed");
+  };
 
   useEffect(() => {
     let searchResultString: string = "";
@@ -179,6 +190,18 @@ const SearchPage = (props: Props) => {
   return (
     <>
       <div className="header-space"></div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {chooseSizesPage && shoeId && (
         <div className="choose-size-page">
           <div className="choose-size-background"></div>
@@ -207,7 +230,13 @@ const SearchPage = (props: Props) => {
                           sizeCode: size,
                           quantity: 1,
                         })
-                      );
+                      )
+                        .then(() => {
+                          successNotify();
+                        })
+                        .catch(() => {
+                          failedNotify();
+                        });
                     }
                     setChooseSizesPage(false);
                   }}
@@ -443,12 +472,14 @@ const SearchPage = (props: Props) => {
                 .slice(8 * (shoePage - 1), 8 * (shoePage - 1) + 8)
                 .map((item) => (
                   <div className="product-wrapper" key={item.id}>
-                    <img
-                      className="product-image"
-                      src={item.imageUrls[0]}
-                      alt=""
-                    />
-                    <p className="product-name">{item.name}</p>
+                    <div onClick={() => history.push(`/shoe?id=${item.id}`)}>
+                      <img
+                        className="product-image"
+                        src={item.imageUrls[0]}
+                        alt=""
+                      />
+                      <p className="product-name">{item.name}</p>
+                    </div>
                     <div className="star-wrapper">
                       <AverageStar averageStar={item.averageStar} />
                     </div>
