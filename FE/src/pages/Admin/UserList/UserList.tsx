@@ -1,6 +1,10 @@
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
-import { isGettingUsersSelector, usersSelector } from "@/store/user/selector";
+import {
+  isGettingUsersSelector,
+  userSelector,
+  usersSelector,
+} from "@/store/user/selector";
 import { UserType } from "@/store/user/type";
 import { Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
@@ -23,6 +27,7 @@ const UserList = (props: Props) => {
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
   const users = useSelector(usersSelector);
+  const userLogin = useSelector(userSelector);
   const isGettingUsers = useSelector(isGettingUsersSelector);
 
   const dispatch = useAppDispatch();
@@ -36,6 +41,9 @@ const UserList = (props: Props) => {
 
   const successNotify = () => {
     toast.success("Success");
+    if (userLogin) {
+      dispatch(userAsyncAction.getOne({ id: userLogin.id }));
+    }
     dispatch(userAsyncAction.getAll());
   };
 

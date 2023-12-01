@@ -54,8 +54,6 @@ const ProductDetail = (props: Props) => {
 
   const suggestRef: React.Ref<CarouselRef> = useRef(null);
 
-  const screenWidth: number = window.innerWidth;
-
   const successNotify = () => {
     toast.success("Success");
   };
@@ -278,19 +276,21 @@ const ProductDetail = (props: Props) => {
               <img id="product-main-image" src={mainImage} alt="" />
               <div id="sub-images-group-wrapper">
                 <div id="sub-images-group">
-                  {shoe.imageUrls.map((shoeImage) => (
-                    <div
-                      key={shoeImage}
-                      style={{ display: "flex", justifyContent: "center" }}
-                    >
-                      <img
-                        className="product-sub-image"
-                        src={shoeImage}
-                        alt="sub-img"
-                        onClick={() => setMainImage(shoeImage)}
-                      />
-                    </div>
-                  ))}
+                  <div id="sub-images-group-scroll">
+                    {shoe.imageUrls.map((shoeImage) => (
+                      <div
+                        key={shoeImage}
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <img
+                          className="product-sub-image"
+                          src={shoeImage}
+                          alt="sub-img"
+                          onClick={() => setMainImage(shoeImage)}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -107,6 +107,8 @@
 
       #product-main-image {
         width: 100%;
+        height: 560px;
+        object-fit: cover;
         margin-bottom: 20px;
         border-radius: 12px;
       }
@@ -117,20 +119,26 @@
 
         #sub-images-group {
           width: 100%;
-          display: flex;
+          overflow-x: scroll;
           justify-content: space-evenly;
 
-          .product-sub-image {
-            margin: 1px;
-            width: 90%;
-            transition: border 5s;
-            border-radius: 4px;
-          }
+          #sub-images-group-scroll {
+            width: max-content;
+            display: flex;
 
-          .product-sub-image:hover {
-            cursor: pointer;
-            margin: 0;
-            border: 1px groove black;
+            .product-sub-image {
+              margin-right: 8px;
+              width: 112px;
+              height: 112px;
+              object-fit: cover;
+              transition: border 5s;
+              border-radius: 4px;
+            }
+  
+            .product-sub-image:hover {
+              cursor: pointer;
+            }
+
           }
         }
       }
@@ -833,14 +841,26 @@
 
         #sub-images-group {
           width: 100%;
-          display: flex;
+          overflow-x: scroll;
           justify-content: space-evenly;
 
-          .product-sub-image {
-            margin: 1px;
-            width: 90%;
-            transition: border 5s;
-            border-radius: 4px;
+          #sub-images-group-scroll {
+            width: max-content;
+            display: flex;
+
+            .product-sub-image {
+              margin-right: 8px;
+              width: 112px;
+              height: 112px;
+              object-fit: cover;
+              transition: border 5s;
+              border-radius: 4px;
+            }
+  
+            .product-sub-image:hover {
+              cursor: pointer;
+            }
+
           }
         }
       }
@@ -1528,14 +1548,26 @@
 
         #sub-images-group {
           width: 100%;
-          display: flex;
+          overflow-x: scroll;
           justify-content: space-evenly;
 
-          .product-sub-image {
-            margin: 1px;
-            width: 90%;
-            transition: border 5s;
-            border-radius: 4px;
+          #sub-images-group-scroll {
+            width: max-content;
+            display: flex;
+
+            .product-sub-image {
+              margin-right: 8px;
+              width: 112px;
+              height: 112px;
+              object-fit: cover;
+              transition: border 5s;
+              border-radius: 4px;
+            }
+  
+            .product-sub-image:hover {
+              cursor: pointer;
+            }
+
           }
         }
       }

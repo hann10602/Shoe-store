@@ -37,17 +37,32 @@ const ChangeBillPage = ({
   const dispatch = useAppDispatch();
 
   const onSubmit = (e: any) => {
-    if (bill) {
-      dispatch(
-        billAsyncAction.update({
-          id: bill.id,
-          status: e.status,
-          isEvaluate: bill.isEvaluate,
-          received: e.received,
-        })
-      )
-        .then(() => successNotify())
-        .catch(() => failedNotify());
+    if (statusValue === "COMPLETED") {
+      if (bill) {
+        dispatch(
+          billAsyncAction.update({
+            id: bill.id,
+            status: e.status,
+            isEvaluate: bill.isEvaluate,
+            received: e.received,
+          })
+        )
+          .then(() => successNotify())
+          .catch(() => failedNotify());
+      }
+    } else {
+      if (bill) {
+        dispatch(
+          billAsyncAction.update({
+            id: bill.id,
+            status: e.status,
+            isEvaluate: bill.isEvaluate,
+            received: e.received,
+          })
+        )
+          .then(() => successNotify())
+          .catch(() => failedNotify());
+      }
     }
 
     handleCancel();
@@ -93,10 +108,10 @@ const ChangeBillPage = ({
               <select
                 disabled={statusValue !== "COMPLETED"}
                 value={received}
+                defaultValue="false"
                 className="mb-6 w-50 h-10 border border-solid border-gray-300 text-lg rounded-md"
                 {...register("received", {
                   onChange: (e) => handleSelectChange(e.target.value),
-                  required: "Please choose order received",
                 })}
               >
                 <option value="false">Have not received</option>

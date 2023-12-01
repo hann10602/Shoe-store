@@ -46,6 +46,7 @@ public class BillServiceImpl implements BillService {
             BeanUtils.copyProperties(entity, dto);
 
             dto.setShoeId(entity.getShoeOrder().getId());
+            dto.setUserName(entity.getUserOrder().getFullName());
             dto.setShoeName(entity.getShoeOrder().getName());
             dto.setShoeSize(entity.getSizeOrder().getName());
             dto.setCreatedDate(sdf.format(entity.getCreatedDate()));
@@ -149,7 +150,9 @@ public class BillServiceImpl implements BillService {
         try {
             Bill entity = findOne(req.getId());
             entity.setStatus(req.getStatus());
-            entity.setReceived(req.getReceived().equals("true") ? true : false);
+            if(req.getReceived() != null) {
+                entity.setReceived(req.getReceived().equals("true") ? true : false);
+            }
             entity.setIsEvaluate(req.getIsEvaluate());
 
             billRepo.save(entity);

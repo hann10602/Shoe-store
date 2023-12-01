@@ -8,19 +8,18 @@ import { useHistory, useLocation } from "react-router-dom";
 import AdminNav from "./AdminNav";
 import { userSelector } from "@/store/user/selector";
 import { useSelector } from "react-redux";
-import { getToken } from "@/utils";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
 }
 
 export const LayoutAdmin: React.FC<IPropsLayoutMain> = ({ children }) => {
-  const token = getToken()
+  const loginUser = useSelector(userSelector);
 
   const history = useHistory();
 
-  if (token?.role !== "ROLE_ADMIN") {
-    console.log(token?.role);
+  if (loginUser && loginUser.role !== "ROLE_ADMIN") {
+    console.log(loginUser?.role);
     history.push("/home");
   }
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
@@ -147,7 +146,7 @@ export const LayoutAdmin: React.FC<IPropsLayoutMain> = ({ children }) => {
             >
               Logout
             </p>
-            <img src={Avatar} alt="avatar" className="w-12 h-12 rounded-full" />
+            <img src={loginUser?.avatar} alt="avatar" className="w-12 h-12 rounded-full object-cover" />
           </div>
         </header>
         {!tab && <div className="p-6">{children}</div>}

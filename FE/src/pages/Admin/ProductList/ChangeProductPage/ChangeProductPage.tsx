@@ -3,14 +3,15 @@ import { categoriesSelector } from "@/store/category/selector";
 import { shoeAsyncAction } from "@/store/shoe/action";
 import { ShoeType } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
-import React from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
 type Props = {
   shoe?: ShoeType;
   successNotify: () => void;
-  failedNotify: () => void;
+  failedNotify: (message: string) => void;
   handleCancel: () => void;
 };
 
@@ -20,58 +21,147 @@ const ChangeProductPage = ({
   failedNotify,
   handleCancel,
 }: Props) => {
+  const cloud_name = "dcb5n0grf";
+  const preset_key = "baswycwi";
+
+  const [productImages, setProductImages] = useState<string[]>(
+    shoe?.imageUrls || []
+  );
+
   const form = useForm();
 
   const { register, formState, handleSubmit, control } = form;
 
   const { errors } = formState;
 
-  const urls = Array.from({ length: Math.ceil(5) }, (_, index) => index + 1);
+  const openFileRef = useRef<HTMLInputElement>(null);
 
   const categories = useSelector(categoriesSelector);
 
   const dispatch = useAppDispatch();
 
-  const onSubmit = (e: any) => {
-    if (shoe) {
-      dispatch(
-        shoeAsyncAction.update({
-          id: shoe.id,
-          name: e.name,
-          price: e.price,
-          description: e.description,
-          salePrice: e.salePrice,
-          category: e.category,
-          imageUrls: e.imageUrls,
-          sizes: e.shoeSizes,
-        })
-      )
-        .then(() => successNotify())
-        .catch(() => failedNotify());
-    } else {
-      dispatch(
-        shoeAsyncAction.create({
-          name: e.name,
-          price: e.price,
-          description: e.description,
-          salePrice: e.salePrice,
-          category: e.category,
-          imageUrls: e.imageUrls,
-          sizes: e.shoeSizes,
-        })
-      )
-      .then(() => successNotify())
-      .catch(() => failedNotify());
+  const uploadImage = (files: FileList | null) => {
+    if (!files) {
+      return;
     }
+    setProductImages([]);
 
-    handleCancel();
+    for (let i = 0; i < files.length; i++) {
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          resolve(event.target?.result);
+        };
+        reader.readAsDataURL(files[i]);
+      })
+        .then((imgUri) => {
+          setProductImages((prev) => [...prev, imgUri as string]);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const onSubmit = (e: any) => {
+    const files = openFileRef.current?.files;
+
+    if (files && files.length !== 0) {
+      const promises = Array.from(files).map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", preset_key);
+
+            axios
+              .post(
+                `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+                formData
+              )
+              .then((res) => resolve(res.data.secure_url));
+          })
+      );
+
+      Promise.all(promises).then((imgs) => {
+        if (shoe) {
+          dispatch(
+            shoeAsyncAction.update({
+              id: shoe.id,
+              name: e.name,
+              price: e.price,
+              description: e.description,
+              salePrice: e.salePrice,
+              category: e.category,
+              imageUrls: imgs as string[],
+              sizes: e.shoeSizes,
+            })
+          )
+            .then(() => successNotify())
+            .catch(() => failedNotify("Failed"));
+        } else {
+          dispatch(
+            shoeAsyncAction.create({
+              name: e.name,
+              price: e.price,
+              description: e.description,
+              salePrice: e.salePrice,
+              category: e.category,
+              imageUrls: imgs as string[],
+              sizes: e.shoeSizes,
+            })
+          )
+            .then(() => successNotify())
+            .catch(() => failedNotify("Failed"));
+        }
+
+        handleCancel();
+      });
+    } else {
+      if (shoe) {
+        dispatch(
+          shoeAsyncAction.update({
+            id: shoe.id,
+            name: e.name,
+            price: e.price,
+            description: e.description,
+            salePrice: e.salePrice,
+            category: e.category,
+            imageUrls: shoe.imageUrls,
+            sizes: e.shoeSizes,
+          })
+        )
+          .then(() => successNotify())
+          .catch(() => failedNotify("Failed"));
+
+        handleCancel();
+      } else {
+        if (e.imageUrls !== undefined) {
+          dispatch(
+            shoeAsyncAction.create({
+              name: e.name,
+              price: e.price,
+              description: e.description,
+              salePrice: e.salePrice,
+              category: e.category,
+              imageUrls: e.imageUrls,
+              sizes: e.shoeSizes,
+            })
+          )
+            .then(() => successNotify())
+            .catch(() => failedNotify("Failed"));
+
+          handleCancel();
+        } else {
+          failedNotify("Added image to created product");
+        }
+      }
+    }
   };
 
   return (
     <div className="w-full h-full fixed top-0 left-0 z-20 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
-        <div className="w-[800px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
+        <div className="w-[1000px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
           <div className="flex justify-end">
             <span
               className="text-2xl font-bold rounded-full hover:bg-gray-200 p-4 cursor-pointer mb-5"
@@ -88,165 +178,192 @@ const ChangeProductPage = ({
             </span>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex">
-              <div className="w-1/2 mr-8">
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Name
-                  </label>
-                  <input
-                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                    type="text"
-                    defaultValue={shoe?.name}
-                    {...register("name", {
-                      required: "Please enter name",
-                    })}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.name?.message?.toString()}
-                  </p>
-                </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Description
-                  </label>
-                  <input
-                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                    type="text"
-                    defaultValue={shoe?.description}
-                    {...register("description", {
-                      required: "Please enter description",
-                    })}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.description?.message?.toString()}
-                  </p>
-                </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Price
-                  </label>
-                  <input
-                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                    type="number"
-                    defaultValue={shoe?.price}
-                    {...register("price", {
-                      required: "Please enter price",
-                    })}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.price?.message?.toString()}
-                  </p>
-                </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Sale price
-                  </label>
-                  <input
-                    className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
-                    type="number"
-                    defaultValue={shoe?.salePrice}
-                    {...register("salePrice", {})}
-                  />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.salePrice?.message?.toString()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Category
-                  </label>
-                  <select
-                    defaultValue={shoe ? shoe.category : "SNEAKER"}
-                    className="mb-6 w-40 h-10 border border-solid border-gray-300 text-lg rounded-md"
-                    {...register("category", {
-                      required: "Please choose category",
-                    })}
-                  >
-                    {categories.map((category) => (
-                      <option value={category.code}>{category.name}</option>
-                    ))}
-                  </select>
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.category?.message?.toString()}
-                  </p>
-                </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Image urls
-                  </label>
-                  <div>
-                    {urls.map((index, i) => (
-                      <input
-                        className="block w-full border border-solid border-gray-300 px-3 py-1 mb-2"
-                        key={index}
-                        type="text"
-                        defaultValue={shoe?.imageUrls[i] || ""}
-                        {...register(`imageUrls.${i}`, {})}
-                      />
-                    ))}
+            <div>
+              <div className="flex">
+                <div className="w-1/2 mr-8">
+                  <div className="form-control relative">
+                    <label
+                      className="block mb-2 text-lg font-semibold"
+                      htmlFor=""
+                    >
+                      Name
+                    </label>
+                    <input
+                      className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                      type="text"
+                      defaultValue={shoe?.name}
+                      {...register("name", {
+                        required: "Please enter name",
+                      })}
+                    />
+                    <p className="font-semibold bottom-2 absolute text-red-500">
+                      {errors.name?.message?.toString()}
+                    </p>
+                  </div>
+                  <div className="form-control relative">
+                    <label
+                      className="block mb-2 text-lg font-semibold"
+                      htmlFor=""
+                    >
+                      Price
+                    </label>
+                    <input
+                      className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                      type="number"
+                      defaultValue={shoe?.price}
+                      {...register("price", {
+                        required: "Please enter price",
+                      })}
+                    />
+                    <p className="font-semibold bottom-2 absolute text-red-500">
+                      {errors.price?.message?.toString()}
+                    </p>
+                  </div>
+                  <div className="form-control relative">
+                    <label
+                      className="block mb-2 text-lg font-semibold"
+                      htmlFor=""
+                    >
+                      Sale price
+                    </label>
+                    <input
+                      className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                      type="number"
+                      defaultValue={shoe?.salePrice}
+                      {...register("salePrice", {})}
+                    />
+                    <p className="font-semibold bottom-2 absolute text-red-500">
+                      {errors.salePrice?.message?.toString()}
+                    </p>
                   </div>
                 </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 mt-5 text-lg font-semibold"
-                    htmlFor=""
+                <div className="w-1/2">
+                  <div className="form-control relative">
+                    <label
+                      className="block mb-2 text-lg font-semibold"
+                      htmlFor=""
+                    >
+                      Description
+                    </label>
+                    <input
+                      className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
+                      type="text"
+                      defaultValue={shoe?.description}
+                      {...register("description", {
+                        required: "Please enter description",
+                      })}
+                    />
+                    <p className="font-semibold bottom-2 absolute text-red-500">
+                      {errors.description?.message?.toString()}
+                    </p>
+                  </div>
+                  <div className="form-control relative">
+                    <label
+                      className="block mb-2 text-lg font-semibold"
+                      htmlFor=""
+                    >
+                      Category
+                    </label>
+                    <select
+                      defaultValue={shoe ? shoe.category : "SNEAKER"}
+                      className="mb-6 w-40 h-10 border border-solid border-gray-300 text-lg rounded-md"
+                      {...register("category", {
+                        required: "Please choose category",
+                      })}
+                    >
+                      {categories.map((category) => (
+                        <option value={category.code} key={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="font-semibold bottom-2 absolute text-red-500">
+                      {errors.category?.message?.toString()}
+                    </p>
+                  </div>
+                  <div className="form-control relative">
+                    <label
+                      className="block mb-2 mt-5 text-lg font-semibold"
+                      htmlFor=""
+                    >
+                      Size
+                    </label>
+                    <Controller
+                      name="shoeSizes"
+                      control={control}
+                      defaultValue={shoe ? shoe.shoeSizes : []}
+                      render={({ field }) => (
+                        <div className="flex mt-5">
+                          {sizes.map((item) => (
+                            <div className="w-5 mr-5" key={item.id}>
+                              <input
+                                className="w-5 h-5 cursor-pointer"
+                                type="checkbox"
+                                value={item.code}
+                                checked={field.value.includes(item.code)}
+                                onChange={() => {
+                                  const updatedArray = field.value.includes(
+                                    item.code
+                                  )
+                                    ? field.value.filter(
+                                        (value: string) => value !== item.code
+                                      )
+                                    : [...field.value, item.code];
+                                  field.onChange(updatedArray);
+                                }}
+                              />
+                              <label>{item.name}</label>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    />
+                    <p className="font-semibold bottom-2 absolute text-red-500">
+                      {errors.shoeSizes?.message?.toString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full form-control relative">
+                <label className="block mb-2 text-lg font-semibold" htmlFor="">
+                  Image urls
+                </label>
+                <div className="flex w-full h-[188px] border border-dashed border-gray-300">
+                  <div className="flex-1 overflow-x-scroll p-2">
+                    <div className="w-max flex space-x-2">
+                      {productImages.map((img) => (
+                        <div className="w-40 h-40" key={img}>
+                          <img
+                            key={img}
+                            src={img}
+                            className="w-full h-full object-cover"
+                            alt="product-img"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div
+                    className="w-40 h-40 cursor-pointer flex  items-center justify-center m-2 bg-white"
+                    onClick={() => openFileRef.current?.click()}
                   >
-                    Size
-                  </label>
-                  <Controller
-                    name="shoeSizes"
-                    control={control}
-                    defaultValue={shoe ? shoe.shoeSizes : []}
-                    render={({ field }) => (
-                      <div className="flex mt-5">
-                        {sizes.map((item) => (
-                          <div className="w-5 mr-5">
-                            <input
-                              className="w-5 h-5 cursor-pointer"
-                              type="checkbox"
-                              value={item.code}
-                              checked={field.value.includes(item.code)}
-                              onChange={() => {
-                                const updatedArray = field.value.includes(
-                                  item.code
-                                )
-                                  ? field.value.filter(
-                                      (value: string) => value !== item.code
-                                    )
-                                  : [...field.value, item.code];
-                                field.onChange(updatedArray);
-                              }}
-                            />
-                            <label>{item.name}</label>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <svg
+                      height={100}
+                      viewBox="0 0 469.33333 469.33333"
+                      fill=""
+                      width={100}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="m437.332031 192h-160v-160c0-17.664062-14.335937-32-32-32h-21.332031c-17.664062 0-32 14.335938-32 32v160h-160c-17.664062 0-32 14.335938-32 32v21.332031c0 17.664063 14.335938 32 32 32h160v160c0 17.664063 14.335938 32 32 32h21.332031c17.664063 0 32-14.335937 32-32v-160h160c17.664063 0 32-14.335937 32-32v-21.332031c0-17.664062-14.335937-32-32-32zm0 0" />
+                    </svg>
+                  </div>
+                  <input
+                    type="file"
+                    className="hidden"
+                    multiple
+                    onChange={(e) => uploadImage(e.target.files)}
+                    ref={openFileRef}
                   />
-                  <p className="font-semibold bottom-2 absolute text-red-500">
-                    {errors.shoeSizes?.message?.toString()}
-                  </p>
                 </div>
               </div>
             </div>

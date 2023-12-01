@@ -41,8 +41,8 @@ const ProductList = (props: Props) => {
     dispatch(categoryAsyncAction.getAll());
   };
 
-  const failedNotify = () => {
-    toast.error("Failed");
+  const failedNotify = (message: string) => {
+    toast.error(message);
   };
 
   const handleDelete = (id: number) => {
@@ -51,7 +51,7 @@ const ProductList = (props: Props) => {
         successNotify();
       })
       .catch(() => {
-        failedNotify();
+        failedNotify("Failed");
       });
     setIsDeletePage(false);
     setSelectedId(undefined);

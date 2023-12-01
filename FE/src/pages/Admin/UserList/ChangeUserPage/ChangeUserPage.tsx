@@ -5,7 +5,6 @@ import { validateEmail } from "@/utils";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
 type Props = {
   user?: UserType;
@@ -27,8 +26,6 @@ const ChangeUserPage = ({
 
   const [avatar, setAvatar] = useState<string>("");
   const form = useForm();
-
-  const history = useHistory();
 
   const { register, formState, handleSubmit } = form;
 
@@ -93,7 +90,7 @@ const ChangeUserPage = ({
                 setAvatar("");
               });
           })
-          .catch((err) => console.log(err));
+          .catch(() => failedNotify());
       } else {
         axios
           .post(
@@ -122,7 +119,7 @@ const ChangeUserPage = ({
                 failedNotify();
               });
           })
-          .catch((err) => console.log(err));
+          .catch(() => successNotify());
       }
     } else {
       if (user) {
@@ -175,7 +172,7 @@ const ChangeUserPage = ({
     <div className="w-full h-full fixed top-0 left-0 z-20 flex items-center justify-center">
       <div className="w-full h-full relative">
         <div className="w-full h-full bg-black opacity-20"></div>
-        <div className="w-[1000px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
+        <div className="w-[1500px] bg-white rounded-lg absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 pb-10">
           <div className="flex justify-end">
             <span
               className="text-2xl font-bold rounded-full hover:bg-gray-200 p-4 cursor-pointer mb-5"
@@ -193,7 +190,56 @@ const ChangeUserPage = ({
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-between space-x-5">
-              <div className="w-4/5">
+              <div className="form-control relative w-2/6">
+                <label
+                  className="mb-2 text-lg flex font-semibold items-center"
+                  htmlFor=""
+                >
+                  Avatar{" "}
+                  <p className="text-xs ml-1 font-normal text-gray-400">
+                    (Click to change)
+                  </p>
+                </label>
+                <div className="flex justify-center items-center">
+                  {user?.avatar || avatar ? (
+                    <img
+                      className="w-[360px] h-[360px] object-cover cursor-pointer border border-dashed border-gray-300"
+                      src={avatar || user?.avatar}
+                      alt="avatar"
+                      onClick={() => openFileRef.current?.click()}
+                    />
+                  ) : (
+                    <div
+                      className="w-[360px] h-[360px] flex justify-center items-center border-dashed border-2 border-blue-300 cursor-pointer"
+                      onClick={() => openFileRef.current?.click()}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="Layer_2"
+                        data-name="Layer 2"
+                        fill="rgb(147, 197, 253)"
+                        width={200}
+                        height={200}
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M22,13a1,1,0,0,0-1,1v4.213A2.79,2.79,0,0,1,18.213,21H5.787A2.79,2.79,0,0,1,3,18.213V14a1,1,0,0,0-2,0v4.213A4.792,4.792,0,0,0,5.787,23H18.213A4.792,4.792,0,0,0,23,18.213V14A1,1,0,0,0,22,13Z" />
+                        <path d="M6.707,8.707,11,4.414V17a1,1,0,0,0,2,0V4.414l4.293,4.293a1,1,0,0,0,1.414-1.414l-6-6a1,1,0,0,0-1.414,0l-6,6A1,1,0,0,0,6.707,8.707Z" />
+                      </svg>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    className="hidden"
+                    {...register("avatar", {
+                      onChange: (e) => {
+                        uploadImage(e.target.files?.[0]);
+                      },
+                    })}
+                    ref={openFileRef}
+                  />
+                </div>
+              </div>
+              <div className="w-2/6">
                 <div className="form-control relative">
                   <label
                     className="block mb-2 text-lg font-semibold"
@@ -248,55 +294,8 @@ const ChangeUserPage = ({
                     {errors.password?.message?.toString()}
                   </p>
                 </div>
-                <div className="form-control relative">
-                  <label
-                    className="block mb-2 text-lg font-semibold"
-                    htmlFor=""
-                  >
-                    Avatar
-                  </label>
-                  <div className="flex justify-center items-center">
-                    {user?.avatar || avatar ? (
-                      <img
-                        className="w-32 h-32 object-cover cursor-pointer"
-                        src={avatar || user?.avatar}
-                        alt="avatar"
-                        onClick={() => openFileRef.current?.click()}
-                      />
-                    ) : (
-                      <div
-                        className="w-32 h-32 flex justify-center items-center border-dashed border-2 border-blue-300 cursor-pointer"
-                        onClick={() => openFileRef.current?.click()}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          id="Layer_2"
-                          data-name="Layer 2"
-                          fill="rgb(147, 197, 253)"
-                          width={80}
-                          height={80}
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M22,13a1,1,0,0,0-1,1v4.213A2.79,2.79,0,0,1,18.213,21H5.787A2.79,2.79,0,0,1,3,18.213V14a1,1,0,0,0-2,0v4.213A4.792,4.792,0,0,0,5.787,23H18.213A4.792,4.792,0,0,0,23,18.213V14A1,1,0,0,0,22,13Z" />
-                          <path d="M6.707,8.707,11,4.414V17a1,1,0,0,0,2,0V4.414l4.293,4.293a1,1,0,0,0,1.414-1.414l-6-6a1,1,0,0,0-1.414,0l-6,6A1,1,0,0,0,6.707,8.707Z" />
-                        </svg>
-                      </div>
-                    )}
-
-                    <input
-                      type="file"
-                      className="hidden"
-                      {...register("avatar", {
-                        onChange: (e) => {
-                          uploadImage(e.target.files?.[0]);
-                        },
-                      })}
-                      ref={openFileRef}
-                    />
-                  </div>
-                </div>
               </div>
-              <div className="w-4/5">
+              <div className="w-2/6">
                 <div className="form-control relative">
                   <label
                     className="block mb-2 text-lg font-semibold"
@@ -384,7 +383,6 @@ const ChangeUserPage = ({
                 </div>
               </div>
             </div>
-
             <div className="flex justify-between items-center mt-5">
               <button
                 className="w-[45%] h-12 border border-solid border-gray-300 rounded-xl font-semibold hover:bg-gray-400"

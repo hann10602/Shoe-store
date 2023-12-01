@@ -139,7 +139,7 @@ const UserInformation = (props: Props) => {
         <div className="field-wrapper">
           <div id="avatar-wrapper">
             {isUpdateUser ? (
-              <>
+              <div style={{height: "100%"}} onClick={() => openFileRef.current?.click()}>
                 {loginUser?.avatar ? (
                   <img
                     className="avatar"
@@ -164,7 +164,6 @@ const UserInformation = (props: Props) => {
                   ref={openFileRef}
                 />
                 <span
-                  onClick={() => openFileRef.current?.click()}
                   id="avatar-change"
                 >
                   <svg
@@ -186,7 +185,7 @@ const UserInformation = (props: Props) => {
                     />
                   </svg>
                 </span>
-              </>
+              </div>
             ) : (
               <>
                 {loginUser?.avatar ? (
