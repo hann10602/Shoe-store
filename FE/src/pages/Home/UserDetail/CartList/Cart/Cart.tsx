@@ -141,8 +141,12 @@ const Cart = ({ order }: Props) => {
                     dispatch(billAsyncAction.getByUserId({ userId: token.id }));
                     history.push("/user?page=orders");
                   })
-                  .catch(() => {
-                    failedNotify("Failed");
+                  .catch((err) => {
+                    if (err.message === "ERR_NETWORK") {
+                      history.push("/sign-in");
+                    } else {
+                      failedNotify("Failed");
+                    }
                   });
               } else {
                 failedNotify("Please add address and phone number");
@@ -159,8 +163,12 @@ const Cart = ({ order }: Props) => {
                   dispatch(cartAsyncAction.getByUserId({ userId: token.id }));
                   successNotify();
                 })
-                .catch(() => {
-                  failedNotify("Failed");
+                .catch((err) => {
+                  if (err.message === "ERR_NETWORK") {
+                    history.push("/sign-in");
+                  } else {
+                    failedNotify("Failed");
+                  }
                 });
             }}
           >

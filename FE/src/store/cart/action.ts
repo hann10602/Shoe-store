@@ -16,11 +16,19 @@ const getOne = createAsyncThunk(
   "cart/self",
   async (param: GetCartType, { rejectWithValue }) => {
     try {
-      const resp = await axios.get(`${baseUrl}/cart/self/${param.id}`, {
-        headers: { Authorization: `Bearer ${token.token}` },
-      });
-      if (resp.status === 200) {
+      const resp = await axios
+        .get(`${baseUrl}/cart/self/${param.id}`, {
+          headers: { Authorization: `Bearer ${token.token}` },
+        })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);
@@ -32,11 +40,19 @@ const getAll = createAsyncThunk(
   "cart/getAll",
   async (param, { rejectWithValue }) => {
     try {
-      const resp = await axios.get(`${baseUrl}/cart/get-all`, {
-        headers: { Authorization: `Bearer ${token.token}` },
-      });
-      if (resp.status === 200) {
+      const resp = await axios
+        .get(`${baseUrl}/cart/get-all`, {
+          headers: { Authorization: `Bearer ${token.token}` },
+        })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);
@@ -48,12 +64,19 @@ const getByUserId = createAsyncThunk(
   "cart/getByUserId",
   async (params: GetCartByUserIdType, { rejectWithValue }) => {
     try {
-      const resp = await axios.get(
-        `${baseUrl}/cart/get-by-user-id/${params.userId}`,
-        { headers: { Authorization: `Bearer ${token.token}` } }
-      );
-      if (resp.status === 200) {
+      const resp = await axios
+        .get(`${baseUrl}/cart/get-by-user-id/${params.userId}`, {
+          headers: { Authorization: `Bearer ${token.token}` },
+        })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);
@@ -65,11 +88,19 @@ const create = createAsyncThunk(
   "cart/create",
   async (param: CreateCartType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/cart/create`, param, {
-        headers: { Authorization: `Bearer ${token.token}` },
-      });
-      if (resp.status === 200) {
+      const resp = await axios
+        .post(`${baseUrl}/cart/create`, param, {
+          headers: { Authorization: `Bearer ${token.token}` },
+        })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);
@@ -81,11 +112,19 @@ const update = createAsyncThunk(
   "cart/update",
   async (param: UpdateCartType, { rejectWithValue }) => {
     try {
-      const resp = await axios.put(`${baseUrl}/cart/update`, param, {
-        headers: { Authorization: `Bearer ${token.token}` },
-      });
-      if (resp.status === 200) {
+      const resp = await axios
+        .put(`${baseUrl}/cart/update`, param, {
+          headers: { Authorization: `Bearer ${token.token}` },
+        })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);
@@ -97,11 +136,19 @@ const deletes = createAsyncThunk(
   "cart/delete",
   async (param: DeleteCartType, { rejectWithValue }) => {
     try {
-      const resp = await axios.delete(`${baseUrl}/cart/delete/${param.id}`, {
-        headers: { Authorization: `Bearer ${token.token}` },
-      });
-      if (resp.status === 200) {
+      const resp = await axios
+        .delete(`${baseUrl}/cart/delete/${param.id}`, {
+          headers: { Authorization: `Bearer ${token.token}` },
+        })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);

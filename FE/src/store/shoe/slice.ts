@@ -54,9 +54,14 @@ const shoeSlice = createSlice({
         state.shoe = action.payload;
         state.isGettingShoe = false;
       })
-      .addCase(shoeAsyncAction.getOne.rejected, (state) => {
+      .addCase(shoeAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingShoe = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.getAll.pending, (state) => {
@@ -66,9 +71,14 @@ const shoeSlice = createSlice({
         state.shoes = action.payload;
         state.isGettingShoes = false;
       })
-      .addCase(shoeAsyncAction.getAll.rejected, (state) => {
+      .addCase(shoeAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingShoes = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.getByCategory1.pending, (state) => {
@@ -78,9 +88,14 @@ const shoeSlice = createSlice({
         state.shoesByCategory1 = action.payload;
         state.isGettingShoesByCategory1 = false;
       })
-      .addCase(shoeAsyncAction.getByCategory1.rejected, (state) => {
+      .addCase(shoeAsyncAction.getByCategory1.rejected, (state, err: any) => {
         state.isGettingShoesByCategory1 = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.getByCategory2.pending, (state) => {
@@ -90,9 +105,14 @@ const shoeSlice = createSlice({
         state.shoesByCategory2 = action.payload;
         state.isGettingShoesByCategory2 = false;
       })
-      .addCase(shoeAsyncAction.getByCategory2.rejected, (state) => {
+      .addCase(shoeAsyncAction.getByCategory2.rejected, (state, err: any) => {
         state.isGettingShoesByCategory2 = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.getByCategory3.pending, (state) => {
@@ -102,9 +122,14 @@ const shoeSlice = createSlice({
         state.shoesByCategory3 = action.payload;
         state.isGettingShoesByCategory3 = false;
       })
-      .addCase(shoeAsyncAction.getByCategory3.rejected, (state) => {
+      .addCase(shoeAsyncAction.getByCategory3.rejected, (state, err: any) => {
         state.isGettingShoesByCategory3 = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.searchShoes.pending, (state) => {
@@ -114,9 +139,14 @@ const shoeSlice = createSlice({
         state.shoesSearch = action.payload;
         state.isSearchShoes = false;
       })
-      .addCase(shoeAsyncAction.searchShoes.rejected, (state) => {
+      .addCase(shoeAsyncAction.searchShoes.rejected, (state, err: any) => {
         state.isSearchShoes = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.create.pending, (state) => {
@@ -126,9 +156,14 @@ const shoeSlice = createSlice({
         state.response = action.payload;
         state.isCreatingShoe = false;
       })
-      .addCase(shoeAsyncAction.create.rejected, (state) => {
+      .addCase(shoeAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingShoe = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.update.pending, (state) => {
@@ -138,9 +173,14 @@ const shoeSlice = createSlice({
         state.response = action.payload;
         state.isUpdatingShoe = false;
       })
-      .addCase(shoeAsyncAction.update.rejected, (state) => {
+      .addCase(shoeAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingShoe = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(shoeAsyncAction.deletes.pending, (state) => {
@@ -150,9 +190,14 @@ const shoeSlice = createSlice({
         state.response = action.payload;
         state.isDeletingShoe = false;
       })
-      .addCase(shoeAsyncAction.deletes.rejected, (state) => {
+      .addCase(shoeAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingShoe = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

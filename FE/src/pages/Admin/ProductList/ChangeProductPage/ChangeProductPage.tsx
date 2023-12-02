@@ -7,6 +7,7 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   shoe?: ShoeType;
@@ -35,6 +36,8 @@ const ChangeProductPage = ({
   const { errors } = formState;
 
   const openFileRef = useRef<HTMLInputElement>(null);
+
+  const history = useHistory();
 
   const categories = useSelector(categoriesSelector);
 
@@ -96,7 +99,13 @@ const ChangeProductPage = ({
             })
           )
             .then(() => successNotify())
-            .catch(() => failedNotify("Failed"));
+            .catch((err) => {
+              if (err.message === "ERR_NETWORK") {
+                history.push("/sign-in");
+              } else {
+                failedNotify("Failed");
+              }
+            });
         } else {
           dispatch(
             shoeAsyncAction.create({
@@ -110,7 +119,13 @@ const ChangeProductPage = ({
             })
           )
             .then(() => successNotify())
-            .catch(() => failedNotify("Failed"));
+            .catch((err) => {
+              if (err.message === "ERR_NETWORK") {
+                history.push("/sign-in");
+              } else {
+                failedNotify("Failed");
+              }
+            });
         }
 
         handleCancel();
@@ -130,7 +145,13 @@ const ChangeProductPage = ({
           })
         )
           .then(() => successNotify())
-          .catch(() => failedNotify("Failed"));
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify("Failed");
+            }
+          });
 
         handleCancel();
       } else {
@@ -147,7 +168,13 @@ const ChangeProductPage = ({
             })
           )
             .then(() => successNotify())
-            .catch(() => failedNotify("Failed"));
+            .catch((err) => {
+              if (err.message === "ERR_NETWORK") {
+                history.push("/sign-in");
+              } else {
+                failedNotify("Failed");
+              }
+            });
 
           handleCancel();
         } else {

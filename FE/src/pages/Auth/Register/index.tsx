@@ -43,7 +43,13 @@ const Register = (props: Props) => {
       })
     )
       .then(() => history.push(`/sign-in`))
-      .catch(() => failedNotify());
+      .catch((err) => {
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+        } else {
+          failedNotify();
+        }
+      });
   };
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeletePage from "../DeletePage";
 import ChangeProductPage from "./ChangeProductPage";
+import { useHistory } from "react-router-dom";
 
 type Props = {};
 
@@ -27,6 +28,7 @@ const ProductList = (props: Props) => {
   const isGettingShoes = useSelector(isGettingShoesSelector);
 
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const tablePagination = Array.from(
     { length: Math.ceil(shoes.length / 10) },
@@ -50,8 +52,12 @@ const ProductList = (props: Props) => {
       .then(() => {
         successNotify();
       })
-      .catch(() => {
-        failedNotify("Failed");
+      .catch((err) => {
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+        } else {
+          failedNotify("Failed");
+        }
       });
     setIsDeletePage(false);
     setSelectedId(undefined);

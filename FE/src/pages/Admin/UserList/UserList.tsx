@@ -13,6 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeletePage from "../DeletePage";
 import ChangeUserPage from "./ChangeUserPage";
+import { useHistory } from "react-router-dom";
 
 type Props = {};
 
@@ -30,6 +31,7 @@ const UserList = (props: Props) => {
   const userLogin = useSelector(userSelector);
   const isGettingUsers = useSelector(isGettingUsersSelector);
 
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
   const tablePagination = Array.from(
@@ -58,8 +60,12 @@ const UserList = (props: Props) => {
       .then(() => {
         successNotify();
       })
-      .catch(() => {
-        failedNotify();
+      .catch((err) => {
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+        } else {
+          failedNotify();
+        }
       });
   };
 

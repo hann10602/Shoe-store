@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import "./style.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router-dom";
 
 type Props = {};
 
@@ -29,6 +30,7 @@ const OrderList = (props: Props) => {
 
   const { errors } = formState;
 
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
   const token = getToken();
@@ -63,8 +65,12 @@ const OrderList = (props: Props) => {
           dispatch(billAsyncAction.getByUserId({ userId: token.id }));
           successNotify();
         })
-        .catch(() => {
-          failedNotify();
+        .catch((err) => {
+          if (err.message === "ERR_NETWORK") {
+            history.push("/sign-in");
+          } else {
+            failedNotify();
+          }
         });
 
       reset();

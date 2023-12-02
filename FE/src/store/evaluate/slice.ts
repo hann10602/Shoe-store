@@ -38,9 +38,14 @@ const evaluateSlice = createSlice({
         state.evaluate = action.payload;
         state.isGettingEvaluate = false;
       })
-      .addCase(evaluateAsyncAction.getOne.rejected, (state) => {
+      .addCase(evaluateAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingEvaluate = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(evaluateAsyncAction.getByShoeId.pending, (state) => {
@@ -50,9 +55,14 @@ const evaluateSlice = createSlice({
         state.evaluates = action.payload;
         state.isGettingEvaluates = false;
       })
-      .addCase(evaluateAsyncAction.getByShoeId.rejected, (state) => {
+      .addCase(evaluateAsyncAction.getByShoeId.rejected, (state, err: any) => {
         state.isGettingEvaluates = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(evaluateAsyncAction.create.pending, (state) => {
@@ -62,9 +72,14 @@ const evaluateSlice = createSlice({
         state.response = action.payload;
         state.isCreatingEvaluate = false;
       })
-      .addCase(evaluateAsyncAction.create.rejected, (state) => {
+      .addCase(evaluateAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingEvaluate = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(evaluateAsyncAction.deletes.pending, (state) => {
@@ -74,9 +89,14 @@ const evaluateSlice = createSlice({
         state.response = action.payload;
         state.isDeletingEvaluate = false;
       })
-      .addCase(evaluateAsyncAction.deletes.rejected, (state) => {
+      .addCase(evaluateAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingEvaluate = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

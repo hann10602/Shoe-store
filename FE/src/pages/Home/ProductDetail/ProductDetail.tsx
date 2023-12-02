@@ -97,8 +97,12 @@ const ProductDetail = (props: Props) => {
         .then(() => {
           successNotify();
         })
-        .catch(() => {
-          failedNotify("Failed");
+        .catch((err) => {
+          if (err.message === "ERR_NETWORK") {
+            history.push("/sign-in");
+          } else {
+            failedNotify("Failed");
+          }
         });
 
       setCartPage(false);
@@ -136,8 +140,12 @@ const ProductDetail = (props: Props) => {
               productQuantity && productQuantity - buyQuantity
             );
           })
-          .catch(() => {
-            failedNotify("Failed");
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify("Failed");
+            }
           });
       } else {
         failedNotify("Please add address and phone number");

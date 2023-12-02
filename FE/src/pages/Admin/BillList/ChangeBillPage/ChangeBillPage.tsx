@@ -3,6 +3,7 @@ import { BillType } from "@/store/bill/type";
 import { useAppDispatch } from "@/store/store";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   bill: BillType;
@@ -24,7 +25,7 @@ const ChangeBillPage = ({
     setReceived(e);
   };
 
-  console.log(received);
+  const history = useHistory();
 
   const form = useForm();
 
@@ -48,7 +49,13 @@ const ChangeBillPage = ({
           })
         )
           .then(() => successNotify())
-          .catch(() => failedNotify());
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify();
+            }
+          });
       }
     } else {
       if (bill) {
@@ -61,7 +68,13 @@ const ChangeBillPage = ({
           })
         )
           .then(() => successNotify())
-          .catch(() => failedNotify());
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify();
+            }
+          });
       }
     }
 

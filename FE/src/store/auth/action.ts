@@ -9,9 +9,17 @@ const login = createAsyncThunk(
   "auth/login",
   async (param: LoginType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(`${baseUrl}/auth/login`, param);
-      if (resp.status === 200) {
+      const resp = await axios
+        .post(`${baseUrl}/auth/login`, param)
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);
@@ -23,12 +31,17 @@ const register = createAsyncThunk(
   "auth/register",
   async (param: RegisterType, { rejectWithValue }) => {
     try {
-      const resp = await axios.post(
-        `${baseUrl}/auth/register`,
-        param
-      );
-      if (resp.status === 200) {
+      const resp = await axios
+        .post(`${baseUrl}/auth/register`, param)
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (resp.code === "ERR_NETWORK") {
+        return rejectWithValue(resp);
+      } else if (resp.status === 200) {
         return resp.data;
+      } else if (resp.code !== "ERR_NETWORK") {
+        return rejectWithValue(resp);
       }
     } catch (err) {
       return rejectWithValue(err);

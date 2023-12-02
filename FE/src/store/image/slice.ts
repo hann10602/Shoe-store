@@ -38,7 +38,7 @@ const shoeSlice = createSlice({
         state.shoe = action.payload;
         state.isGettingShoe = false;
       })
-      .addCase(shoeAsyncAction.getOne.rejected, (state) => {
+      .addCase(shoeAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingShoe = false;
       });
     builder
@@ -49,7 +49,7 @@ const shoeSlice = createSlice({
         state.shoes = action.payload;
         state.isGettingShoes = false;
       })
-      .addCase(shoeAsyncAction.getAll.rejected, (state) => {
+      .addCase(shoeAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingShoes = false;
       });
     builder
@@ -60,7 +60,7 @@ const shoeSlice = createSlice({
         state.response = action.payload;
         state.isCreatingShoe = false;
       })
-      .addCase(shoeAsyncAction.create.rejected, (state) => {
+      .addCase(shoeAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingShoe = false;
       });
     builder
@@ -71,7 +71,7 @@ const shoeSlice = createSlice({
         state.response = action.payload;
         state.isUpdatingShoe = false;
       })
-      .addCase(shoeAsyncAction.update.rejected, (state) => {
+      .addCase(shoeAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingShoe = false;
       });
     builder
@@ -82,7 +82,7 @@ const shoeSlice = createSlice({
         state.response = action.payload;
         state.isDeletingShoe = false;
       })
-      .addCase(shoeAsyncAction.deletes.rejected, (state) => {
+      .addCase(shoeAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingShoe = false;
       });
   },

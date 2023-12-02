@@ -375,7 +375,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
               </g>
             </svg>
           </span>
-          {loginUser !== null ? (
+          {loginUser !== undefined ? (
             <div id="header-user">
               <img
                 id="header-user-image"

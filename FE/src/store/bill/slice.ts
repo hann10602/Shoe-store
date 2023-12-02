@@ -42,9 +42,14 @@ const billSlice = createSlice({
         state.bill = action.payload;
         state.isGettingBill = false;
       })
-      .addCase(billAsyncAction.getOne.rejected, (state) => {
+      .addCase(billAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingBill = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(billAsyncAction.getAll.pending, (state) => {
@@ -55,9 +60,14 @@ const billSlice = createSlice({
 
         state.isGettingBills = false;
       })
-      .addCase(billAsyncAction.getAll.rejected, (state) => {
+      .addCase(billAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingBills = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(billAsyncAction.getByUserId.pending, (state) => {
@@ -68,9 +78,14 @@ const billSlice = createSlice({
 
         state.isGettingBillsByUserId = false;
       })
-      .addCase(billAsyncAction.getByUserId.rejected, (state) => {
+      .addCase(billAsyncAction.getByUserId.rejected, (state, err: any) => {
         state.isGettingBillsByUserId = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(billAsyncAction.create.pending, (state) => {
@@ -80,9 +95,14 @@ const billSlice = createSlice({
         state.response = action.payload;
         state.isCreatingBill = false;
       })
-      .addCase(billAsyncAction.create.rejected, (state) => {
+      .addCase(billAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingBill = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(billAsyncAction.createFromCart.pending, (state) => {
@@ -92,9 +112,14 @@ const billSlice = createSlice({
         state.response = action.payload;
         state.isCreatingBill = false;
       })
-      .addCase(billAsyncAction.createFromCart.rejected, (state) => {
+      .addCase(billAsyncAction.createFromCart.rejected, (state, err: any) => {
         state.isCreatingBill = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(billAsyncAction.update.pending, (state) => {
@@ -104,9 +129,14 @@ const billSlice = createSlice({
         state.response = action.payload;
         state.isUpdatingBill = false;
       })
-      .addCase(billAsyncAction.update.rejected, (state) => {
+      .addCase(billAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingBill = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(billAsyncAction.deletes.pending, (state) => {
@@ -116,9 +146,14 @@ const billSlice = createSlice({
         state.response = action.payload;
         state.isDeletingBill = false;
       })
-      .addCase(billAsyncAction.deletes.rejected, (state) => {
+      .addCase(billAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingBill = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

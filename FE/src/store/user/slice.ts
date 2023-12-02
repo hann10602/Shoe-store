@@ -37,9 +37,15 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.isGettingUser = false;
       })
-      .addCase(userAsyncAction.getOne.rejected, (state) => {
+      .addCase(userAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingUser = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          state.user = undefined;
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(userAsyncAction.getAll.pending, (state) => {
@@ -49,9 +55,14 @@ const userSlice = createSlice({
         state.users = action.payload;
         state.isGettingUsers = false;
       })
-      .addCase(userAsyncAction.getAll.rejected, (state) => {
+      .addCase(userAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingUsers = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(userAsyncAction.create.pending, (state) => {
@@ -60,9 +71,14 @@ const userSlice = createSlice({
       .addCase(userAsyncAction.create.fulfilled, (state, action) => {
         state.isCreatingUser = false;
       })
-      .addCase(userAsyncAction.create.rejected, (state) => {
+      .addCase(userAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingUser = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(userAsyncAction.update.pending, (state) => {
@@ -71,9 +87,14 @@ const userSlice = createSlice({
       .addCase(userAsyncAction.update.fulfilled, (state, action) => {
         state.isUpdatingUser = false;
       })
-      .addCase(userAsyncAction.update.rejected, (state) => {
+      .addCase(userAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingUser = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(userAsyncAction.changePassword.pending, (state) => {
@@ -82,9 +103,14 @@ const userSlice = createSlice({
       .addCase(userAsyncAction.changePassword.fulfilled, (state) => {
         state.isChangingPasswordUsers = false;
       })
-      .addCase(userAsyncAction.changePassword.rejected, (state) => {
+      .addCase(userAsyncAction.changePassword.rejected, (state, err: any) => {
         state.isChangingPasswordUsers = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(userAsyncAction.deletes.pending, (state) => {
@@ -93,9 +119,14 @@ const userSlice = createSlice({
       .addCase(userAsyncAction.deletes.fulfilled, (state, action) => {
         state.isDeletingUser = false;
       })
-      .addCase(userAsyncAction.deletes.rejected, (state) => {
+      .addCase(userAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingUser = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

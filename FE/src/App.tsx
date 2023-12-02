@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Switch } from "react-router-dom";
+import { Switch, useHistory } from "react-router-dom";
 
 import { RouteWithLayout } from "@/components/RouteWithLayout";
 
@@ -15,12 +15,18 @@ import { userAsyncAction } from "./store/user/action";
 
 export default function App() {
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const tokenForm: string | null = localStorage.getItem("jwt");
   const jwt: JWTType = tokenForm != null ? JSON.parse(tokenForm) : null;
 
   useEffect(() => {
     if (tokenForm) {
-      dispatch(userAsyncAction.getOne({id: Number(jwt.id)}));
+      dispatch(userAsyncAction.getOne({ id: Number(jwt.id) })).catch((err) => {
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+          window.location.reload();
+        }
+      });
     }
   }, [tokenForm]);
 

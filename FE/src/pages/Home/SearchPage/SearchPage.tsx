@@ -234,8 +234,12 @@ const SearchPage = (props: Props) => {
                         .then(() => {
                           successNotify();
                         })
-                        .catch(() => {
-                          failedNotify();
+                        .catch((err) => {
+                          if (err.message === "ERR_NETWORK") {
+                            history.push("/sign-in");
+                          } else {
+                            failedNotify();
+                          }
                         });
                     }
                     setChooseSizesPage(false);

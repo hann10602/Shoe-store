@@ -38,9 +38,14 @@ const categorySlice = createSlice({
         state.category = action.payload;
         state.isGettingCategory = false;
       })
-      .addCase(categoryAsyncAction.getOne.rejected, (state) => {
+      .addCase(categoryAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingCategory = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(categoryAsyncAction.getAll.pending, (state) => {
@@ -51,9 +56,14 @@ const categorySlice = createSlice({
 
         state.isGettingCategories = false;
       })
-      .addCase(categoryAsyncAction.getAll.rejected, (state) => {
+      .addCase(categoryAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingCategories = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(categoryAsyncAction.create.pending, (state) => {
@@ -63,9 +73,14 @@ const categorySlice = createSlice({
         state.response = action.payload;
         state.isCreatingCategory = false;
       })
-      .addCase(categoryAsyncAction.create.rejected, (state) => {
+      .addCase(categoryAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingCategory = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(categoryAsyncAction.update.pending, (state) => {
@@ -75,9 +90,14 @@ const categorySlice = createSlice({
         state.response = action.payload;
         state.isUpdatingCategory = false;
       })
-      .addCase(categoryAsyncAction.update.rejected, (state) => {
+      .addCase(categoryAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingCategory = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(categoryAsyncAction.deletes.pending, (state) => {
@@ -87,9 +107,14 @@ const categorySlice = createSlice({
         state.response = action.payload;
         state.isDeletingCategory = false;
       })
-      .addCase(categoryAsyncAction.deletes.rejected, (state) => {
+      .addCase(categoryAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingCategory = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

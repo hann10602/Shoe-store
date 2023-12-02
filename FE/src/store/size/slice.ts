@@ -47,9 +47,14 @@ const sizeSlice = createSlice({
         state.size = action.payload;
         state.isGettingSize = false;
       })
-      .addCase(sizeAsyncAction.getOne.rejected, (state) => {
+      .addCase(sizeAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingSize = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(sizeAsyncAction.getAll.pending, (state) => {
@@ -60,9 +65,14 @@ const sizeSlice = createSlice({
         state.sizes = sizes;
         state.isGettingSizes = false;
       })
-      .addCase(sizeAsyncAction.getAll.rejected, (state) => {
+      .addCase(sizeAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingSizes = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(sizeAsyncAction.getSizeQuantity.pending, (state) => {
@@ -72,9 +82,14 @@ const sizeSlice = createSlice({
         state.quantity = action.payload;
         state.isGettingQuantity = false;
       })
-      .addCase(sizeAsyncAction.getSizeQuantity.rejected, (state) => {
+      .addCase(sizeAsyncAction.getSizeQuantity.rejected, (state, err: any) => {
         state.isGettingQuantity = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(sizeAsyncAction.getByShoeId.pending, (state) => {
@@ -84,9 +99,14 @@ const sizeSlice = createSlice({
         state.sizesByShoeId = action.payload;
         state.isGettingSizesByShoeId = false;
       })
-      .addCase(sizeAsyncAction.getByShoeId.rejected, (state) => {
+      .addCase(sizeAsyncAction.getByShoeId.rejected, (state, err: any) => {
         state.isGettingSizesByShoeId = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(sizeAsyncAction.create.pending, (state) => {
@@ -96,9 +116,14 @@ const sizeSlice = createSlice({
         state.response = action.payload;
         state.isCreatingSize = false;
       })
-      .addCase(sizeAsyncAction.create.rejected, (state) => {
+      .addCase(sizeAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingSize = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(sizeAsyncAction.update.pending, (state) => {
@@ -108,9 +133,14 @@ const sizeSlice = createSlice({
         state.response = action.payload;
         state.isUpdatingSize = false;
       })
-      .addCase(sizeAsyncAction.update.rejected, (state) => {
+      .addCase(sizeAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingSize = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(sizeAsyncAction.deletes.pending, (state) => {
@@ -120,9 +150,14 @@ const sizeSlice = createSlice({
         state.response = action.payload;
         state.isDeletingSize = false;
       })
-      .addCase(sizeAsyncAction.deletes.rejected, (state) => {
+      .addCase(sizeAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingSize = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

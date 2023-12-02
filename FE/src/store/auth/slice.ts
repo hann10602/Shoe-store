@@ -25,9 +25,14 @@ const authSlice = createSlice({
 
         state.isLogin = false;
       })
-      .addCase(authAsyncAction.login.rejected, (state) => {
+      .addCase(authAsyncAction.login.rejected, (state, err: any) => {
         state.isLogin = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(authAsyncAction.register.pending, (state) => {
@@ -36,9 +41,14 @@ const authSlice = createSlice({
       .addCase(authAsyncAction.register.fulfilled, (state) => {
         state.isRegister = false;
       })
-      .addCase(authAsyncAction.register.rejected, (state) => {
+      .addCase(authAsyncAction.register.rejected, (state, err: any) => {
         state.isRegister = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

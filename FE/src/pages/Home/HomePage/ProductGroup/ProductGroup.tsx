@@ -184,8 +184,12 @@ const ProductGroup = (props: Props) => {
                             userId: token.id,
                           });
                         })
-                        .catch(() => {
-                          failedNotify();
+                        .catch((err) => {
+                          if (err.message === "ERR_NETWORK") {
+                            history.push("/sign-in");
+                          } else {
+                            failedNotify();
+                          }
                         });
                       setShoeSizes([]);
                       setChooseSizesPage(false);

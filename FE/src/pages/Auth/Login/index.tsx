@@ -36,9 +36,14 @@ export const Login = () => {
     )
       .then(() => {
         history.push(`/home`);
+        window.location.reload();
       })
       .catch((err) => {
-        failedNotify();
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+        } else {
+          failedNotify();
+        }
       });
   };
 

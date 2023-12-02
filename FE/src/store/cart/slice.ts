@@ -42,9 +42,14 @@ const cartSlice = createSlice({
         state.cart = action.payload;
         state.isGettingCart = false;
       })
-      .addCase(cartAsyncAction.getOne.rejected, (state) => {
+      .addCase(cartAsyncAction.getOne.rejected, (state, err: any) => {
         state.isGettingCart = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(cartAsyncAction.getAll.pending, (state) => {
@@ -54,9 +59,14 @@ const cartSlice = createSlice({
         state.carts = action.payload;
         state.isGettingCarts = false;
       })
-      .addCase(cartAsyncAction.getAll.rejected, (state) => {
+      .addCase(cartAsyncAction.getAll.rejected, (state, err: any) => {
         state.isGettingCarts = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(cartAsyncAction.getByUserId.pending, (state) => {
@@ -67,9 +77,14 @@ const cartSlice = createSlice({
 
         state.isGettingCartsByUserId = false;
       })
-      .addCase(cartAsyncAction.getByUserId.rejected, (state) => {
+      .addCase(cartAsyncAction.getByUserId.rejected, (state, err: any) => {
         state.isGettingCartsByUserId = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(cartAsyncAction.create.pending, (state) => {
@@ -78,9 +93,14 @@ const cartSlice = createSlice({
       .addCase(cartAsyncAction.create.fulfilled, (state) => {
         state.isCreatingCart = false;
       })
-      .addCase(cartAsyncAction.create.rejected, (state) => {
+      .addCase(cartAsyncAction.create.rejected, (state, err: any) => {
         state.isCreatingCart = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(cartAsyncAction.update.pending, (state) => {
@@ -89,9 +109,14 @@ const cartSlice = createSlice({
       .addCase(cartAsyncAction.update.fulfilled, (state) => {
         state.isUpdatingCart = false;
       })
-      .addCase(cartAsyncAction.update.rejected, (state) => {
+      .addCase(cartAsyncAction.update.rejected, (state, err: any) => {
         state.isUpdatingCart = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
     builder
       .addCase(cartAsyncAction.deletes.pending, (state) => {
@@ -100,9 +125,14 @@ const cartSlice = createSlice({
       .addCase(cartAsyncAction.deletes.fulfilled, (state) => {
         state.isDeletingCart = false;
       })
-      .addCase(cartAsyncAction.deletes.rejected, (state) => {
+      .addCase(cartAsyncAction.deletes.rejected, (state, err: any) => {
         state.isDeletingCart = false;
-        throw new Error();
+        if (err.payload.code === "ERR_NETWORK") {
+          localStorage.removeItem("jwt");
+          throw new Error(err.payload.code as string);
+        } else {
+          throw new Error(err.payload.code as string);
+        }
       });
   },
 });

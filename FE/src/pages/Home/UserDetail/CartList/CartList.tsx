@@ -13,6 +13,7 @@ import { getToken } from "@/utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { userSelector } from "@/store/user/selector";
+import { useHistory } from "react-router-dom";
 
 type Props = {};
 
@@ -23,6 +24,7 @@ const CartList = (props: Props) => {
   const loginUser = useSelector(userSelector);
   const orders = useSelector(cartsByUserIdSelector);
 
+  const history = useHistory();
   const token = getToken();
 
   const totalPrice = useMemo(
@@ -91,8 +93,12 @@ const CartList = (props: Props) => {
                           cartAsyncAction.getByUserId({ userId: token.id })
                         );
                       })
-                      .catch(() => {
-                        failedNotify("Failed");
+                      .catch((err) => {
+                        if (err.message === "ERR_NETWORK") {
+                          history.push("/sign-in");
+                        } else {
+                          failedNotify("Failed");
+                        }
                       });
                   } else {
                     failedNotify("Please add address and phone number");

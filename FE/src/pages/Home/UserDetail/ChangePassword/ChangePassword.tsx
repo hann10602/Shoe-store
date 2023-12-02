@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./style.scss";
+import { useHistory } from "react-router-dom";
 
 type Props = {};
 
@@ -23,6 +24,7 @@ const ChangePassword = (props: Props) => {
 
   const isChangingPassword = useSelector(isChangingPasswordUserSelector);
 
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
   const successNotify = () => {
@@ -47,8 +49,12 @@ const ChangePassword = (props: Props) => {
       dispatch(userAsyncAction.getOne({ id: token.id }));
       successNotify();
     })
-    .catch(() => {
-      failedNotify();
+    .catch((err) => {
+      if (err.message === "ERR_NETWORK") {
+        history.push("/sign-in");
+      } else {
+        failedNotify();
+      }
     });
   };
 

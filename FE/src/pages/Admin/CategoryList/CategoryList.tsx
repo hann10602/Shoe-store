@@ -12,6 +12,7 @@ import DeletePage from "../DeletePage";
 import ChangeCategoryPage from "./ChangeCategoryPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router-dom";
 
 type Props = {};
 
@@ -29,6 +30,8 @@ const CategoryList = (props: Props) => {
   const isGettingCategories = useSelector(isGettingCategoriesSelector);
 
   const dispatch = useAppDispatch();
+
+  const history = useHistory();
 
   const tablePagination = Array.from(
     { length: Math.ceil(categories.length / 10) },
@@ -51,8 +54,12 @@ const CategoryList = (props: Props) => {
       .then(() => {
         successNotify();
       })
-      .catch(() => {
-        failedNotify("This category is not empty");
+      .catch((err) => {
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+        } else {
+          failedNotify("This category is not empty");
+        }
       });
     setIsDeletePage(false);
     setSelectedId(undefined);

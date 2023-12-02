@@ -5,6 +5,7 @@ import { validateEmail } from "@/utils";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 type Props = {
   user?: UserType;
@@ -32,6 +33,7 @@ const ChangeUserPage = ({
   const { errors } = formState;
 
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const uploadImage = (file: File) => {
     if (!file) {
@@ -85,12 +87,24 @@ const ChangeUserPage = ({
                 successNotify();
                 setAvatar("");
               })
-              .catch(() => {
-                failedNotify();
+              .catch((err) => {
+                if (err.message === "ERR_NETWORK") {
+                  history.push("/sign-in");
+                } else {
+                  failedNotify();
+                }
+
                 setAvatar("");
               });
           })
-          .catch(() => failedNotify());
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify();
+              setAvatar("");
+            }
+          });
       } else {
         axios
           .post(
@@ -114,9 +128,13 @@ const ChangeUserPage = ({
                 setAvatar("");
                 successNotify();
               })
-              .catch(() => {
-                setAvatar("");
-                failedNotify();
+              .catch((err) => {
+                if (err.message === "ERR_NETWORK") {
+                  history.push("/sign-in");
+                } else {
+                  failedNotify();
+                  setAvatar("");
+                }
               });
           })
           .catch(() => successNotify());
@@ -140,9 +158,13 @@ const ChangeUserPage = ({
             setAvatar("");
             successNotify();
           })
-          .catch(() => {
-            setAvatar("");
-            failedNotify();
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              setAvatar("");
+              failedNotify();
+            }
           });
       } else {
         dispatch(
@@ -160,9 +182,13 @@ const ChangeUserPage = ({
             setAvatar("");
             successNotify();
           })
-          .catch(() => {
-            setAvatar("");
-            failedNotify();
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify();
+              setAvatar("");
+            }
           });
       }
     }

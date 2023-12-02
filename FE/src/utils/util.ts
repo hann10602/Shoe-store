@@ -1,5 +1,6 @@
 import { errorCode } from "@/constants";
 import { JWTType } from "@/store/auth/type";
+import { useHistory } from "react-router-dom";
 
 export const validateEmail = (email: string) => {
   return String(email)
