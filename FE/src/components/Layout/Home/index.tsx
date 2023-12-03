@@ -59,6 +59,10 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
 
   useEffect(() => {
     dispatch(categoryAsyncAction.getAll());
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [dispatch]);
 
   const navMenu: NavType[] = [
@@ -105,7 +109,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
       id: 2,
       onClick: () => {
         localStorage.removeItem("jwt");
-        history.push('/sign-in')
+        history.push("/sign-in");
       },
       title: "Logout",
       icon: (
@@ -414,7 +418,14 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
             <h2>Category</h2>
             {!isGettingCategories ? (
               navMenu[1].menuItem?.map((category) => (
-                <p key={category.id}>{category.name}</p>
+                <p
+                  key={category.id}
+                  onClick={() => {
+                    history.push(`/search?s=?&category=${category.code}`);
+                  }}
+                >
+                  {category.name}
+                </p>
               ))
             ) : (
               <div className="is-loading">
@@ -479,7 +490,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
           </div>
           <div className="footer-overall-item">
             <h2>Support</h2>
-            <p>About</p>
+            <p onClick={() => history.push("/about")}>About</p>
             <p>Feedback and help</p>
           </div>
           <div className="footer-overall-item">
