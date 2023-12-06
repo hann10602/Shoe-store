@@ -10,14 +10,16 @@ import {
   UpdateBillType,
 } from "./type";
 
-const baseUrl = BASE_URL;
 const token = getToken();
 
-const baseAxios = axios.create();
+const baseAxios = axios.create({
+  baseURL: BASE_URL,
+});
 
-baseAxios.interceptors.response.use(
-  function (resp) {
-    return resp;
+baseAxios.interceptors.request.use(
+  function (req) {
+    req.headers.Authorization = `Bearer ${token.token}`;
+    return req;
   },
   function (err) {
     console.log(err);
@@ -30,9 +32,7 @@ const getOne = createAsyncThunk(
   async (param: GetBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .get(`${baseUrl}/bill/self/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .get(`/bill/self/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -54,9 +54,7 @@ const getAll = createAsyncThunk(
   async (param, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .get(`${baseUrl}/bill/get-all`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .get(`/bill/get-all`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -78,9 +76,7 @@ const getByUserId = createAsyncThunk(
   async (params: GetBillByUserIdType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .get(`${baseUrl}/bill/get-by-user-id/${params.userId}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .get(`/bill/get-by-user-id/${params.userId}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -103,9 +99,7 @@ const create = createAsyncThunk(
   async (param: CreateBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .post(`${baseUrl}/bill/create`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .post(`/bill/create`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -127,9 +121,7 @@ const createFromCart = createAsyncThunk(
   async (param: CreateBillFromCartType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .post(`${baseUrl}/bill/create-from-cart`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .post(`/bill/create-from-cart`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -151,9 +143,7 @@ const update = createAsyncThunk(
   async (param: UpdateBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .put(`${baseUrl}/bill/update`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .put(`/bill/update`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -175,9 +165,7 @@ const deletes = createAsyncThunk(
   async (param: DeleteBillType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .delete(`${baseUrl}/bill/delete/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+        .delete(`/bill/delete/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 

@@ -9,17 +9,29 @@ import {
   UpdateUserType,
 } from "./type";
 
-const baseUrl = BASE_URL;
 const token = getToken();
+
+const baseAxios = axios.create({
+  baseURL: BASE_URL,
+});
+
+baseAxios.interceptors.request.use(
+  function (req) {
+    req.headers.Authorization = `Bearer ${token.token}`;
+    return req;
+  },
+  function (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+);
 
 const getOne = createAsyncThunk(
   "user/self",
   async (param: GetUserType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/user/self/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .get(`/user/self/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -40,10 +52,8 @@ const getAll = createAsyncThunk(
   "user/get-all",
   async (param, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/user/get-all`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .get(`/user/get-all`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -65,10 +75,8 @@ const create = createAsyncThunk(
   "user/create",
   async (param: CreateUserType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .post(`${baseUrl}/auth/register`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .post(`/auth/register`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -89,10 +97,8 @@ const update = createAsyncThunk(
   "user/update",
   async (param: UpdateUserType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .put(`${baseUrl}/user/update`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .put(`/user/update`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -113,10 +119,8 @@ const changePassword = createAsyncThunk(
   "user/change-password",
   async (param: ChangePasswordUserType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .put(`${baseUrl}/user/change-password`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .put(`/user/change-password`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -137,10 +141,8 @@ const deletes = createAsyncThunk(
   "user/delete",
   async (param: DeleteUserType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .delete(`${baseUrl}/user/delete/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .delete(`/user/delete/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 

@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import Order from "./Cart/Cart";
 import "./style.scss";
 import { billAsyncAction } from "@/store/bill/action";
-import { getToken } from "@/utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { userSelector } from "@/store/user/selector";
@@ -25,7 +24,6 @@ const CartList = (props: Props) => {
   const orders = useSelector(cartsByUserIdSelector);
 
   const history = useHistory();
-  const token = getToken();
 
   const totalPrice = useMemo(
     () =>
@@ -48,7 +46,9 @@ const CartList = (props: Props) => {
   };
 
   useEffect(() => {
-    dispatch(cartAsyncAction.getByUserId({ userId: token.id }));
+    if (loginUser) {
+      dispatch(cartAsyncAction.getByUserId({ userId: loginUser.id }));
+    }
   }, []);
 
   return (
@@ -88,10 +88,14 @@ const CartList = (props: Props) => {
                       })
                     )
                       .then(() => {
-                        successNotify();
-                        dispatch(
-                          cartAsyncAction.getByUserId({ userId: token.id })
-                        );
+                        if (loginUser) {
+                          successNotify();
+                          dispatch(
+                            cartAsyncAction.getByUserId({
+                              userId: loginUser.id,
+                            })
+                          );
+                        }
                       })
                       .catch((err) => {
                         if (err.message === "ERR_NETWORK") {

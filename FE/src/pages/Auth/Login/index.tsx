@@ -8,6 +8,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UserType } from "@/store/user/type";
+import { userAsyncAction } from "@/store/user/action";
 
 export const Login = () => {
   const [message, setMessage] = useState<string | null>(null);

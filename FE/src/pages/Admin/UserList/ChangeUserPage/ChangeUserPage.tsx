@@ -298,6 +298,10 @@ const ChangeUserPage = ({
                     defaultValue={user?.username}
                     {...register("username", {
                       required: "Please enter username",
+                      validate: {
+                        isPhoneNum: (fieldValue) =>
+                          fieldValue.length >= 6 || "Username at least 6 character",
+                      },
                     })}
                   />
                   <p className="font-semibold bottom-2 absolute text-red-500">
@@ -314,7 +318,13 @@ const ChangeUserPage = ({
                   <input
                     className="w-full border mb-8 border-solid border-gray-300 rounded-full h-10 text-lg px-3"
                     type="text"
-                    {...register("password", {})}
+                    {...register("password", {
+                      required: "Please enter password",
+                      validate: {
+                        isPhoneNum: (fieldValue) =>
+                          fieldValue.length >= 6 || "Password at least 6 characters",
+                      },
+                    })}
                   />
                   <p className="font-semibold bottom-2 absolute text-red-500">
                     {errors.password?.message?.toString()}

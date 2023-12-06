@@ -8,17 +8,29 @@ import {
   GetEvaluatesByShoeIdType,
 } from "./type";
 
-const baseUrl = BASE_URL;
 const token = getToken();
+
+const baseAxios = axios.create({
+  baseURL: BASE_URL,
+});
+
+baseAxios.interceptors.request.use(
+  function (req) {
+    req.headers.Authorization = `Bearer ${token.token}`;
+    return req;
+  },
+  function (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+);
 
 const getOne = createAsyncThunk(
   "evaluate/self",
   async (param: GetEvaluateType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/evaluate/self/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .get(`/evaluate/self/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -39,8 +51,8 @@ const getByShoeId = createAsyncThunk(
   "evaluate/getByShoeId",
   async (param: GetEvaluatesByShoeIdType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/evaluate/get-by-shoe-id/${param.shoeId}`)
+      const resp = await baseAxios
+        .get(`/evaluate/get-by-shoe-id/${param.shoeId}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -61,10 +73,8 @@ const create = createAsyncThunk(
   "evaluate/create",
   async (param: CreateEvaluateType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .post(`${baseUrl}/evaluate/create`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .post(`/evaluate/create`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -85,10 +95,8 @@ const deletes = createAsyncThunk(
   "evaluate/delete",
   async (param: DeleteEvaluateType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .post(`${baseUrl}/evaluate/delete`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .post(`/evaluate/delete`, param)
         .then((res) => res)
         .catch((err) => err);
 

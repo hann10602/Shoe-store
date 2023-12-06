@@ -8,17 +8,29 @@ import { BASE_URL, getToken } from "@/utils";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = BASE_URL;
 const token = getToken();
+
+const baseAxios = axios.create({
+  baseURL: BASE_URL,
+});
+
+baseAxios.interceptors.request.use(
+  function (req) {
+    req.headers.Authorization = `Bearer ${token.token}`;
+    return req;
+  },
+  function (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+);
 
 const getOne = createAsyncThunk(
   "category/self",
   async (param: GetCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/category/self/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .get(`/category/self/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -39,8 +51,8 @@ const getAll = createAsyncThunk(
   "category/get-all",
   async (param, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/category/get-all`)
+      const resp = await baseAxios
+        .get(`/category/get-all`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -61,10 +73,8 @@ const create = createAsyncThunk(
   "category/create",
   async (param: CreateCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .post(`${baseUrl}/category/create`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .post(`/category/create`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -85,10 +95,8 @@ const update = createAsyncThunk(
   "category/update",
   async (param: UpdateCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .put(`${baseUrl}/category/update`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .put(`/category/update`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -109,10 +117,8 @@ const deletes = createAsyncThunk(
   "category/delete",
   async (param: DeleteCategoryType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .delete(`${baseUrl}/category/delete/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .delete(`/category/delete/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 

@@ -4,13 +4,16 @@ import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import CartList from "./CartList";
 import ChangePassword from "./ChangePassword";
-import OrderList from "./OrderList";
+import OrderList from "./OrderLIst";
 import UserInformation from "./UserInformation";
 import "./style.scss";
+import { useAppDispatch } from "@/store/store";
+import { logout } from "@/store/user/slice";
 
 type Props = {};
 
 const UserDetail = (props: Props) => {
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const location = useLocation();
@@ -64,7 +67,8 @@ const UserDetail = (props: Props) => {
               id="logout"
               onClick={() => {
                 localStorage.removeItem("jwt");
-                history.push("/sign-in")
+                history.push("/sign-in");
+                dispatch(logout());
               }}
             >
               Logout
@@ -73,15 +77,11 @@ const UserDetail = (props: Props) => {
         </div>
         <div id="user-main">
           {page === null && loginUser !== undefined && <UserInformation />}
-          {page === "carts" && loginUser !== undefined && (
-            <CartList />
-          )}
+          {page === "carts" && loginUser !== undefined && <CartList />}
           {page === "change-password" && loginUser !== undefined && (
             <ChangePassword />
           )}
-          {page === "orders" && loginUser !== undefined && (
-            <OrderList />
-          )}
+          {page === "orders" && loginUser !== undefined && <OrderList />}
         </div>
       </div>
     </>

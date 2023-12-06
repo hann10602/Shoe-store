@@ -355,6 +355,7 @@ const SearchPage = (props: Props) => {
                 <label htmlFor="">From:</label>
                 <input
                   className="price-input"
+                  value={priceFrom}
                   name="price-from"
                   type="number"
                   onChange={(e) => setPriceFrom(e.target.value)}
@@ -364,6 +365,7 @@ const SearchPage = (props: Props) => {
                 <label htmlFor="">To:</label>
                 <input
                   className="price-input"
+                  value={priceTo}
                   name="price-to"
                   type="number"
                   onChange={(e) => setPriceTo(e.target.value)}
@@ -584,7 +586,7 @@ const SearchPage = (props: Props) => {
             <div id="review-pagination">
               {shoesPagination.map((item) => (
                 <div
-                  className="pagination-option"
+                  className={`${shoePage === item ? 'pagination-option-choose' : ''} pagination-option`}
                   onClick={() => setShoePage(item)}
                   key={item}
                 >

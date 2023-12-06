@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const AdminHome = (props: Props) => {
-  return (
-    <div>AdminHome</div>
-  )
-}
+  return <div></div>;
+};
 
-export default AdminHome
+export default AdminHome;

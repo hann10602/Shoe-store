@@ -375,36 +375,6 @@
             }
           }
         }
-
-        #review-pagination {
-          margin-top: 60px;
-          width: 100%;
-          display: flex;
-          justify-content: center;
-
-          .pagination-option {
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            background-color: rgb(216, 216, 216);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s;
-          }
-
-          :not(.pagination-option:last-child) {
-            margin-right: 12px;
-          }
-
-          .pagination-option:hover {
-            background-color: rgb(184, 184, 184);
-          }
-
-          :not(.pagination-option:last-child) {
-            border-right: 1px solid rgb(180, 180, 180);
-          }
-        }
       }
     }
   }
@@ -1197,5 +1167,39 @@
         }
       }
     }
+  }
+}
+
+#review-pagination {
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .pagination-option {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    background-color: rgb(216, 216, 216);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+
+  :not(.pagination-option:last-child) {
+    margin-right: 12px;
+  }
+
+  .pagination-option:hover {
+    background-color: rgb(184, 184, 184);
+  }
+
+  .pagination-option-choose {
+    background-color: rgb(184, 184, 184);
+  }
+
+  :not(.pagination-option:last-child) {
+    border-right: 1px solid rgb(180, 180, 180);
   }
 }

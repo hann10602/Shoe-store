@@ -27,7 +27,11 @@ const initialState: UserStateType = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.user = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(userAsyncAction.getOne.pending, (state) => {
@@ -132,3 +136,4 @@ const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
+export const { logout } = userSlice.actions;

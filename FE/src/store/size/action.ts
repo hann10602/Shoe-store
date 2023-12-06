@@ -10,17 +10,29 @@ import {
   UpdateSizeType,
 } from "./type";
 
-const baseUrl = BASE_URL;
 const token = getToken();
+
+const baseAxios = axios.create({
+  baseURL: BASE_URL,
+});
+
+baseAxios.interceptors.request.use(
+  function (req) {
+    req.headers.Authorization = `Bearer ${token.token}`;
+    return req;
+  },
+  function (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+);
 
 const getOne = createAsyncThunk(
   "size/self",
   async (param: GetSizeType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/size/self/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .get(`/size/self/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -41,8 +53,8 @@ const getAll = createAsyncThunk(
   "size/get-all",
   async (param, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/size/get-all`, {})
+      const resp = await baseAxios
+        .get(`/size/get-all`, {})
         .then((res) => res)
         .catch((err) => err);
 
@@ -63,9 +75,9 @@ const getSizeQuantity = createAsyncThunk(
   "size/get-quantity",
   async (param: GetQuantityType, { rejectWithValue }) => {
     try {
-      const resp = await axios
+      const resp = await baseAxios
         .get(
-          `${baseUrl}/size/get-quantity?shoeId=${param.shoeId}&sizeCode=${param.sizeCode}`
+          `/size/get-quantity?shoeId=${param.shoeId}&sizeCode=${param.sizeCode}`
         )
         .then((res) => res)
         .catch((err) => err);
@@ -87,10 +99,8 @@ const getByShoeId = createAsyncThunk(
   "size/getByShoeId",
   async (params: GetSizeByShoeIdType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .get(`${baseUrl}/size/get-by-shoe-id/${params.shoeId}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .get(`/size/get-by-shoe-id/${params.shoeId}`)
         .then((res) => res)
         .catch((err) => err);
 
@@ -111,10 +121,8 @@ const create = createAsyncThunk(
   "size/create",
   async (param: CreateSizeType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .post(`${baseUrl}/size/create`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .post(`/size/create`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -135,10 +143,8 @@ const update = createAsyncThunk(
   "size/update",
   async (param: UpdateSizeType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .put(`${baseUrl}/size/update`, param, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .put(`/size/update`, param)
         .then((res) => res)
         .catch((err) => err);
 
@@ -159,10 +165,8 @@ const deletes = createAsyncThunk(
   "size/delete",
   async (param: DeleteSizeType, { rejectWithValue }) => {
     try {
-      const resp = await axios
-        .delete(`${baseUrl}/size/delete/${param.id}`, {
-          headers: { Authorization: `Bearer ${token.token}` },
-        })
+      const resp = await baseAxios
+        .delete(`/size/delete/${param.id}`)
         .then((res) => res)
         .catch((err) => err);
 

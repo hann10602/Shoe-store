@@ -17,11 +17,6 @@ type Props = {
 };
 
 const Cart = ({ order }: Props) => {
-  const [currentQuantity, setCurrentQuantity] = useState<number>(
-    order.quantity
-  );
-
-  const updateQuantity = useDebounce(currentQuantity, 300);
   const loginUser = useSelector(userSelector);
   const token = getToken();
 
@@ -35,15 +30,6 @@ const Cart = ({ order }: Props) => {
   const failedNotify = (message: string) => {
     toast.error(message);
   };
-
-  useEffect(() => {
-    dispatch(
-      cartAsyncAction.update({
-        id: order.id,
-        quantity: currentQuantity,
-      })
-    );
-  }, [updateQuantity]);
 
   return (
     <div className="order-wrapper">
@@ -78,20 +64,42 @@ const Cart = ({ order }: Props) => {
               <button
                 className="fix-quantity-btn"
                 onClick={() => {
-                  if (currentQuantity > 1) {
-                    setCurrentQuantity(currentQuantity - 1);
+                  if (order.quantity > 1) {
+                    dispatch(
+                      cartAsyncAction.update({
+                        id: order.id,
+                        quantity: order.quantity - 1,
+                      })
+                    ).then(() => {
+                      if (loginUser) {
+                        dispatch(
+                          cartAsyncAction.getByUserId({ userId: loginUser.id })
+                        );
+                      }
+                    });
                   }
                 }}
               >
                 {" "}
                 -{" "}
               </button>
-              <div className="buy-quantity">{currentQuantity}</div>
+              <div className="buy-quantity">{order.quantity}</div>
               <button
                 className="fix-quantity-btn"
                 onClick={() => {
-                  if (currentQuantity < order.maxQuantity) {
-                    setCurrentQuantity(currentQuantity + 1);
+                  if (order.quantity < order.maxQuantity) {
+                    dispatch(
+                      cartAsyncAction.update({
+                        id: order.id,
+                        quantity: order.quantity + 1,
+                      })
+                    ).then(() => {
+                      if (loginUser) {
+                        dispatch(
+                          cartAsyncAction.getByUserId({ userId: loginUser.id })
+                        );
+                      }
+                    });
                   }
                 }}
               >

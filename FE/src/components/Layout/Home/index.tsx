@@ -2,6 +2,7 @@ import AppStore from "@/assets/img/web/appstore.png";
 import QRCode from "@/assets/img/web/bancode.png";
 import GooglePlay from "@/assets/img/web/googleplay.png";
 import ConnectFooter from "@/assets/img/web/web-carousel-1.jpg";
+import ReplaceAvatar from "@/assets/img/web/replace-avatar.jpg";
 import { categoryAsyncAction } from "@/store/category/action";
 import {
   categoriesSelector,
@@ -21,6 +22,7 @@ import {
 } from "@/store/shoe/selector";
 import SearchResultItem from "./SearchResultItem";
 import { userSelector } from "@/store/user/selector";
+import { logout } from "@/store/user/slice";
 
 interface IPropsLayoutMain {
   children: React.ReactNode;
@@ -110,6 +112,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
       onClick: () => {
         localStorage.removeItem("jwt");
         history.push("/sign-in");
+        dispatch(logout());
       },
       title: "Logout",
       icon: (
@@ -193,6 +196,46 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
           <div id="mobile-nav-wrapper-inside">
             <div id="mobile-nav-background"></div>
             <nav id="mobile-nav" ref={mobileNavRef}>
+              <div>
+                <span className="logo" onClick={() => history.push("/home")}>
+                <svg
+                  id="Capa_1"
+                  enable-background="new 0 0 512 512"
+                  height="80"
+                  viewBox="0 0 512 512"
+                  width="80"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <linearGradient
+                    id="SVGID_1_"
+                    gradientUnits="userSpaceOnUse"
+                    x1="256"
+                    x2="256"
+                    y1="512"
+                    y2="0"
+                  >
+                    <stop offset="0" stop-color="#ffbef9" />
+                    <stop offset="1" stop-color="#fff1ff" />
+                  </linearGradient>
+                  <linearGradient
+                    id="SVGID_2_"
+                    gradientUnits="userSpaceOnUse"
+                    x1="256"
+                    x2="256"
+                    y1="336"
+                    y2="176"
+                  >
+                    <stop offset="0" stop-color="#ff81ff" />
+                    <stop offset="1" stop-color="#a93aff" />
+                  </linearGradient>
+                  <circle cx="256" cy="256" fill="url(#SVGID_1_)" r="256" />
+                  <path
+                    d="m359.379 241.48-9.741-1.389c-15.518-2.217-30.692-6.291-45.323-11.789l-28.807 34.592c-3.133 3.753-8.718 4.286-12.517 1.137-3.765-3.142-4.276-8.75-1.136-12.526l25.357-30.448c-5.47-2.602-10.832-5.413-16.068-8.459l-26.082 31.321c-3.133 3.753-8.718 4.286-12.517 1.137-3.764-3.142-4.276-8.75-1.136-12.526l24.616-29.561c-10.421-7.262-20.271-15.352-29.274-24.361-2.533-2.552-6.358-3.307-9.68-1.927-3.322 1.372-5.482 4.618-5.482 8.212 0 14.705-11.953 26.666-26.647 26.666h-28.174c-13.627 0-26.968-5.529-36.605-15.173-2.542-2.535-6.35-3.316-9.681-1.927-3.322 1.372-5.482 4.618-5.482 8.212v79.998h300.03c-5.521-21.197-23.205-37.974-45.651-41.189zm-254.379 58.965v8.889c0 14.704 11.953 26.666 26.647 26.666h266.471c4.91 0 8.882-3.976 8.882-8.889v-26.666z"
+                    fill="url(#SVGID_2_)"
+                  />
+                </svg>
+              </span>
+              </div>
               {loginUser ? (
                 <NavigateItem
                   item={{ id: 5, title: "Profile", path: "/user" }}
@@ -383,7 +426,7 @@ export const LayoutMain: React.FC<IPropsLayoutMain> = ({ children }) => {
             <div id="header-user">
               <img
                 id="header-user-image"
-                src={loginUser?.avatar}
+                src={loginUser?.avatar || ReplaceAvatar}
                 alt=""
                 ref={userImageRef}
                 onClick={() => setIsMenuDisplay(!isMenuDisplay)}
