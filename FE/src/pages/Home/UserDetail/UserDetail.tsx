@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import CartList from "./CartList";
 import ChangePassword from "./ChangePassword";
-import OrderList from "./OrderLIst";
+import OrderList from "./OrderList";
 import UserInformation from "./UserInformation";
 import "./style.scss";
 import { useAppDispatch } from "@/store/store";

@@ -149,7 +149,7 @@ const SearchPage = (props: Props) => {
     setShoes(
       shoesSearch.filter((shoe) => {
         if (searchParam) {
-          if (!shoe.name.includes(searchParam)) {
+          if (!shoe.name.toUpperCase().includes(searchParam.toUpperCase())) {
             return false;
           }
         }
@@ -164,7 +164,6 @@ const SearchPage = (props: Props) => {
           }
         }
         if (categoryParam) {
-          console.log(shoe.category, categoryParam);
           if (!(shoe.category === categoryParam)) {
             return false;
           }
@@ -586,7 +585,9 @@ const SearchPage = (props: Props) => {
             <div id="review-pagination">
               {shoesPagination.map((item) => (
                 <div
-                  className={`${shoePage === item ? 'pagination-option-choose' : ''} pagination-option`}
+                  className={`${
+                    shoePage === item ? "pagination-option-choose" : ""
+                  } pagination-option`}
                   onClick={() => setShoePage(item)}
                   key={item}
                 >
