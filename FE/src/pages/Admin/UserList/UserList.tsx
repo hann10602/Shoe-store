@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DeletePage from "../DeletePage";
 import ChangeUserPage from "./ChangeUserPage";
 import { useHistory } from "react-router-dom";
+import { failedNotify } from "@/utils";
 
 type Props = {};
 
@@ -49,10 +50,6 @@ const UserList = (props: Props) => {
     dispatch(userAsyncAction.getAll());
   };
 
-  const failedNotify = () => {
-    toast.error("Failed");
-  };
-
   const handleDelete = (id: number) => {
     setIsDeletePage(false);
     setSelectedId(undefined);
@@ -64,7 +61,7 @@ const UserList = (props: Props) => {
         if (err.message === "ERR_NETWORK") {
           history.push("/sign-in");
         } else {
-          failedNotify();
+          failedNotify(err.message);
         }
       });
   };
@@ -88,7 +85,6 @@ const UserList = (props: Props) => {
       {isChangePage && (
         <ChangeUserPage
           successNotify={successNotify}
-          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           user={selectedEntity}
         />

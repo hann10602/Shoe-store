@@ -4,6 +4,7 @@ import com.nnh.be.dto.auth.AuthenticationSdi;
 import com.nnh.be.dto.auth.AuthenticationSdo;
 import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
 import com.nnh.be.dto.sdi.user.CreateUserSdi;
+import com.nnh.be.dto.sdi.user.RegisterUserSdi;
 import com.nnh.be.dto.sdi.user.UpdateUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.exception.AuthenticationExceptionCustom;
@@ -33,7 +34,43 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    public MessageSdo register(CreateUserSdi req) {
+    public MessageSdo register(RegisterUserSdi req) {
+        List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
+
+        try {
+            if (usersExist.isEmpty()) {
+                User user = new User();
+                BeanUtils.copyProperties(req, user);
+                user.setPassword(passwordEncoder.encode(req.getPassword()));
+                user.setUserRole(roleRepo.findByCode("ROLE_USER").get());
+                userRepo.save(user);
+
+                return MessageSdo.of("Success");
+
+            } else {
+                for(User user : usersExist) {
+                    if(Objects.equals(user.getUsername(), req.getUsername())) {
+                        throw new MessageException("Username is exist");
+                    }
+
+                    if(Objects.equals(user.getEmail(), req.getEmail())) {
+                        throw new MessageException("Email is exist");
+                    }
+
+                    if(Objects.equals(user.getPhoneNum(), req.getPhoneNum())) {
+                        throw new MessageException("Phone number is exist");
+                    }
+                };
+
+                throw new MessageException("Register fail");
+            }
+        } catch (Exception e) {
+            throw e;
+//            return MessageSdo.of("Failed");
+        }
+    }
+
+    public MessageSdo create(CreateUserSdi req) {
         List<User> usersExist = userRepo.findByUsernameOrEmailOrPhoneNum(req.getUsername(), req.getEmail(), req.getPhoneNum());
 
         try {
@@ -53,23 +90,19 @@ public class AuthenticationService {
             } else {
                 for(User user : usersExist) {
                     if(Objects.equals(user.getUsername(), req.getUsername())) {
-//                        return MessageSdo.of("Username is exist");
-                        throw new MessageException("register fail");
+                        throw new MessageException("Username is exist");
                     }
 
                     if(Objects.equals(user.getEmail(), req.getEmail())) {
-//                        return MessageSdo.of("Email is exist");
-                        throw new MessageException("register fail");
+                        throw new MessageException("Email is exist");
                     }
 
                     if(Objects.equals(user.getPhoneNum(), req.getPhoneNum())) {
-//                        return MessageSdo.of("Phone number is exist");
-                        throw new MessageException("register fail");
+                        throw new MessageException("Phone number is exist");
                     }
                 };
 
-//                return MessageSdo.of("Undefined");
-                throw new MessageException("register fail");
+                throw new MessageException("Register fail");
             }
         } catch (Exception e) {
             throw e;
@@ -127,25 +160,20 @@ public class AuthenticationService {
                 return MessageSdo.of("Success");
 
             } else {
-                for(User user : usersExist) {
-                    if(Objects.equals(user.getUsername(), req.getUsername())) {
-//                        return MessageSdo.of("Username is exist");
-                        throw new MessageException("similar username");
+                    if(Objects.equals(usersExist.get(1).getUsername(), req.getUsername())) {
+                        throw new MessageException("Username is exist");
                     }
 
-                    if(Objects.equals(user.getEmail(), req.getEmail())) {
-//                        return MessageSdo.of("Email is exist");
-                        throw new MessageException("similar email");
+                    if(Objects.equals(usersExist.get(1).getEmail(), req.getEmail())) {
+                        throw new MessageException("Email is exist");
                     }
 
-                    if(Objects.equals(user.getPhoneNum(), req.getPhoneNum())) {
-//                        return MessageSdo.of("Phone number is exist");
-                          throw new MessageException("similar phone number");
+                    if(Objects.equals(usersExist.get(1).getPhoneNum(), req.getPhoneNum())) {
+                        throw new MessageException("Phone number is exist");
                     }
-                };
 
-//                return MessageSdo.of("Undefined");
-                throw new MessageException("update fail");
+
+                throw new MessageException("Update fail");
             }
         } catch (Exception e) {
             throw e;

@@ -3,6 +3,7 @@ import { categoriesSelector } from "@/store/category/selector";
 import { shoeAsyncAction } from "@/store/shoe/action";
 import { ShoeType } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
+import { failedNotify } from "@/utils";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -12,14 +13,12 @@ import { useHistory } from "react-router-dom";
 type Props = {
   shoe?: ShoeType;
   successNotify: () => void;
-  failedNotify: (message: string) => void;
   handleCancel: () => void;
 };
 
 const ChangeProductPage = ({
   shoe,
   successNotify,
-  failedNotify,
   handleCancel,
 }: Props) => {
   const cloud_name = "dcb5n0grf";

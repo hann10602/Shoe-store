@@ -6,7 +6,7 @@ import {
 } from "@/store/bill/selector";
 import { evaluateAsyncAction } from "@/store/evaluate/action";
 import { useAppDispatch } from "@/store/store";
-import { getToken } from "@/utils";
+import { failedNotify, getToken, successNotify } from "@/utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -39,14 +39,6 @@ const OrderList = (props: Props) => {
 
   const isGettingBillsByUserId = useSelector(isGettingBillsByUserIdSelector);
 
-  const successNotify = () => {
-    toast.success("Success");
-  };
-
-  const failedNotify = () => {
-    toast.error("Failed");
-  };
-
   const handleSetEvaluateStar = useCallback((star: number) => {
     setEvaluateOrderStar(star);
   }, []);
@@ -69,7 +61,7 @@ const OrderList = (props: Props) => {
           if (err.message === "ERR_NETWORK") {
             history.push("/sign-in");
           } else {
-            failedNotify();
+            failedNotify(err.message);
           }
         });
 

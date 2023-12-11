@@ -5,7 +5,7 @@ import "./style.scss";
 import { authAsyncAction } from "@/store/auth/action";
 import { RegisterType } from "@/store/auth/type";
 import { useAppDispatch } from "@/store/store";
-import { validateEmail } from "@/utils";
+import { failedNotify, validateEmail } from "@/utils";
 import { FieldValues, useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,10 +26,6 @@ const Register = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const failedNotify = () => {
-    toast.error("User exist");
-  };
-
   const onSubmit = (e: FieldValues) => {
     dispatch(
       authAsyncAction.register({
@@ -39,7 +35,6 @@ const Register = (props: Props) => {
         email: e.email,
         phoneNum: e.phoneNum,
         address: e.address,
-        role: "ROLE_USER",
       })
     )
       .then(() => history.push(`/sign-in`))
@@ -47,7 +42,7 @@ const Register = (props: Props) => {
         if (err.message === "ERR_NETWORK") {
           history.push("/sign-in");
         } else {
-          failedNotify();
+          failedNotify(err.message);
         }
       });
   };

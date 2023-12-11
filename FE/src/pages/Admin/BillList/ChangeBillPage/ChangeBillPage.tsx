@@ -1,21 +1,20 @@
 import { billAsyncAction } from "@/store/bill/action";
 import { BillType } from "@/store/bill/type";
 import { useAppDispatch } from "@/store/store";
-import React, { useEffect, useState } from "react";
+import { failedNotify } from "@/utils";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 
 type Props = {
   bill: BillType;
   successNotify: () => void;
-  failedNotify: () => void;
   handleCancel: () => void;
 };
 
 const ChangeBillPage = ({
   bill,
   successNotify,
-  failedNotify,
   handleCancel,
 }: Props) => {
   const [received, setReceived] = useState<string>(
@@ -53,7 +52,7 @@ const ChangeBillPage = ({
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
             } else {
-              failedNotify();
+              failedNotify(err.message);
             }
           });
       }
@@ -72,7 +71,7 @@ const ChangeBillPage = ({
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
             } else {
-              failedNotify();
+              failedNotify(err.message);
             }
           });
       }

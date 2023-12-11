@@ -1,6 +1,7 @@
 import { categoryAsyncAction } from "@/store/category/action";
 import { CategoryType } from "@/store/category/type";
 import { useAppDispatch } from "@/store/store";
+import { failedNotify } from "@/utils";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -8,14 +9,12 @@ import { useHistory } from "react-router-dom";
 type Props = {
   category?: CategoryType;
   successNotify: () => void;
-  failedNotify: (message: string) => void;
   handleCancel: () => void;
 };
 
 const ChangeCategoryPage = ({
   category,
   successNotify,
-  failedNotify,
   handleCancel,
 }: Props) => {
   const form = useForm();
@@ -42,7 +41,7 @@ const ChangeCategoryPage = ({
           if (err.message === "ERR_NETWORK") {
             history.push("/sign-in");
           } else {
-            failedNotify("Category is exist");
+            failedNotify("This category code is exist");
           }
         });
     } else {
@@ -57,7 +56,7 @@ const ChangeCategoryPage = ({
           if (err.message === "ERR_NETWORK") {
             history.push("/sign-in");
           } else {
-            failedNotify("Category is exist");
+            failedNotify("This category code is exist");
           }
         });
     }

@@ -4,6 +4,7 @@ import com.nnh.be.dto.auth.AuthenticationSdi;
 import com.nnh.be.dto.auth.AuthenticationSdo;
 import com.nnh.be.dto.sdi.user.ChangePasswordUserSdi;
 import com.nnh.be.dto.sdi.user.CreateUserSdi;
+import com.nnh.be.dto.sdi.user.RegisterUserSdi;
 import com.nnh.be.dto.sdo.MessageSdo;
 import com.nnh.be.service.auth.AuthenticationService;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<MessageSdo> register(@RequestBody CreateUserSdi request) {
+    public ResponseEntity<MessageSdo> register(@RequestBody RegisterUserSdi request) {
         return ResponseEntity.ok(service.register(request));
     }
 

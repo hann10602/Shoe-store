@@ -54,8 +54,8 @@ const UserInformation = (props: Props) => {
     toast.success("Success");
   };
 
-  const failedNotify = () => {
-    toast.error("Failed");
+  const failedNotify = (message: string) => {
+    toast.error(message);
   };
 
   const handleUserUpdate = (e: FieldValues) => {
@@ -91,7 +91,7 @@ const UserInformation = (props: Props) => {
                 if (err.message === "ERR_NETWORK") {
                   history.push("/sign-in");
                 } else {
-                  failedNotify();
+                  failedNotify(err.message);
                 }
               });
 
@@ -120,7 +120,7 @@ const UserInformation = (props: Props) => {
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
             } else {
-              failedNotify();
+              failedNotify(err.message);
             }
           });
 
@@ -149,7 +149,10 @@ const UserInformation = (props: Props) => {
         <div className="field-wrapper">
           <div id="avatar-wrapper">
             {isUpdateUser ? (
-              <div style={{height: "100%"}} onClick={() => openFileRef.current?.click()}>
+              <div
+                style={{ height: "100%" }}
+                onClick={() => openFileRef.current?.click()}
+              >
                 {loginUser?.avatar ? (
                   <img
                     className="avatar"
@@ -173,9 +176,7 @@ const UserInformation = (props: Props) => {
                   })}
                   ref={openFileRef}
                 />
-                <span
-                  id="avatar-change"
-                >
+                <span id="avatar-change">
                   <svg
                     version="1.1"
                     id="Capa_1"

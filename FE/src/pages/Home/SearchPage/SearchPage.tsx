@@ -15,9 +15,10 @@ import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./style.scss";
 import { userSelector } from "@/store/user/selector";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./style.scss";
+import { failedNotify, successNotify } from "@/utils";
 
 type Props = {};
 
@@ -62,14 +63,6 @@ const SearchPage = (props: Props) => {
     { length: Math.ceil(5) },
     (_, index) => index + 1
   );
-
-  const successNotify = () => {
-    toast.success("Success");
-  };
-
-  const failedNotify = () => {
-    toast.error("Failed");
-  };
 
   useEffect(() => {
     let searchResultString: string = "";
@@ -237,7 +230,7 @@ const SearchPage = (props: Props) => {
                           if (err.message === "ERR_NETWORK") {
                             history.push("/sign-in");
                           } else {
-                            failedNotify();
+                            failedNotify(err.message);
                           }
                         });
                     }

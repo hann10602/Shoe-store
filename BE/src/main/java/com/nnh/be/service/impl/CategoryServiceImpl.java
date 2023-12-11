@@ -111,6 +111,6 @@ public class CategoryServiceImpl implements CategoryService {
             return MessageSdo.of("Success");
         }
 
-        throw new MessageException("Delete category fail");
+        throw new MessageException("Product of this category is exist");
     }
 }

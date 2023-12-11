@@ -13,6 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { userSelector } from "@/store/user/selector";
 import { useHistory } from "react-router-dom";
+import { failedNotify, successNotify } from "@/utils";
 
 type Props = {};
 
@@ -36,14 +37,6 @@ const CartList = (props: Props) => {
       ),
     [orders]
   );
-
-  const successNotify = () => {
-    toast.success("Success");
-  };
-
-  const failedNotify = (message: string) => {
-    toast.error(message);
-  };
 
   useEffect(() => {
     if (loginUser) {

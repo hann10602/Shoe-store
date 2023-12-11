@@ -13,6 +13,7 @@ import ChangeCategoryPage from "./ChangeCategoryPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useHistory } from "react-router-dom";
+import { failedNotify } from "@/utils";
 
 type Props = {};
 
@@ -45,10 +46,6 @@ const CategoryList = (props: Props) => {
     dispatch(categoryAsyncAction.getAll());
   };
 
-  const failedNotify = (message: string) => {
-    toast.error(message);
-  };
-
   const handleDelete = (id: number) => {
     dispatch(categoryAsyncAction.deletes({ id }))
       .then(() => {
@@ -58,7 +55,7 @@ const CategoryList = (props: Props) => {
         if (err.message === "ERR_NETWORK") {
           history.push("/sign-in");
         } else {
-          failedNotify("This category is not empty");
+          failedNotify(err.message);
         }
       });
     setIsDeletePage(false);
@@ -84,7 +81,6 @@ const CategoryList = (props: Props) => {
       {isChangePage && (
         <ChangeCategoryPage
           successNotify={successNotify}
-          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           category={selectedEntity}
         />

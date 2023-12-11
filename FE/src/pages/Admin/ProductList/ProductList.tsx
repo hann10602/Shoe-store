@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DeletePage from "../DeletePage";
 import ChangeProductPage from "./ChangeProductPage";
 import { useHistory } from "react-router-dom";
+import { failedNotify } from "@/utils";
 
 type Props = {};
 
@@ -41,10 +42,6 @@ const ProductList = (props: Props) => {
     toast.success("Success");
     dispatch(shoeAsyncAction.getAll());
     dispatch(categoryAsyncAction.getAll());
-  };
-
-  const failedNotify = (message: string) => {
-    toast.error(message);
   };
 
   const handleDelete = (id: number) => {
@@ -83,7 +80,6 @@ const ProductList = (props: Props) => {
       {isChangePage && (
         <ChangeProductPage
           successNotify={successNotify}
-          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           shoe={selectedEntity}
         />

@@ -44,7 +44,7 @@ const evaluateSlice = createSlice({
           localStorage.removeItem("jwt");
           throw new Error(err.payload.code as string);
         } else {
-          throw new Error(err.payload.code as string);
+          throw new Error(err.payload.response.request.response);
         }
       });
     builder
@@ -61,7 +61,7 @@ const evaluateSlice = createSlice({
           localStorage.removeItem("jwt");
           throw new Error(err.payload.code as string);
         } else {
-          throw new Error(err.payload.code as string);
+          throw new Error(err.payload.response.request.response);
         }
       });
     builder
@@ -78,7 +78,7 @@ const evaluateSlice = createSlice({
           localStorage.removeItem("jwt");
           throw new Error(err.payload.code as string);
         } else {
-          throw new Error(err.payload.code as string);
+          throw new Error(err.payload.response.request.response);
         }
       });
     builder
@@ -95,7 +95,7 @@ const evaluateSlice = createSlice({
           localStorage.removeItem("jwt");
           throw new Error(err.payload.code as string);
         } else {
-          throw new Error(err.payload.code as string);
+          throw new Error(err.payload.response.request.response);
         }
       });
   },

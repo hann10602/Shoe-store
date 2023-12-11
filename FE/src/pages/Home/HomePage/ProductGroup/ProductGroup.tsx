@@ -11,7 +11,7 @@ import {
 } from "@/store/shoe/selector";
 import { ShoeType } from "@/store/shoe/type";
 import { useAppDispatch } from "@/store/store";
-import { getToken } from "@/utils";
+import { failedNotify, getToken, successNotify } from "@/utils";
 import { Carousel } from "antd";
 import { CarouselRef } from "antd/lib/carousel";
 import React, { memo, useEffect, useRef, useState } from "react";
@@ -62,14 +62,6 @@ const ProductGroup = (props: Props) => {
   const shoesByCategory3 = useSelector(shoesByCategory3Selector);
 
   const token = getToken();
-
-  const successNotify = () => {
-    toast.success("Success");
-  };
-
-  const failedNotify = () => {
-    toast.error("Failed");
-  };
 
   const handleResize = () => {
     setWindowSize(window.innerWidth);
@@ -188,7 +180,7 @@ const ProductGroup = (props: Props) => {
                           if (err.message === "ERR_NETWORK") {
                             history.push("/sign-in");
                           } else {
-                            failedNotify();
+                            failedNotify(err.message);
                           }
                         });
                       setShoeSizes([]);

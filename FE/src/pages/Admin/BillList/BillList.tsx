@@ -9,6 +9,7 @@ import DeletePage from "../DeletePage";
 import ChangeBillPage from "./ChangeBillPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { failedNotify } from "@/utils";
 
 type Props = {};
 
@@ -39,17 +40,13 @@ const BillList = (props: Props) => {
     dispatch(billAsyncAction.getAll());
   };
 
-  const failedNotify = () => {
-    toast.error("Failed");
-  };
-
   const handleDelete = (id: number) => {
     dispatch(billAsyncAction.deletes({ id }))
       .then(() => {
         successNotify();
       })
-      .catch(() => {
-        failedNotify();
+      .catch((err) => {
+        failedNotify(err.message);
       });
     setIsDeletePage(false);
     setSelectedId(undefined);
@@ -74,7 +71,6 @@ const BillList = (props: Props) => {
       {isChangePage && selectedEntity && (
         <ChangeBillPage
           successNotify={successNotify}
-          failedNotify={failedNotify}
           handleCancel={handleChangeCancel}
           bill={selectedEntity}
         />

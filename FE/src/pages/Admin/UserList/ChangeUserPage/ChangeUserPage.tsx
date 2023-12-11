@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
 import { UserType } from "@/store/user/type";
-import { validateEmail } from "@/utils";
+import { failedNotify, validateEmail } from "@/utils";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,14 +10,12 @@ import { useHistory } from "react-router-dom";
 type Props = {
   user?: UserType;
   successNotify: () => void;
-  failedNotify: () => void;
   handleCancel: () => void;
 };
 
 const ChangeUserPage = ({
   user,
   successNotify,
-  failedNotify,
   handleCancel,
 }: Props) => {
   const cloud_name = "dcb5n0grf";
@@ -56,8 +54,6 @@ const ChangeUserPage = ({
   const onSubmit = (e: any) => {
     const file = openFileRef.current?.files?.[0];
 
-    handleCancel();
-
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
@@ -86,23 +82,23 @@ const ChangeUserPage = ({
               .then(() => {
                 successNotify();
                 setAvatar("");
+                handleCancel();
               })
               .catch((err) => {
                 if (err.message === "ERR_NETWORK") {
                   history.push("/sign-in");
+                  setAvatar("");
                 } else {
-                  failedNotify();
+                  failedNotify(err.message);
                 }
-
-                setAvatar("");
               });
           })
           .catch((err) => {
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
-            } else {
-              failedNotify();
               setAvatar("");
+            } else {
+              failedNotify(err.message);
             }
           });
       } else {
@@ -127,17 +123,21 @@ const ChangeUserPage = ({
               .then(() => {
                 setAvatar("");
                 successNotify();
+                handleCancel();
               })
               .catch((err) => {
                 if (err.message === "ERR_NETWORK") {
                   history.push("/sign-in");
-                } else {
-                  failedNotify();
                   setAvatar("");
+                } else {
+                  failedNotify(err.message);
                 }
               });
           })
-          .catch(() => successNotify());
+          .catch(() => {
+            successNotify();
+            handleCancel();
+          });
       }
     } else {
       if (user) {
@@ -157,13 +157,14 @@ const ChangeUserPage = ({
           .then(() => {
             setAvatar("");
             successNotify();
+            handleCancel();
           })
           .catch((err) => {
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
-            } else {
               setAvatar("");
-              failedNotify();
+            } else {
+              failedNotify(err.message);
             }
           });
       } else {
@@ -181,13 +182,14 @@ const ChangeUserPage = ({
           .then(() => {
             setAvatar("");
             successNotify();
+            handleCancel();
           })
           .catch((err) => {
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
-            } else {
-              failedNotify();
               setAvatar("");
+            } else {
+              failedNotify(err.message);
             }
           });
       }
@@ -300,7 +302,8 @@ const ChangeUserPage = ({
                       required: "Please enter username",
                       validate: {
                         isPhoneNum: (fieldValue) =>
-                          fieldValue.length >= 6 || "Username at least 6 character",
+                          fieldValue.length >= 6 ||
+                          "Username at least 6 character",
                       },
                     })}
                   />
@@ -322,7 +325,8 @@ const ChangeUserPage = ({
                       required: "Please enter password",
                       validate: {
                         isPhoneNum: (fieldValue) =>
-                          fieldValue.length >= 6 || "Password at least 6 characters",
+                          fieldValue.length >= 6 ||
+                          "Password at least 6 characters",
                       },
                     })}
                   />

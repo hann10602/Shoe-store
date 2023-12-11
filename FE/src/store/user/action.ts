@@ -76,7 +76,7 @@ const create = createAsyncThunk(
   async (param: CreateUserType, { rejectWithValue }) => {
     try {
       const resp = await baseAxios
-        .post(`/auth/register`, param)
+        .post(`/user/create`, param)
         .then((res) => res)
         .catch((err) => err);
 

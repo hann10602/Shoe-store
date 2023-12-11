@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/store/store";
 import { userAsyncAction } from "@/store/user/action";
 import { isChangingPasswordUserSelector } from "@/store/user/selector";
-import { getToken } from "@/utils";
+import { failedNotify, getToken } from "@/utils";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -32,10 +32,6 @@ const ChangePassword = (props: Props) => {
     dispatch(userAsyncAction.getOne({ id: token.id }));
   };
 
-  const failedNotify = () => {
-    toast.error("Wrong old password");
-  };
-
   const handleChangePassword = (e: FieldValues) => {
     dispatch(
       userAsyncAction.changePassword({
@@ -44,18 +40,17 @@ const ChangePassword = (props: Props) => {
         newPassword: e.newPassword,
       })
     )
-      
-    .then(() => {
-      dispatch(userAsyncAction.getOne({ id: token.id }));
-      successNotify();
-    })
-    .catch((err) => {
-      if (err.message === "ERR_NETWORK") {
-        history.push("/sign-in");
-      } else {
-        failedNotify();
-      }
-    });
+      .then(() => {
+        dispatch(userAsyncAction.getOne({ id: token.id }));
+        successNotify();
+      })
+      .catch((err) => {
+        if (err.message === "ERR_NETWORK") {
+          history.push("/sign-in");
+        } else {
+          failedNotify("Wrong old password");
+        }
+      });
   };
 
   return (

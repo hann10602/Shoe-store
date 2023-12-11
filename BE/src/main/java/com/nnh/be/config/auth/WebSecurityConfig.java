@@ -24,12 +24,12 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/category/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/size/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/evaluate/get-by-shoe-id/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/shoe/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.

@@ -28,6 +28,11 @@ public class UserController {
         return userService.findAll();
     }
 
+    @PostMapping("/create")
+    public MessageSdo create(@RequestBody CreateUserSdi req) {
+        return authService.create(req);
+    }
+
     @PutMapping("/update")
     public MessageSdo update(@RequestBody UpdateUserSdi req) {
         return authService.update(req);

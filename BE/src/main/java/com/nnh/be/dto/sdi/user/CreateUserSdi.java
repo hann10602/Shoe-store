@@ -13,5 +13,4 @@ public class CreateUserSdi {
     private String phoneNum;
     private String avatar;
     private String role;
-    private String address;
 }

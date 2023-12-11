@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserType } from "@/store/user/type";
 import { userAsyncAction } from "@/store/user/action";
+import { failedNotify } from "@/utils";
 
 export const Login = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -24,10 +25,6 @@ export const Login = () => {
 
   const history = useHistory();
   const location = useLocation();
-
-  const failedNotify = () => {
-    toast.error("Wrong username or password");
-  };
 
   const onSubmit = (e: FieldValues) => {
     dispatch(
@@ -44,7 +41,7 @@ export const Login = () => {
         if (err.message === "ERR_NETWORK") {
           history.push("/sign-in");
         } else {
-          failedNotify();
+          failedNotify("Wrong username or password");
         }
       });
   };
