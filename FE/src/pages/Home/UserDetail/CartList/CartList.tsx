@@ -94,7 +94,7 @@ const CartList = (props: Props) => {
                         if (err.message === "ERR_NETWORK") {
                           history.push("/sign-in");
                         } else {
-                          failedNotify("Failed");
+                          failedNotify(err.message);
                         }
                       });
                   } else {

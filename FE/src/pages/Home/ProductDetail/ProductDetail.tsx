@@ -86,24 +86,28 @@ const ProductDetail = (props: Props) => {
     if (!loginUser) {
       history.push("/sign-in");
     } else if (shoe) {
-      dispatch(
-        cartAsyncAction.create({
-          userId: loginUser.id,
-          shoeId: shoe.id,
-          sizeCode: buySize,
-          quantity: buyQuantity,
-        })
-      )
-        .then(() => {
-          successNotify();
-        })
-        .catch((err) => {
-          if (err.message === "ERR_NETWORK") {
-            history.push("/sign-in");
-          } else {
-            failedNotify("Failed");
-          }
-        });
+      if (productQuantity && buyQuantity > productQuantity) {
+        failedNotify("Out of stock");
+      } else {
+        dispatch(
+          cartAsyncAction.create({
+            userId: loginUser.id,
+            shoeId: shoe.id,
+            sizeCode: buySize,
+            quantity: buyQuantity,
+          })
+        )
+          .then(() => {
+            successNotify();
+          })
+          .catch((err) => {
+            if (err.message === "ERR_NETWORK") {
+              history.push("/sign-in");
+            } else {
+              failedNotify("Failed");
+            }
+          });
+      }
 
       setCartPage(false);
     }
@@ -144,7 +148,7 @@ const ProductDetail = (props: Props) => {
             if (err.message === "ERR_NETWORK") {
               history.push("/sign-in");
             } else {
-              failedNotify("Failed");
+              failedNotify(err.message);
             }
           });
       } else {
